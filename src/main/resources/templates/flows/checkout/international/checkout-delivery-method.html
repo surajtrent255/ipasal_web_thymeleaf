@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<title>iPasal: Customer Checkout | Delivery Method</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/noui/nouislider.min.css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/checkout.css"
+	th:href="@{/css/checkout.css}" />
+<link
+	href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+	rel="stylesheet" type="text/css" />
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<header th:replace="~{fragments/header :: header}" class="header1">
+
+	</header>
+
+	<div class="row" id="shipping_detail_container"
+		th:if="${session.containsKey('cart') && session.cart != null}">
+		<div class="row checkout-status-container">
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">1</span>PERSONAL
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">2</span>SHIPPING
+				</div>
+			</div>
+			<div class="col-20">
+				<div class="badge-container">
+					<span class="badge badge-selected">3</span>DELIVERY
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">4</span>PAYMENT
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">5</span>FINISH
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-50">
+				<div class="container">
+					<form method="POST" th:object="${selectedShipping}">
+						<label> Delivery Locations: </label> <select id="citySelector"
+							name="deliveryOption" th:field="*{location}">
+							<option th:each="shippingRate: ${shippingRateInfo}"
+								th:data-val="${shippingRate.amount}"
+								th:text="${shippingRate.location != 'Default' ? shippingRate.location : 'Other Location'}"
+								th:value="${shippingRate.location}"></option>
+						</select>
+						<button class="btn" name="_eventId_billingShippingInfo">
+							<i class="fa fa-angle-double-left" aria-hidden="true"></i> Prev -
+							Billing/Shipping Info
+						</button>
+						<button class="btn" name="_eventId_paymentMethod">
+							Next - Payment Method <i class="fa fa-angle-double-right"
+								aria-hidden="true"></i>
+						</button>
+					</form>
+
+				</div>
+			</div>
+
+			<div class="col-50">
+				<div class="container">
+					<h4>
+						Items In Cart <span class="price" style="color: black"> <i
+							class="fa fa-shopping-cart"></i> <b
+							th:text="${#arrays.length(session.cart)}">0</b>
+						</span>
+					</h4>
+					<p th:each="product : ${session.cart}">
+						<a th:href="@{/products/} + ${product.productId}"
+							href="product-detail.html" th:text="${product.productName}">Product
+							Name X 2</a> x <span th:text="${product.quantity}"> </span> <span
+							class="price"
+							th:text="'Rs. ' + ${product.rate * product.quantity}">Rs.0</span>
+					</p>
+					<p>
+						Sub Total &#61; <span class="price" style="color: black"
+							th:text="${'Rs. ' + totalPrice}">Rs.0</span>
+					</p>
+					<p>
+						Shipping Cost &#61; <span id="shipping-amount" class="price"
+							style="color: black" th:text="${'Rs.' + selectedShipping.amount}">Rs.0</span>
+					</p>
+					<p>
+						Total &#61; <span id="total-amount" class="price"
+							style="color: black"
+							th:text="${'Rs.' + (totalPrice + selectedShipping.amount)}">Rs.0</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:if="${session.cart == null}">There is no items in your
+		cart. Please add product to cart to finalize the order.</div>
+
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="js/checkout.js" th:src="@{/js/checkout.js}">
+		
+	</script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
+	<script type="text/javascript" th:inline="javascript">
+		let shippingDetails = /*[[${shippingRateInfo}]]*/'';
+		let subTotal = /*[[${totalPrice}]]*/'';
+
+		function calculateTotal(shippingRate) {
+			return subTotal + shippingRate
+		}
+
+		$("#citySelector").on(
+				"change",
+				function(event) {
+					event.preventDefault();
+					let value = parseFloat($("#citySelector option:selected")
+							.attr("data-val"));
+					//let city = $("#citySelector option:selected").text();
+					//$("#shippingCity").val(city);
+					$("#shipping-amount").empty();
+					$("#shipping-amount").text("Rs. " + value);
+					$("#total-amount").empty();
+					$("#total-amount").text("Rs. " + calculateTotal(value));
+				});
+	</script>
+</body>
+</html>

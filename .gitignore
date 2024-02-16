@@ -1,0 +1,41 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### Other system specific directory ###
+/bin/
+/classes/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+## Vs Code ###
+.mvn
+.vscode
+*.DS_Store
+mvnw
+mvnw.cmd
+
+### Ignoring Applicationw.yml ###
+/src/main/resources/application.yml
+/src/application.yml
+

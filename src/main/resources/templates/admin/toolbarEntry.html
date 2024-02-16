@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Header Information Entry Page.</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.feature-group-container {
+		margin: 20px auto;
+	}
+
+	.featured-group {
+		color: #757582;
+		margin: 10px 20px;
+		font-size: 13px;
+		vertical-align: center;
+	}
+	.submit-btn {
+		margin-top: 20px;
+	}
+	
+	.btn_container {
+  position: relative;
+}
+
+.btn_centered-element {
+  height: 50px;
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  top: 65%;
+  margin-top: -50px;
+  }
+  
+		.site-color {
+			background-color: #e65540;
+		}
+		th{
+			color: aliceblue;
+		}
+		th, td {
+			text-align: left;
+			font-size: small;
+		}
+		table {
+			border: 1px solid #e9ecef;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}  
+.editmediaback {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+		
+.inputtext {
+	width: 100%;
+  	padding: 12px 20px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc !important;
+  	border-radius: 4px;
+  	box-sizing: border-box;
+	}
+
+.lower-case {
+    text-transform: lowercase;
+}
+	
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card mb-3">
+  							<div class="card-header bg-primary">Header Information Entry Form</div>
+  							<span>Social Medias</span>
+  							<button class="btn btn-success" id="add-new-social-btn">Add New Social Media</button>
+  							<table class="table">
+									<thead class="site-color">
+										<tr>
+											<th>Icon</th>
+											<th scope="col">Social Media</th>
+											<th>Action</th>
+											<th>Current Status</th>
+											<th>Display</th>
+										</tr>
+									</thead>
+									<tbody id="orders-container">
+											<tr th:each="socialMedia, iteration: ${socialMedias}">
+												<td th:class="${socialMedia.socialIcon}"></td>
+												<td th:text="${socialMedia.socialName}">  </td>
+												<td>
+													<button
+														class="btn btn-success" th:onclick="|showEditModal(${socialMedia.socialMediaId})|" th:id = "'editSocialMedia' + ${socialMedia.socialMediaId}"
+														>Edit
+													</button>
+												</td>
+												<td>
+													<span th:text="${socialMedia.active} ? 'Active' : 'Inactive'"></span>
+												</td>
+												<td >
+												<button
+														class="btn btn-info"
+														th:onclick="|setActive(${socialMedia.socialMediaId})|">Show
+													</button>
+													<button
+														class="btn btn-danger"
+														th:onclick="|setInactive(${socialMedia.socialMediaId})|">Do not Show
+													</button>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+    			
+    			<span> ToolBar Message:</span>
+    			<textarea class = "table" rows="" cols="" id="toolbarMessage" th:text="${toolBarMessage.message}"></textarea>
+    			<button class="btn btn-success" id="toolbarMessageEdit">Update</button>
+  							</div>
+						</div>
+					</div>
+					
+			</div>
+		</div>
+	</section>
+<!-- Modal for edit social media -->
+	<div th:each="socialMedia, iteration: ${socialMedias}">
+	<div class="modal fade" th:id="'socialmedia-change-modal' + ${socialMedia.socialMediaId}"
+		data-keyboard="false" data-backdrop="false" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content editmediaback">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit Social Media</h5>
+				</div>
+<!-- 				<form method="post"> -->
+				<div class="modal-content-body">
+					<div style="margin: 5px 20px;">
+						
+						<span>Name: </span><input class="inputtext lower-case" type="text" th:value="${socialMedia.socialName}" th:name="'socialMediaName' + ${socialMedia.socialMediaId}"><br>
+						<span>Link: </span><br><span class="s-text7">Link must start with https://</span><br><input class="inputtext" type="text" th:value="${socialMedia.socialLink}" th:name="'socialMediaLink' + ${socialMedia.socialMediaId}"><br>
+						<span>Icon: (Enter the font awesome class tag) </span><br><span class="s-text7">Example :- fa fa-facebook</span><input class="inputtext lower-case" type="text" th:value="${socialMedia.socialIcon}" th:name="'socialMediaIcon' + ${socialMedia.socialMediaId}"><br>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<a><button id="changeOkBtn" th:onclick="|updateSocialMedia(${socialMedia.socialMediaId})|" class="btn btn-primary">Change</button></a>
+					<button th:onclick= "|hideEditModal(${socialMedia.socialMediaId})|" th:id="'changeCancelBtn' + ${socialMedia.socialMediaId}" class="btn btn-danger">Cancel</button>
+					
+				</div>
+<!-- 				</form> -->
+			</div>
+		</div>
+	</div>
+	</div>
+<!-- Modal for edit social media ends-->
+	
+<!-- Modal for add social media -->
+	<div class="modal fade" id="social-modal-add"
+		data-keyboard="false" data-backdrop="false" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content editmediaback">
+				<div class="modal-header">
+					<h5 class="modal-title">Add Social Media</h5>
+				</div>
+<!-- 				<form method="post"> -->
+				<div class="modal-content-body">
+					<div style="margin: 5px 20px;">
+						
+						<span>Name: </span><input class="inputtext lower-case" type="text" id="addSocialName"><br>
+						<span>Link: </span><br><span class="s-text7">Link must start with https://</span><br><input class="inputtext" type="text" id="addSocialLink"><br>
+						<span>Icon: (Enter the font awesome class tag) </span><br><span class="s-text7">Example :- fa fa-facebook</span><input class="inputtext lower-case" type="text" id="addSocialIcon"><br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="submitSocialBtn" class="btn btn-primary">Submit</button>
+					<button id="submitCancelBtn" class="btn btn-danger">Cancel</button>
+				</div>
+<!-- 				</form> -->
+			</div>
+		</div>
+	</div>
+<!-- Modal for add social media ends-->
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+	
+	function showEditModal(socialMediaId){
+		let socialModalId = "socialmedia-change-modal" + socialMediaId;
+		$('#' + socialModalId).modal("show");
+	}
+	
+	function hideEditModal(socialMediaId){
+		let socialModalId = "socialmedia-change-modal" + socialMediaId;
+		$('#' + socialModalId).modal("hide");
+	}
+	
+	$("#add-new-social-btn").on("click", function(event) {
+		$("#social-modal-add").modal("show");
+	});
+	
+	$("#submitCancelBtn").on("click", function(event) {
+		$("#social-modal-add").modal("hide");
+	});
+	
+	
+	
+	//Add new Social Media
+	$("#submitSocialBtn").on("click", function(event){
+		let socialMediaInfo = {};
+		socialMediaInfo.socialName = $("#addSocialName").val().toLowerCase();
+		socialMediaInfo.socialLink= $("#addSocialLink").val();
+		socialMediaInfo.socialIcon= $("#addSocialIcon").val().toLowerCase();
+		swal({
+			title : "Add!",
+			text : "Are you sure you want to add this social media?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/social/add",
+					method : "POST",
+					contentType: "application/json",
+					data: JSON.stringify(socialMediaInfo),
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : "Social Media Added Successfully"
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	});
+	
+	
+	//Update the info of social media
+	function updateSocialMedia(socialMediaId){
+		let socialModalName = "socialMediaName" + socialMediaId;
+		let socialModalLink = "socialMediaLink" + socialMediaId;
+		let socialModalIcon = "socialMediaIcon" + socialMediaId;
+		let socialMedia = {};
+		socialMedia.socialName = $("input[name=" + socialModalName + "]").val().toLowerCase();
+		socialMedia.socialLink= $("input[name=" + socialModalLink + "]").val();
+		socialMedia.socialIcon= $("input[name=" + socialModalIcon + "]").val().toLowerCase();
+		console.log(socialMedia.socialName);
+		swal({
+			title : "Update!",
+			text : "Are you sure you want to update this social media?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/social/update/" + socialMediaId,
+					method : "PUT",
+					contentType: "application/json",
+					data: JSON.stringify(socialMedia),
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+	
+	function setActive(socialMediaId) {
+		swal({
+			title : "Set Active!",
+			text : "Are you sure you want to set this as active",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/social/setActive/" + socialMediaId,
+					method : "POST",
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+
+	function setInactive(socialMediaId) {
+		swal({
+			title : "Set Inactive!",
+			text : "Are you sure you want to set this as Inactive",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/social/setInactive/" + socialMediaId,
+					method : "POST",
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+
+
+	$("#toolbarMessageEdit").on('click', function(event) {
+		event.preventDefault();
+		var toolbarMessage = {};
+		var message = $("#toolbarMessage").val();
+		
+		toolbarMessage.message = message;
+		
+		swal({
+			title : "Update Toolbar Message!",
+			text : "Are you sure you want to update toolbar message?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$.ajax({
+					method: "PUT",
+					url: contextPath + "/toolbarMessage",
+					data: JSON.stringify(toolbarMessage),
+					contentType: "application/json",
+					success: function(result) {
+						swal({
+							text: "Toolbar message updated successfully!",
+							icon: "success",
+							closeOnClickOutside: true,
+							closeOnEsc: true
+						})
+						.then(function() {
+							window.location.href = contextPath;
+						});
+					}, 
+					error: function(error) {
+						$(".loader-holder").hide();
+						swal({
+							text: error.responseJSON.message,
+							icon: "error",
+							closeOnClickOutside: false,
+							closeOnEsc: false
+						})
+						.then(function() {
+							window.location.href = contextPath;
+						});
+					}
+				});
+			}
+		});
+	});
+	
+	
+	
+	
+	
+</script>
+</body>
+</html>

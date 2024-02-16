@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/">
+<head>
+	<title>iPasal: Your Wish List</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css"
+		  th:href="@{/vendor/noui/nouislider.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+	<!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+
+</header>
+
+<div style="position: absolute; right: 0px">
+	<button class="button-ws" type="button" id="notify-admin" th:if="${#authentication.principal.roleId == 4 }">Notify Admin</button>
+	<input type="hidden" class="block2-user-id" th:value="${#authentication.principal.userId}">
+</div>
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-8 col-lg-12 p-b-50">
+				<!-- Product -->
+				<!--<div th:if="${wishProductList==null}">-->
+					<!--<p><b>You haven't added the products in your wish list yet.</b></p>-->
+				<!--</div>-->
+
+				<div class="row" id="products-container">
+					<div th:if="${wishProductList != null}" class="col-sm-12 col-md-6 col-lg-3 p-b-50" th:each="product : ${wishProductList}">
+						<!-- Block2 -->
+						<div class="block2">
+							<div th:switch="true">
+										<div th:case="${product.availableItems} < 1 ">
+											<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">
+								<img th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+									 alt="IMG-PRODUCT">
+
+								<div class="block2-overlay trans-0-4">
+									<a class="block2-btn-towishlist hov-pointer trans-0-4">
+										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+									</a>
+
+
+
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+<!-- 										Button -->
+
+										<button th:if="${product.availableItems >= 1}"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+											Add to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+							</div>
+							
+							
+							<div th:case="${product.discountPercent} > 0">
+												<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+								<img th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+									 alt="IMG-PRODUCT">
+
+								<div class="block2-overlay trans-0-4">
+									<a class="block2-btn-towishlist hov-pointer trans-0-4">
+										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+									</a>
+
+
+
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+<!-- 										Button -->
+
+										<button th:if="${product.availableItems >= 1}"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+											Add to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+							</div>
+							
+							
+							<div th:case="${product.isNewProduct()}">
+												<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+								<img th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+									 alt="IMG-PRODUCT">
+
+								<div class="block2-overlay trans-0-4">
+									<a class="block2-btn-towishlist hov-pointer trans-0-4">
+										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+									</a>
+
+
+
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+<!-- 										Button -->
+
+										<button th:if="${product.availableItems >= 1}"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+											Add to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+							</div>
+							
+							
+							<div th:case="*">
+												<div class="block2-img wrap-pic-w of-hidden pos-relative ">
+								<img th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+									 alt="IMG-PRODUCT">
+
+								<div class="block2-overlay trans-0-4">
+									<a class="block2-btn-towishlist hov-pointer trans-0-4">
+										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+									</a>
+
+
+
+									<div class="block2-btn-addcart w-size1 trans-0-4">
+<!-- 										Button -->
+
+										<button th:if="${product.availableItems >= 1}"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+											Add to Cart
+										</button>
+									</div>
+								</div>
+							</div>
+							</div>
+							
+							</div>
+
+<!-- 							<div id="product-image-block" -->
+<!-- 								 th:classappend="${product.availableItems >= 1} ? 'block2-labelnew' : 'block2-labeloutofstock'" -->
+<!-- 								 class="block2-img wrap-pic-w of-hidden pos-relative"> -->
+<!-- 								<img th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}" -->
+<!-- 									 alt="IMG-PRODUCT"> -->
+
+<!-- 								<div class="block2-overlay trans-0-4"> -->
+<!-- 									<a class="block2-btn-towishlist hov-pointer trans-0-4"> -->
+<!-- 										<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> -->
+<!-- 										<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i> -->
+<!-- 									</a> -->
+
+
+
+<!-- 									<div class="block2-btn-addcart w-size1 trans-0-4"> -->
+<!-- 										Button -->
+
+<!-- 										<button th:if="${product.availableItems >= 1}" -->
+<!-- 												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4" -->
+<!-- 												th:onclick="|NAMESPACE.addToCart( '${product.productId}','${product.productName}', '${product.rate}');|"> -->
+<!-- 											Add to Cart -->
+<!-- 										</button> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+
+							<div class="block2-txt p-t-20">
+								<a id="product-id-url"
+								   th:href="@{/products/} + ${product.productId}" href="product-detail.html"
+								   class="block2-name dis-block s-text3 p-b-5" th:text="${product.getProductName()}">
+								</a>
+								<input type="hidden" class="block2-pro-id" th:value="${product.productId}">
+								<input type="hidden" class="block2-user-id" th:value="${#authentication.principal.userId}">
+								
+								
+								<div th:switch="true">
+									<p th:case="${product.discountPercent} > 0">
+										<span class="block2-oldprice m-text7 p-r-5"> Rs. 
+<!-- 											<span th:text="${product.actualRate}">  -->
+											
+											<span th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span> 
+										<span class="block2-price m-text6 p-r-5"> Rs. 
+<!-- 											<span th:text="${product.rate}">  -->
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span>
+									</p>
+
+									<p th:case="${product.discountPercent} == 0">
+										<span class="block2-price m-text6 p-r-5"> Rs. 
+<!-- 											<span th:text="${product.rate}">  -->
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span>
+									</p>
+								</div>
+								
+								
+								
+								
+								
+<!-- 								<span id="product-rate" -->
+<!-- 									  class="block2-price m-text6 p-r-5"> -->
+<!-- 										Rs. <span th:text="${product.rate}"></span> -->
+<!-- 									</span> -->
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<button th:if="${#lists.size(wishProductList) == 9}" class="btn btn-block" id="load-more"
+						style="background-color: #e65540; color: #fff;">
+					Load More &gt;
+				</button>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- Footer -->
+<!-- Replaces current footer tag with fragments/footer.html -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+</footer>
+<div th:replace="~{fragments/scripts :: scripts}">
+</div>
+<script th:inline="javascript">
+	$(function () {
+		$("#products-container").on("click", ".block2-btn-addcart", function () {
+			let productName = $(this).parent().parent().parent().find('.block2-name').html();
+			swal({
+				icon: "success",
+				text: productName + " is added to cart !"
+			});
+		});
+	});
+</script>
+</body>
+</html>

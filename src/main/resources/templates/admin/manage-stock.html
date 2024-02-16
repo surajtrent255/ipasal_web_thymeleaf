@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Advance Stock Management Page.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<h3 class="m-text26  p-b-16">Advance Stock Management</h3>
+					<hr>
+
+					<div class="container">
+						<div>
+							<h4 style="font-size: 16px; margin-left:5em;">Manage Stock 
+								<span style="margin-left: 60px">
+									<label for="stock-management-yes">
+										<input type="radio" id="stock-management-yes" name="stock-management-status" value="yes" checked/> Yes
+									</label>
+									<label style="margin-left: 20px;" for="stock-management-no">
+										<input type="radio" id="stock-management-no" name="stock-management-status" value="no"/> No
+									</label>
+								</span>
+							</h4>
+							
+						</div><br>
+
+						<div>
+							<h4>Stock Source</h4> <br>
+							<div style="margin-left: 5em;">
+								<label>
+									Category ID: <input type="text" th:value="${product.categoryId}"/>
+								</label> <br>
+								<label>
+									Category Name: <input type="text" th:value="${product.categoryName}"/>
+								</label>
+							</div>
+						</div><br>
+
+						<div >
+							<h4 style="margin-bottom: 15px;">Stock Information</h4> 
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th>#</th>
+										<th>QTY</th>
+										<th>Stock Status</th>
+										<th>Low Stack Alert Qty</th>
+										<th> </th>
+									</tr>
+								</thead>
+								<tbody id="table-body">
+									<tr>
+										<td th:text="${product.productName}">Test Product</td>
+										<td><input type="text" name="quantity" th:value="${product.availableItems}" value="10"/></td>
+										<td th:text="${product.availableItems > 0}? 'In-Stock' : 'Out-Of-Stock'">In-Stock </td>
+										<td><input type="text" name="lowStockQtyNumber" value="5" /></td>
+										<td></td>
+									</tr>
+								</tbody>
+								
+							</table>
+							<div class="pull-right">
+								<button style="margin-right: 14px;" class="btn btn-danger">Cancel</button>
+								<button id="submit" class="btn btn-success">Done</button>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	
+	<script th:inline="javascript">
+		let updateItemsStock = function() {
+			let productInfo = /*[[${product}]]*/ {};
+			productInfo.availableItems = $("input[name='quantity']").val(); 
+			$(".loader-holder").show();
+			$.ajax({
+				url: contextPath + "/products/" + productInfo.productId,
+				method: "PUT",
+				contentType: "application/json",
+				data: JSON.stringify(productInfo),
+				success: function(data) {
+					$(".loader-holder").hide();
+					swal({
+						text: data,
+						icon: 'success',
+						buttons: true
+					}).then(function(okBtnPressed) {
+						window.location = contextPath + "/admin/stocks";
+					});
+				}, 
+				error: function(error) {
+					$(".loader-holder").hide();
+					swal({
+						text: error.responseText,
+						icon: 'error',
+						buttons: true
+					});
+				}
+			});
+			
+		}
+		
+		
+		$("#submit").on('click', function(event) {
+			event.preventDefault();
+			let editMode = $("input[name='stock-management-status']:checked").val();
+			if(editMode == "yes") {
+				swal({
+					text: "Do you really want to update stock of this item?",
+					icon: "info",
+					buttons: true
+				}).then(function(confirmation) {
+					if(confirmation) {
+						updateItemsStock();
+					}
+				});
+			} else {
+				swal({
+					text: "Please enable edit more first!",
+					icon: "info"
+				});
+			}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/">
+<head>
+	<title>Home</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" href="images/icons/favicon.png"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" href="vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" href="fonts/themify/themify-icons.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" href="fonts/elegant-font/html-css/style.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" href="vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" href="vendor/css-hamburgers/hamburgers.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" href="vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" href="vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/daterangepicker/daterangepicker.css}" href="vendor/daterangepicker/daterangepicker.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" href="vendor/slick/slick.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/lightbox2/css/lightbox.min.css}" href="vendor/lightbox2/css/lightbox.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" href="css/util.css">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" href="css/main.css">
+	<!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:fragment="header" class="header1">
+	<!-- Header desktop -->
+	<div class="container-menu-header">
+		<div class="topbar">
+<!-- 			<div class="topbar-social" th:if="${socialTools == null}"> -->
+<!-- 				<a href="#"><i class="topbar-social-item fa fa-external-link" aria-hidden="true">&nbsp; No active social media.</i></a> -->
+<!-- 			</div> -->
+			<div class="topbar-social" th:if="${socialTools != null}">
+				<a th:each="soc : ${socialTools}" th:href="${soc.socialLink}" class="topbar-social-item" th:classappend="${soc.socialIcon}"></a>
+			</div>
+
+			<span class="topbar-child1" th:if="${toolBarMessage != null}" th:text="${toolBarMessage.message}">
+					
+			</span>
+
+			<div class="topbar-child2">
+				<div sec:authorize="isAuthenticated()" th:remove="tag">
+					<span class="topbar-email" th:text="${#authentication.principal.email}">
+						fashe@example.com
+					</span>
+				</div>
+				<div class="topbar-language rs1-select2" style="display: none;">
+					<select class="selection-1" name="time">
+						<option>USD</option>
+						<option>NRS</option>
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="wrap_header">
+			<!-- Logo -->
+			<a href="." th:href="@{/}" class="logo">
+				<img th:src="@{/images/icons/ipasallogo.png}" src="images/icons/logo.png" alt="IMG-LOGO">
+			</a>
+
+			<!-- Menu -->
+			<div class="wrap_menu">
+				<nav class="menu">
+					<ul class="main_menu">
+						<li id="shopByCategory" class="m-l-12 m-r-12 fs-14">
+							<i class="fa fa-chevron-down pull-left p-t-3 m-r-8"  aria-hidden="true"></i> &nbsp; SHOP BY CATEGORY
+							<div id="slide_menu">
+									<div class="row" id="menu_items">
+										<ul th:if="${categories != null && categories.size() > 0}">
+											<li th:each="pCategory : ${categories}" class="m-l-10 m-r-10 p-t-5 p-b-5 fs-10">
+												<a th:href="@{/category/parent/{id}/product/sort(id=${pCategory.categoryId})}"
+														   th:text="${pCategory.getCategoryName()}" th:data-parent-category-id="${pCategory.categoryId}"></a> 
+														   <i class="fa fa-chevron-right pull-right" aria-hidden="true"></i>
+											</li>
+										</ul>
+									</div>
+									<div id="childCategory" class="row">
+								
+									</div>
+							</div>
+						</li>
+
+						<li>
+							<a href="featured.html" th:href="@{/featured}">Featured</a>
+						</li>
+
+						<li sec:authorize = "isAuthenticated()">
+							<a href="wish-list.html" th:href="@{/wish-list/{userId}(userId = ${#authentication.principal.userId})}">Wish List</a>
+						</li>
+
+						<li>
+							<a href="about.html" th:href="@{/about}">About</a>
+						</li>
+
+						<li>
+							<a href="contact.html" th:href="@{/contact}">Contact</a>
+						</li>
+						<li sec:authorize="!isAuthenticated()">
+							<a href="login" th:href="@{/login}"> Login </a>
+						</li>
+						<li sec:authorize="!isAuthenticated()">
+							<a href="registration" th:href="@{/registration}"> Register </a>
+						</li>
+						<li id="search-box">
+							<div class="input-group">
+								<input
+									class="font-size-12 border-right-0 border"
+									type="search" placeholder="Search items..."
+									id="product-search-input"> <span
+									class="input-group-append">
+									<button id="product-search-btn" class="btn"
+										type="button">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
+							 
+						</li>
+					</ul>
+				</nav>
+			</div>
+
+			<!-- Header Icon -->
+			<div class="header-icons">
+				<div class="header-wrapicon2" sec:authorize="isAuthenticated()">
+					<img th:src="@{/images/icons/icon-header-01.png}" src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<!-- Header cart noti -->
+					<div class="header-cart header-dropdown">
+						<ul class="header-cart-wrapitem">
+							<li class="header-cart-item">
+								<div sec:authorize="hasRole('ROLE_CUSTOMER')" class="header-cart-item-txt">
+									<a th:href="@{/customer}">
+										<i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+									</a>
+								</div>
+								<div sec:authorize="hasRole('ROLE_ADMIN')" class="header-cart-item-txt">
+									<a th:href="@{/admin}">
+										<i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+									</a>
+								</div>
+								<div sec:authorize="hasRole('ROLE_ADMIN')" class="header-cart-item-txt">
+									<a th:href="@{/admin/accountSetting}" >
+										<i class="fa fa-wrench" aria-hidden="true"></i> Account Settings
+									</a>
+								</div>
+								<div sec:authorize="hasRole('ROLE_CUSTOMER')" class="header-cart-item-txt">
+									<a th:href="@{/customer/accountSetting}" >
+										<i class="fa fa-wrench" aria-hidden="true"></i> Account Settings
+									</a>
+								</div>
+								<div class="header-cart-item-txt">
+									<a th:href="@{/logout}" >
+										<i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<!-- End of popup menu -->
+
+				<span class="linedivide1"></span>
+
+				<div class="header-wrapicon2" sec:authorize="!hasRole('ROLE_ADMIN')">
+					<img th:src="@{/images/icons/icon-header-02.png}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<span class="header-icons-noti" id="cartBadge">0</span>
+
+					<!-- Header cart noti -->
+					<div class="header-cart header-dropdown">
+						<ul class="header-cart-wrapitem" id="cartList">
+						</ul>
+
+						<div class="header-cart-total">
+							<span id="totalPrice" >  </span>
+						</div>
+
+						<div class="header-cart-buttons" id="cart_btns">
+							<div class="header-cart-wrapbtn">
+								<!-- Button -->
+								<a href="cart.html"  th:href="@{/products/cart}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									View Cart
+								</a>
+							</div>
+
+							<div class="header-cart-wrapbtn">
+								<!-- Button -->
+								<a href="/checkout" th:href="@{/checkout}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									Check Out
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Header Mobile -->
+	<div class="wrap_header_mobile">
+		<!-- Logo moblie -->
+		<a href="index.html" th:href="@{/}" class="logo-mobile">
+			<img th:src="@{/images/icons/logo.png}" src="images/icons/logo.png" alt="IMG-LOGO">
+		</a>
+
+		<!-- Button show menu -->
+		<div class="btn-show-menu">
+			<!-- Header Icon mobile -->
+			<div class="header-icons-mobile">
+				<div class="header-wrapicon2" sec:authorize="isAuthenticated()">
+					<img th:src="@{/images/icons/icon-header-01.png}" src="images/icons/icon-header-01.png" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<!-- Header cart noti -->
+					<div class="header-cart header-dropdown">
+						<ul class="header-cart-wrapitem">
+							<li class="header-cart-item">
+								<div sec:authorize="hasRole('ROLE_CUSTOMER')" class="header-cart-item-txt">
+									<a th:href="@{/customer}">
+										<i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+									</a>
+								</div>
+								<div sec:authorize="hasRole('ROLE_ADMIN')" class="header-cart-item-txt">
+									<a th:href="@{/admin}">
+										<i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard
+									</a>
+								</div>
+								<div class="header-cart-item-txt">
+									<a th:href="@{/logout}" >
+										<i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+									</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<span class="linedivide2"></span>
+
+				<div class="header-wrapicon2">
+					<img th:src="@{/images/icons/icon-header-02.png}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+					<span class="header-icons-noti" id="cartBadgeMobile"> </span>
+
+					<!-- Header cart noti -->
+
+					<div class="header-cart header-dropdown">
+
+						<ul class="header-cart-wrapitem" id="cartListMobile">
+
+						</ul>
+
+						<div class="header-cart-total" >
+							<span id="totalPriceMobile" > </span>
+						</div>
+
+						<div class="header-cart-buttons" id="cart_btns_mobile">
+							<div class="header-cart-wrapbtn">
+								<!-- Button -->
+								<a href="cart.html"  th:href="@{/products/cart}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									View Cart
+								</a>
+							</div>
+
+							<div class="header-cart-wrapbtn">
+								<!-- Button -->
+								<a th:href="@{/checkout}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+									Check Out
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+					<span class="hamburger-box">
+						<span class="hamburger-inner"></span>
+					</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- Menu Mobile -->
+	<div class="wrap-side-menu" >
+		<nav class="side-menu">
+			<ul class="main-menu">
+				<li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+						<span class="topbar-child1" th:if="${toolBarMessage != null}" th:text="${toolBarMessage.message}">
+							Free shipping for standard order over 1000
+						</span>
+				</li>
+
+				<li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+					<div class="topbar-child2-mobile" sec:authorize="isAuthenticated()" th:remove="tag">
+							<span class="topbar-email" th:text="${#authentication.principal.email}">
+								fashe@example.com
+							</span>
+
+						<div class="topbar-language rs1-select2" style="display: none">
+							<select class="selection-1" name="time">
+								<option>USD</option>
+								<option>EUR</option>
+							</select>
+						</div>
+					</div>
+				</li>
+
+				<li class="item-topbar-mobile p-l-10">
+<!-- 					<div class="topbar-social-mobile" th:if="${socialTools == null}"> -->
+<!-- 						<a href="#"><i class="topbar-social-item fa fa-external-link" aria-hidden="true">&nbsp; No active social media.</i></a> -->
+<!-- 					</div> -->
+					<div class="topbar-social-mobile" th:if="${socialTools != null}">
+						<a th:each="soc : ${socialTools}" th:href="${soc.socialLink}" class="topbar-social-item" th:classappend="${soc.socialIcon}"></a>
+					</div>
+				</li>
+
+				<li class="item-menu-mobile">
+					<a th:href="@{/}">Home</a>
+
+				</li >
+				<!-- Dropdown menu for mobile view -->
+				<li class="item-menu-mobile">
+					<a href="#" id="mobile-cat"> Category </a>
+					<ul class="sub-menu fs-13 font-weight-bold" id="categoryHierarchyMobile">
+						
+					</ul>
+				</li>
+
+				<li class="item-menu-mobile">
+					<a href="featured.html" th:href="@{/featured}">Featured</a>
+				</li>
+
+				<li class="item-menu-mobile" sec:authorize = "isAuthenticated()">
+					<a href="wish-list.html" th:href="@{/wish-list/{userId}(userId = ${#authentication.principal.userId})}">Wish List</a>
+				</li>
+
+				<li class="item-menu-mobile">
+					<a href="about.html" th:href="@{/about}">About</a>
+				</li>
+
+				<li class="item-menu-mobile">
+					<a href="contact.html" th:href="@{/contact}">Contact</a>
+				</li>
+				<li class="item-menu-mobile" sec:authorize="!isAuthenticated()">
+					<a href="login" th:href="@{/login}"> Login </a>
+				</li>
+				<li class="item-menu-mobile" sec:authorize="!isAuthenticated()">
+					<a href="registration" th:href="@{/registration}"> Register </a>
+				</li>
+
+			</ul>
+		</nav>
+	</div>
+	
+	
+	
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+	var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+	(function(){
+		var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+		s1.async=true;
+		s1.src='https://embed.tawk.to/5caaf26353f1e453fb8ca3c2/default';
+		s1.charset='UTF-8';
+		s1.setAttribute('crossorigin','*');
+		s0.parentNode.insertBefore(s1,s0);
+	})();
+</script>
+<!--End of Tawk.to Script-->
+
+<script>
+	
+</script>
+</header>
+</body>
+</html>

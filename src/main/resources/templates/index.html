@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/">
+<head>
+<title>iPasal: Online shopping in Nepal for the best genuine products</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" href="images/icons/favicon.png" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/themify/themify-icons.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="fonts/elegant-font/html-css/style.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="vendor/slick/slick.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/lightbox2/css/lightbox.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/util.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<header th:replace="~{fragments/header}" class="header1">
+
+	</header>
+
+	<!-- Slide1 -->
+	<section th:if="${sliderDataError == null && sliderData != null}" class="slide1">
+		<div class="wrap-slick1">
+			<div class="slick1">
+				<div class="item-slick1 item1-slick1"
+					 th:style="'background-image:url(' + ${sliderData[0].getSliderImage().getImageName()} + ');'" >
+					<div
+						class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+						<span
+							class="caption1-slide1 m-text1 t-center animated visible-false m-b-15"
+							data-appear="fadeInDown"
+						th:text="${sliderData[0].getTextMain()}"></span>
+
+						<h2
+							class="caption2-slide1 m-text4-white t-center animated visible-false m-b-37"
+							data-appear="fadeInUp"
+							th:text="${sliderData[0].getTextSecondary()}"></h2>
+
+						<div class="wrap-btn-slide1 w-size1 animated visible-false"
+							data-appear="zoomIn">
+							<!-- Button -->
+							<a th:href="@{/category/parent/{id}/product/sort(id=${sliderData[0].getCategoryId()})}"
+								class="flex-c-m size1 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+								Shop Now </a>
+						</div>
+					</div>
+				</div>
+
+				<div th:if="${sliderData.size() >= 2 }" class="item-slick1 item2-slick1"
+					 th:style="'background-image:url(' + ${sliderData[1].getSliderImage().getImageName()} + ');'">
+					<div
+						class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+						<span
+							class="caption1-slide1 m-text1 t-center animated visible-false m-b-15"
+							data-appear="rollIn"
+							th:text="${sliderData[1].getTextMain()}"> </span>
+
+						<h2
+							class="caption2-slide1 m-text4-white t-center animated visible-false m-b-37"
+							data-appear="lightSpeedIn"
+							th:text="${sliderData[1].getTextSecondary()}"></h2>
+
+						<div class="wrap-btn-slide1 w-size1 animated visible-false"
+							data-appear="slideInUp">
+							<!-- Button -->
+							<a th:href="@{/category/parent/{id}/product/sort(id=${sliderData[1].getCategoryId()})}"
+								class="flex-c-m size1 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+								Shop Now </a>
+						</div>
+					</div>
+				</div>
+
+				<div th:if="${sliderData.size() >= 3}" class="item-slick1 item3-slick1"
+					 th:style="'background-image:url(' + ${sliderData[2].getSliderImage().getImageName()} + ');'">
+					<div
+						class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+						<span
+							class="caption1-slide1 m-text1 t-center animated visible-false m-b-15"
+							data-appear="rotateInDownLeft"
+							th:text="${sliderData[2].getTextMain()}"> </span>
+
+						<h2
+							class="caption2-slide1 m-text4-white t-center animated visible-false m-b-37"
+							data-appear="rotateInUpRight"
+							th:text="${sliderData[2].getTextSecondary()}"></h2>
+
+						<div class="wrap-btn-slide1 w-size1 animated visible-false"
+							data-appear="rotateIn">
+							<!-- Button -->
+							<a th:href="@{/category/parent/{id}/product/sort(id=${sliderData[2].getCategoryId()})}"
+								class="flex-c-m size1 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+								Shop Now </a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${sliderDataError != null}" class="slide1">
+		<div class="wrap-slick1">
+			<div class="slick1">
+				<div class="item-slick1 item1-slick1" 
+						th:style="'background-image:url(' + @{/images/master-slide-06.jpg} + ');'">
+						<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+							<!-- <span
+								class="caption1-slide1 m-text1 t-center animated visible-false m-b-15"
+								data-appear="fadeInDown"
+							th:text="${sliderDataError}">There is no content slider.</span> -->
+	
+							<h2
+								class="caption2-slide1 m-text4-white t-center animated visible-false m-b-37"
+								data-appear="fadeInUp" th:text="${sliderDataError}"> Want to create content slider.? </h2>
+	
+							<div class="wrap-btn-slide1 w-size1 animated visible-false"
+								data-appear="zoomIn">
+								<!-- Button -->
+								<a th:href="@{/admin/}"
+									class="flex-c-m size1 bo-rad-23 s-text2 bgwhite hov1 trans-0-4">
+									Create Slider </a>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Sale Slider -->
+	<section class="sales">
+		<div  class="container">
+			<div class="sales-title-container row">
+				<div class="col-md-2 sales-title" th:each="pro : ${promo}"> 
+					<a href="#" th:href="@{/promotionalSales/pr/} + ${pro.promotionalSalesId}" class="sales-title-text"><i class="fa fa-fire " aria-hidden="true" th:text="${pro.promotionalTitle}"></i> </a>
+				</div>
+			</div>
+		</div>
+
+		<div class="container" th:if="${(saleProducts != null) && (saleProductsError == null)}" >
+			<div class="container row">
+				<div class="col-md-10 float-left">
+					<h3 class="sales-header">DISCOUNTS!</h3>
+				</div>
+				<div class="col-md-2 float-right">
+					<a th:href="@{/products/allSales}" class="shop-more pull-right"> MORE ITEMS </a>
+				</div>
+			</div>
+			<div class="sales-product-container row">
+				<div class="col-md-2 sale-item" th:each="product, index : ${saleProducts}">
+					<a th:href="@{/products/{id}(id=${product.productId})}">
+						<div class="sale-image-container">
+							<img th:if="${product.images != null && #arrays.length(product.images) > 0}" th:src="${product.images[0].image}" alt="IMG-PRODUCT">
+							<img th:if="${product.images == null}" th:src="@{/images/gallery-01.jpg}" />
+						</div>
+						<div class="item-detail">
+							<span th:text="${product.productName}"></span><br>
+							<span><del>Rs. <span th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')}"></span></del></span><br>
+							<span>Rs. <span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> </span></span><br>
+						</div>
+					</a>
+<!-- 					<a th:if="${index.last}" th:href="@{/products/allSales}" class="shop-more pull-right"> MORE ITEMS </a> -->
+				</div>
+			</div>
+		</div>
+		
+		<div class="container" th:if="${(saleProducts == null) && (saleProductsError != null)}">
+			<div class="row">
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30">
+						<div>
+							<h1 th:text="${saleProductsError}" class="t-center"></h1>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	<!-- Banner -->
+	<section class="banner bgwhite p-t-40 p-b-40">
+		<div class="container">
+			<div class="row" th:if="${(rows != null) && (rows  > 0) && (featuredCategories != null)}" th:each="row: ${#numbers.sequence(0, (rows - 1))}" >
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30 pull-right" style="width: 300px;">
+						<a th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[((row * 6) + 0)].categoryId})}"> 
+						<img th:src="${featuredCategories[((row * 6) + 0)].image.getOddImage()}"
+							 alt="IMG-BENNER">
+
+						<div class="block1-wrapbtn w-size2">
+							<!-- Button -->
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[((row * 6) + 0)].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[((row * 6) + 0)].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30 pull-right" style="width: 300px;">
+						<a th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 1].categoryId})}">
+						<img th:src="${featuredCategories[((row * 6) + 1)].image.getEvenImage()}"
+							 alt="IMG-BENNER">
+
+						<div class="block1-wrapbtn w-size2">
+							
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 1].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[(row * 6) + 1].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30 m-l-r-auto" style="width: 300px;">
+						<a th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 2].categoryId})}">
+						<img th:src="${featuredCategories[((row * 6) + 2)].image.getEvenImage()}"
+							 alt="IMG-BENNER">
+
+						<div class="block1-wrapbtn w-size2">
+							<!-- Button -->
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 2].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[(row * 6) + 2].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30 m-l-r-auto" style="width: 300px;">
+						<a th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 3].categoryId})}">
+						<img th:src="${featuredCategories[((row * 6) + 3)].image.getOddImage()}"
+							 alt="IMG-BENNER">
+
+						<div class="block1-wrapbtn w-size2">
+							<!-- Button -->
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 3].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[(row * 6) + 3].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+				</div>
+
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30" style="width: 300px;">
+						<a th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 4].categoryId})}">
+						<img th:src="${featuredCategories[((row * 6) + 4)].image.getOddImage()}"
+							 alt="IMG-BENNER">
+
+						<div class="block1-wrapbtn w-size2">
+							<!-- Button -->
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 4].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[(row * 6) + 4].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+
+					<!-- block2 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30" style="width: 300px;">
+						<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 5].categoryId})}">
+						<img th:src="${featuredCategories[((row * 6) + 5)].image.getEvenImage()}"
+							 alt="IMG">
+
+						<div class="block1-wrapbtn w-size2">
+							<!-- Button -->
+							<a
+								th:href="@{/category/parent/{id}/product/sort(id=${featuredCategories[(row * 6) + 5].categoryId})}"
+								class="flex-c-m size2-custom m-text2-custom bg3 hov1 trans-0-4 m-l-r-auto"
+								th:text="${featuredCategories[(row * 6) + 5].categoryName}"> </a>
+						</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section class="banner bgwhite p-t-40 p-b-40" th:if="${featuredCategoriesError != null}">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-10 col-md-8 col-lg-4 m-l-r-auto">
+					<!-- block1 -->
+					<div class="block1 hov-img-zoom pos-relative m-b-30">
+						<div>
+							<p th:text="${featuredCategoriesError}" class="t-center"> No featured categories found.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+					
+
+	<!-- New Product -->
+	
+	<!-- Sale Slider -->
+	<section class="most-bought-product-container m-b-20">
+		<div  class="container">
+			<div class="sec-title p-b-60 p-t-20">
+				<h3 class="m-text5 t-center">Most Bought Products</h3>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row most-bought-products">
+				<div class="mbp-item" th:each="product : ${mostBoughtProduct}">
+					<a th:href="${'/products/' + product.productId}">
+						<div class="mbp-image-container">
+							<img th:if="${product.images.size() > 0}"
+										th:src="${product.images[0].image}"
+										src="images/gallery-12.jpg" class="mbp-image-container"/> 
+							<img th:if="${product.images.size()<= 0 }"
+							 src="images/gallery-12.jpg" class="mbp-image-container"/>
+							
+						</div>
+						<div class="mbp-item-detail">
+							<h5 th:text="${product.productName}"></h5>
+<!-- 							<p>Rs. <del th:if="${product.discountPercent > 0}" th:text="${product.actualRate}"> </del> <span th:text="${product.rate}">  </span></p> -->
+							<span  th:if="${product.discountPercent > 0}"><del>Rs. <span th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')}"></span></del><br></span>
+							<span>Rs. <span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> </span></span><br>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+	<!-- <section th:if="${mostBoughtProduct != null && mostBoughtProduct.size() > 0}" class="newproduct bgwhite p-t-45 p-b-105">
+		<div class="container">
+			<div class="sec-title p-b-60">
+				<h3 class="m-text5 t-center">Most Bought Products</h3>
+			</div>
+
+			Slide2
+			<div class="wrap-slick2">
+				<div class="slick2">
+
+					<div class="item-slick2 p-l-15 p-r-15"
+						th:each="product : ${mostBoughtProduct}">
+						Block2
+						<div class="block2">
+						
+							
+							<div th:switch="true">
+								<div th:case="${product.availableItems} < 1 ">
+									<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">
+							
+									<img th:if="${product.images.size() > 0}"
+										th:src="${product.images.get(0).image}"
+										src="images/gallery-12.jpg" /> <img
+										th:if="${product.images.size() <= 0}"
+										src="images/gallery-12.jpg" />
+									<div class="block2-overlay trans-0-4">
+										<a class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+											class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+											class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+										</a>
+	
+										<input type="hidden" id="userId" th:value="${#authentication.principal.userId}"/>
+	
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											Button
+											<button
+												th:if="${product.availableItems >= 1}"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Add to Cart
+											</button>
+										</div>
+									</div>
+								</div>
+						</div>
+						
+						
+						
+						<div th:case="${product.discountPercent} > 0">
+								<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+							
+									<img th:if="${product.images.size() > 0}"
+										th:src="${product.images.get(0).image}"
+										src="images/gallery-12.jpg" /> <img
+										th:if="${product.images.size() <= 0}"
+										src="images/gallery-12.jpg" />
+									<div class="block2-overlay trans-0-4">
+										<a class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+											class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+											class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+										</a>
+	
+										<input type="hidden" id="userId" th:value="${#authentication.principal.userId}"/>
+	
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											Button
+											<button
+												th:if="${product.availableItems >= 1}"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Add to Cart
+											</button>
+										</div>
+									</div>
+								</div>
+						</div>
+						
+						
+						<div th:case="${product.isNewProduct()}">
+												<div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+							
+									<img th:if="${product.images.size() > 0}"
+										th:src="${product.images.get(0).image}"
+										src="images/gallery-12.jpg" /> <img
+										th:if="${product.images.size() <= 0}"
+										src="images/gallery-12.jpg" />
+									<div class="block2-overlay trans-0-4">
+										<a class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+											class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+											class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+										</a>
+		
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											Button
+											<button
+												th:if="${product.availableItems >= 1}"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Add to Cart
+											</button>
+										</div>
+									</div>
+								</div>
+						</div>
+						
+						
+						
+						<div th:case="*">
+												<div class="block2-img wrap-pic-w of-hidden pos-relative ">
+							
+									<img th:if="${product.images.size() > 0}"
+										th:src="${product.images.get(0).image}"
+										src="images/gallery-12.jpg" /> <img
+										th:if="${product.images.size() <= 0}"
+										src="images/gallery-12.jpg" />
+									<div class="block2-overlay trans-0-4">
+										<a class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+											class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+											class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+										</a>
+	
+										<input type="hidden" id="userId" th:value="${#authentication.principal.userId}"/>
+	
+										<div class="block2-btn-addcart w-size1 trans-0-4">
+											Button
+											<button
+												th:if="${product.availableItems >= 1}"
+												th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+												class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+												Add to Cart
+											</button>
+										</div>
+									</div>
+								</div>
+						</div>
+						
+					
+					</div>
+
+							<div class="block2-txt p-t-20">
+								<a th:href="@{/products/{id}(id=${product.productId})}" class="block2-name dis-block s-text3 p-b-5"> 
+									<span id="pro-name" th:text="${product.productName}"></span>
+								</a>
+								<input type="hidden" class="block2-pro-id" th:value="${product.productId}">
+								<input type="hidden" sec:authorize="isAuthenticated()" class="block2-user-id" th:value="${#authentication.principal.userId}">
+								<div class="block2-price m-text6 p-r-5"> 
+									Rs. <span
+									th:text="${product.rate}"></span>
+								</div>
+								<div th:switch="true">
+									<p th:case="${product.discountPercent} > 0">
+										<span class="block2-oldprice m-text7 p-r-5"> Rs. 
+											<span th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+										</span> 
+												
+										<span class="block2-price m-text6 p-r-5"> Rs.
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+										</span>
+									</p>
+											
+									<p th:case="${product.discountPercent} == 0">
+										<span class="block2-price m-text6 p-r-5"> Rs. 
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+										</span>
+									</p>
+								</div>			
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</section> -->
+	
+	<section th:if="${mostBoughtProductError != null}" class="newproduct bgwhite p-t-45 p-b-105">
+		<div class="container">
+			<div class="sec-title p-b-60">
+				<h3 class="m-text5 t-center">Most Bought Products</h3>
+			</div>
+			<div>
+				<p class="t-center" th:text="${mostBoughtProductError}">Most bought product list is empty. </p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Banner2 -->
+	<section class="banner2 bg5 p-t-55 p-b-55">
+		<div class="container">
+			<div class="row">
+				<div th:if="${offerCategory != null && offerCategory.size() > 0}" class="col-sm-10 col-md-8 col-lg-6 m-l-r-auto p-t-15 p-b-15">
+					<div class="hov-img-zoom pos-relative">
+							<img th:src="${offerCategory[0].image.imageName}" style="height:379px" alt="IMG-BANNER">
+						<div class="ab-t-l sizefull flex-col-c-m p-l-15 p-r-15">
+
+							<h3 class="l-text1 fs-35-sm"
+								th:text="${offerCategory[0].categoryName}"></h3>
+
+								<a th:href="@{/category/parent/{id}/product/sort(id=${offerCategory[0].categoryId})}" class="s-text4 hov2 p-t-20 "> View Collection </a>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-10 col-md-8 col-lg-6 m-l-r-auto p-t-15 p-b-15">
+					<div class="bgwhite hov-img-zoom pos-relative p-b-20per-ssm">
+						<img th:src="${(hotDealsData != null && not #lists.isEmpty(hotDealsData)) ? hotDealsData[0].getHotDealImageDTO().getImageName() : 'images/shop-item-09.jpg'}" style="height:379px" alt="IMG-BANNER"/>
+
+						<div class="ab-t-l sizefull flex-col-c-b p-l-15 p-r-15 p-b-20">
+							<div class="t-center">
+								<a th:if="${hotDealsData != null && not #lists.isEmpty(hotDealsData)}" th:href="@{/products/{id}(id=${hotDealsData[0].getProductId()})}"
+								   class="dis-block s-text3 p-b-5"
+									th:text="${hotDealsData[0].getProductName()}">
+									 </a> <span th:if="${hotDealsData != null && not #lists.isEmpty(hotDealsData)}"
+									class="block2-oldprice m-text7 p-r-5" th:text="${hotDealsData[0].getOldRate()}"> </span> <span
+									th:if="${hotDealsData != null && not #lists.isEmpty(hotDealsData)}"
+									class="block2-newprice m-text8" th:text="${hotDealsData[0].getNewRate()}"> </span>
+								<a th:if="${#lists.isEmpty(hotDealsData)}">No Hot Deal available</a>
+							</div>
+
+							<div th:if="${endDate != null}" class="flex-c-m p-t-44 p-t-30-xl">
+								<div class="flex-col-c-m size3 bo1 m-l-5 m-r-5">
+									<span class="m-text10 p-b-1 days"
+										  >5 </span> <span
+										class="s-text5"> days </span>
+									<input th:if="${endDate != null}" id="end-date" type="hidden" th:value="${endDate}">
+								</div>
+
+								<div class="flex-col-c-m size3 bo1 m-l-5 m-r-5">
+									<span class="m-text10 p-b-1 hours"
+											></span> <span
+										class="s-text5"> hrs </span>
+								</div>
+
+								<div class="flex-col-c-m size3 bo1 m-l-5 m-r-5">
+									<span class="m-text10 p-b-1 minutes"
+											> </span> <span
+										class="s-text5"> mins </span>
+								</div>
+
+								<div class="flex-col-c-m size3 bo1 m-l-5 m-r-5">
+									<span class="m-text10 p-b-1 seconds"
+											>  </span> <span
+										class="s-text5"> secs </span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Shipping -->
+	<section class="shipping bgwhite p-t-62 p-b-46">
+		<div class="flex-w p-l-15 p-r-15">
+			<div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+				<h4 class="m-text12 t-center">Free Delivery Inside Ring Road</h4>
+
+				<a href="#" class="s-text11 t-center"> Click here for more info
+				</a>
+			</div>
+
+			<div
+				class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 bo2 respon2">
+				<h4 class="m-text12 t-center">30 Days Return</h4>
+
+				<span class="s-text11 t-center"> Simply return it within 30
+					days for an exchange. </span>
+			</div>
+
+			<div class="flex-col-c w-size5 p-l-15 p-r-15 p-t-16 p-b-15 respon1">
+				<h4 class="m-text12 t-center">Store Opening</h4>
+
+				<span class="s-text11 t-center"> Shop open from Sunday to
+					Friday </span>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<!--===============================================================================================-->
+	<script type="text/javascript" src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+</body>
+</html>

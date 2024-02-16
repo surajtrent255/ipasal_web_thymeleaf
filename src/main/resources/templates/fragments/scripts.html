@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+</head>
+<body>
+<div th:fragment="scripts">
+    <!-- Back to top -->
+    <div class="btn-back-to-top bg0-hov" id="myBtn">
+		<span class="symbol-btn-back-to-top">
+			<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+		</span>
+    </div>
+
+    <!-- Container Selection1 -->
+    <div id="dropDownSelect1"></div>
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
+    
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script>
+
+
+    <!--===============================================================================================-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/slick-custom.js}" src="js/slick-custom.js"></script>
+
+    <!--===============================================================================================-->
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.10.0/js/lightbox.min.js"></script>
+    <!--===============================================================================================-->
+    <script type="text/javascript" th:src="@{/vendor/sweetalert/sweetalert.min.js}"></script>
+  
+    <!--===============================================================================================-->
+    <script type="text/javascript" th:src="@{/vendor/select2/select2.min.js}"></script>
+    
+    <script type="text/javascript" th:src="@{/js/menu.js}"></script>
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" 
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" 
+        crossorigin="anonymous">
+	</script>
+	<script th:src="@{/vendor/tagsinput/tagsinput.js}"></script>
+	
+	
+	
+	
+	
+	
+	<script th:inline="javascript">
+		//Gets the current page url
+		let contextPath = /*[[${#request.contextPath}]]*/ '/index'; 
+		
+		//Gets the hierarchical categories list sent from springboot
+		//and sets in js variable.
+		let categoriesData = /*[[${categories}]]*/ '';
+	
+	</script>
+	
+    <script type="text/javascript">
+
+        $(".selection-1").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect1')
+        });
+        $(".selection-2").select2({
+            minimumResultsForSearch: 20,
+            dropdownParent: $('#dropDownSelect2')
+        });
+
+        /**
+         * Action for the options selection for the dropdown
+         */
+        $("#filterRateSelection").on('change', function () {
+            let optionSelected = $(this).find('option:selected').text();
+
+            if (optionSelected == "Price: low to high") {
+                sorting('asc');
+            } else if (optionSelected == "Price: high to low") {
+                sorting('desc');
+            } else if (optionSelected == "Popularity") {
+                alert("Sorry! Currently this option is not available.")
+            }
+            console.log("Selected item is :" + optionIndex);
+
+        })
+    </script>
+
+
+    <script type="text/javascript">
+        /*
+        * To notify the admin when the whole-seller clicks the button
+        * */
+        $(".button-ws").on('click', function () {
+            var loggedId = $(this).parent().find('.block2-user-id').val();
+            let notifyUrl = contextPath +"/wish-list/notify/"+loggedId;
+            $(".loader-holder").show();
+            $(".loader").show();
+            $.ajax({
+                url: notifyUrl,
+                method: 'GET',
+                success: function (response) {
+                    $(".loader-holder").hide();
+                    $(".loader").hide();
+                    swal("Admin has been notified successfully.", "You will be contacted soon", "success");
+                }
+            })
+        });
+
+        /*
+        * Test to get the quantity from the product detail page
+        * */
+
+        // $('#cart-item-num').on('change', function () {
+        //     let quantity = $('#cart-item-num').val();
+        //     console.log("Cart item number is ->"+quantity);
+        //
+        // });
+
+//         $('.block2-btn-addcart').each(function () {
+//             var nameProduct = $(this).parent().parent().parent().parent().parent().find('.block2-name').text();
+//             $(this).on('click', function () {
+//                 swal(nameProduct.replace('<span id="pro-name">', '').replace('</span>', ''), " is added to cart !", "success");
+//             });
+//         });
+
+        /*
+        * For adding the item to the wish list
+        * */
+        $('.block2-btn-addwishlist').each(function () {
+            var nameProduct = $(this).parent().parent().parent().parent().parent().find('.block2-name').text();
+            var proId = $(this).parent().parent().parent().parent().parent().find('.block2-pro-id').val();
+            var loggedId = $(this).parent().parent().parent().parent().parent().find('.block2-user-id').val();
+
+            $(this).on('click', function () {
+                let wishItem = {};
+                wishItem.userId = loggedId;
+                wishItem.productId = proId;
+                wishItem.deleted = false;
+                let sUrl = contextPath +"/wish-list/status/" + loggedId + "/" + proId;
+                /*
+                * When the user is logged in, add the item to the wish list
+                * */
+                if (loggedId) {
+                    /*
+                    * 1. Ajax call to check if the item is already in the wish list
+                    * */
+                    $.ajax({
+                        url: sUrl,
+                        method: "GET",
+                        success: function (response) {
+                            /*
+                            * 1.1 YES : Display the alert to show item already present
+                            * */
+                            if (response == true) {
+                                swal(nameProduct.replace('<span id="pro-name">', '').replace('</span>', ''), " is already in wish list !", "success");
+                            } else {
+                                /*
+                                * 1.2 : NO -> Add the item to the wish list
+                                * 2. Ajax call second to add the item in the wish list
+                                * */
+                                $.ajax({
+                                    url: contextPath + "/wish-list/add",
+                                    method: "POST",
+                                    data: JSON.stringify(wishItem),
+                                    contentType: "application/json",
+                                    success: function (response) {
+                                        swal(nameProduct.replace('<span id="pro-name">', '').replace('</span>', ''), " is added to wish list !", "success");
+                                    },
+                                });
+                            }
+                        },
+                    });
+                }
+                /*
+                * When the user is not logged in, display the alert to either login or register
+                * */
+                else {
+                    swal("Please Login to  add the item in the wish list");
+                }
+        });
+        })
+        ;
+
+        /*
+        * Removing wish list item from wish list
+        * */
+        $('.block2-btn-towishlist').each(function () {
+            var nameProduct = $(this).parent().parent().parent().parent().parent().find('.block2-name').html();
+            var proId = $(this).parent().parent().parent().parent().parent().find('.block2-pro-id').val();
+            var loggedId = $(this).parent().parent().parent().parent().parent().find('.block2-user-id').val();
+
+            $(this).on('click', function () {
+                let rUrl = contextPath +"/wish-list/getId/" + loggedId + "/" + proId;
+                /*
+                * First ajax call to get the Id of the wish list item being clicked
+                * */
+                $.ajax({
+                    url: rUrl,
+                    method: "GET",
+                    success: function (response) {
+                        let wishList = {};
+                        wishList.userId = loggedId;
+                        wishList.productId = proId;
+                        wishList.deleted = true;
+                        wishList.id = response;
+                        let pUrl = contextPath +"/wish-list/" + response;
+
+                        /*
+                        * Second ajax call: To remove the item from wish list using the wish id being retrieved
+                        * */
+                        $.ajax({
+                            url: pUrl,
+                            method: "PUT",
+                            contentType: "application/json",
+                            data: JSON.stringify(wishList),
+                            success: function (response) {
+                                console.log("Status of product is ->" + response);
+                                swal(nameProduct.replace('<span id="pro-name">', '').replace('</span>', ''), " is removed from wish list !", "success")
+                                    .then(function () {
+                                        window.location = contextPath + "/wish-list/" + loggedId;
+                                    });
+
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+
+    </script>
+
+
+    <!--===============================================================================================-->
+    <script type="text/javascript" src="vendor/noui/nouislider.min.js"
+            th:src="@{/vendor/noui/nouislider.min.js}"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js" th:src="@{/js/main.js}"></script>
+    <script src="js/addToCart.js" th:src="@{/js/addToCart.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            NAMESPACE.setCartItems();
+        });
+        /* $(document).ready(function() {
+            NAMESPACE.getCartData();
+        }); */
+    </script>
+
+    <!--Scripts for forget password-->
+    <script>
+        let resetButton = $('#button-proceed');
+        resetButton.on('click', function () {
+            let resetEmail = $('#reset-email').val();
+            $(".loader-holder").show();
+            $(".loader").show();
+            $.ajax({
+                method: 'POST',
+                url: contextPath + "/forgot-password/checkEmail?email="+resetEmail,
+                success: function (response) {
+                    console.log("The response from the check is ->"+response);
+                    if (response){
+                        $.ajax({
+                            method: 'GET',
+                            url: contextPath +"/forgot-password/sendPasswordResetMail",
+                            data: {
+                                email: resetEmail
+                            },
+                            success: function (response) {
+                                console.log(response);
+                                if (response!= null) {
+                                    $(".loader-holder").hide();
+                                    $(".loader").hide();
+                                swal("Email has been sent to you", " with reset link", "success")
+                                    .then(function () {
+                                        window.location = contextPath + "/login";
+                                    });
+                            }
+                            }
+                        })
+                    } else {
+                        $(".loader-holder").hide();
+                        $(".loader").hide();
+                        alert("Sorry, the email didn't match any Id in our database.");
+                    }
+                }
+            })
+        })
+
+    </script>
+
+    <!--Script for resetting the password-->
+    <script>
+        let buttonProceed = $('#button-reset');
+        buttonProceed.on('click', function () {
+            let password = $('#password-reset').val();
+            let repeatPassword = $('#password-repeat').val();
+            let pwResetUserId = $('#user-id-pw-reset').val();
+            if (password.length <6){
+            	swal({
+                	text: "Password must be at least 6 characters long", 
+                	});
+            }
+            else{
+            if (password != repeatPassword){
+            	swal({
+                	text: "Password re-entered did not match.", 
+                	});
+            } else {
+                $(".loader-holder").show();
+                $(".loader").show();
+                $.ajax({
+                    method: 'GET',
+                    url: contextPath +"/forgot-password/"+pwResetUserId,
+                    data: {
+                        password: repeatPassword
+                    },
+                    success: function (response) {
+                        $(".loader-holder").hide();
+                        $(".loader").hide();
+                        swal({
+                        	text: "Password has been reset successfully", 
+                        	icon: "success"
+                        	}).then(function () {
+                                window.location = contextPath + "/logout";
+                            });
+                    }
+
+                })
+            }
+            }
+        })
+    </script>
+    <!--Registration Page Script to set the whole-seller role-->
+    <script>
+        $("#whole-seller").change(function () {
+            if (this.checked){
+                $("#user-role").val(4);
+            }
+        });
+    </script>
+
+    <script>
+
+        $('#btn-add-payment').on('click', function () {
+            let paymentName = $('#payment-name').val();
+            let paymetStatus = document.getElementById("payment-status");
+            let status = paymetStatus.options[paymetStatus.selectedIndex].value;
+            let paymentMethod = {};
+            paymentMethod.paymentName = paymentName;
+            paymentMethod.paymentStatus = status;
+            let pAddUrl = contextPath + '/admin/payment-methods/add';
+            $.ajax({
+                method: 'POST',
+                url: pAddUrl,
+                data: JSON.stringify(paymentMethod),
+                contentType: "application/json",
+                success: function (response) {
+                    window.location = contextPath + "/admin/payment-methods";
+                    /*console.log("The payment method being inserted is ->"+response);
+                    swal("is added successfully", "success")
+                    .then(function () {
+                        window.location = contextPath+"/admin/whole-seller";
+                    });*/
+                },
+                error: function (error) {
+                    swal({
+                        text: error.responseJSON.message,
+                        icon: "error",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    })
+                        .then(function() {
+                            window.location.href = contextPath+"/admin/payment-methods";
+                        });
+                }
+
+            });
+        })
+
+        /*
+        * Update Payment Method
+        * */
+        $('#btn-update-payment-details').on('click', function () {
+            let paymentName = $('#payment-name').val();
+            let paymentStatus = document.getElementById("payment-status");
+            let paymentMId = $("#paymentM-id").val();
+            let status = paymetStatus.options[paymetStatus.selectedIndex].value;
+            let paymentMethod = {};
+            console.log("The payment details for update is ->"+paymentName+" "+status+" "+paymentMId);
+            paymentMethod.id = paymentMId;
+            paymentMethod.paymentName = paymentName;
+            paymentMethod.paymentStatus = status;
+            let pupdateUrl = contextPath + '/admin/payment-methods/update/'+paymentMId;
+            $.ajax({
+                method: 'PUT',
+                url: pupdateUrl,
+                data: JSON.stringify(paymentMethod),
+                contentType: "application/json",
+                success: function (response) {
+                    window.location = contextPath + "/login";
+                },
+                error: function (error) {
+                    swal({
+                        text: error.responseJSON.message,
+                        icon: "error",
+                        closeOnClickOutside: false,
+                        closeOnEsc: false
+                    })
+                        .then(function() {
+                            window.location.href = contextPath+"/login";
+                        });
+                }
+
+            });
+        })
+
+    </script>
+    
+    <script>
+    
+    	// Event handler for the category menu 
+    	$(function() {
+    		$("#shopByCategory").on('click', function() {
+    			$("#slide_menu").toggle();
+    		});
+    	});
+    	
+    	//category hierarchy for mobile view
+		$(function() {
+			createCategoryList();
+		});
+				
+		//Creation of the category listing on first page load	
+		function createCategoryList() {
+			$("#categoryHierarchyMobile").empty();
+			let categoryHierarchyDom = "";
+			//contextPath is defined on first inline javascript tag above....
+			function createCategoryHierarchy(categories) {
+				categories.forEach(function(category) {
+					categoryHierarchyDom += `<li>` ;
+					if(category.childCategories && category.childCategories.length > 0) {
+						categoryHierarchyDom += '<a href="' + contextPath + '/category/parent/' + category.categoryId + '/product/sort">' + category.categoryName + '</a>';
+						categoryHierarchyDom += ` <i class="m-l-8 fa fa-angle-right" data-toggle="collapse" data-target="#data-mobile${category.categoryId}" style="color:black;" aria-hidden="true"></i>`;
+						categoryHierarchyDom += "<ul id='data-mobile" + category.categoryId+"' class='p-l-5 collapse cat-menu'>";
+						createCategoryHierarchy(category.childCategories)
+						categoryHierarchyDom += "</li></ul>";
+					} else {
+						categoryHierarchyDom += '<a href="' + contextPath + '/category/' + category.parentId + '/' + category.categoryId + '/product/sort">' + category.categoryName + '</a>';
+					}
+					categoryHierarchyDom += "</li>";
+				});
+			}
+			
+			//categoriesData variable is defined on first inline javascript tag above....
+			createCategoryHierarchy(categoriesData);
+			$("#categoryHierarchyMobile").append(categoryHierarchyDom);
+		}
+		
+		//event handler for the mobile category menu....
+		$("#mobile-cat").on('click', function(event) {
+			event.preventDefault();
+			$("#categoryHierarchyMobile").toggle();
+		})
+    </script>
+
+	<script>
+		$("#product-search-btn").on("click", function(event) {
+			event.preventDefault();
+			let searchKey = $("#product-search-input").val();
+			location.href = contextPath + "/products/searchResults?searchKey=" + searchKey;
+		});
+	</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/">
+<head>
+<title>iPasal: Products of your Choice</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/noui/nouislider.min.css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<header th:replace="~{fragments/header :: header}" class="header1">
+
+	</header>
+
+	<!-- Title Page -->
+	<section  class="bg-title-page p-t-50 p-b-40 flex-col-c-m"
+		th:style="'background-image:url(' +  ${parentC != null && parentC.getImage() != null ? parentC.getImage().getBannerImage(): ''}  + ');'">
+		<h2 class="l-text2 t-center" th:if="${(parentC != null && parentC.categoryName != null)}" th:text="${parentC.getCategoryName()}">
+
+		</h2>
+	</section>
+
+
+	<!-- Content page -->
+	<section class="bgwhite p-t-55 p-b-65">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-md-4 col-lg-3 p-b-50">
+					<div class="leftbar p-r-20 p-r-0-sm">
+						<!--  -->
+						<h4 class="m-text14 p-b-7">Categories</h4>
+						<ul class="p-b-54">
+							<li class="p-t-4" th:each="subcategory : ${subCategories}">
+								<a th:if="${subcategory.childCategories.size() == 0}"
+								th:href="@{/category/{parentId}/{id}/product/sort(parentId = ${subcategory.getParentId()},id=${subcategory.categoryId})}"
+								class="s-text13" th:text="${subcategory.categoryName}"> </a>
+								<a th:if="${subcategory.childCategories.size() > 0}"
+								th:href="@{/category/parent/{id}/product/sort(id=${subcategory.categoryId})}"
+								class="s-text13" th:text="${subcategory.categoryName}"> </a>
+							</li>
+						</ul>
+
+						<!--  -->
+						<h4 class="m-text14 p-b-32">Filters</h4>
+
+						<div class="filter-price p-t-22 p-b-50 bo3">
+							<div class="m-text15 p-b-17">Price</div>
+
+							<div class="wra-filter-bar">
+								<div id="filter-bar"></div>
+							</div>
+
+							<div class="flex-sb-m flex-w p-t-16">
+								<div class="w-size11">
+									<!-- Button -->
+									<input type="hidden" id="categoryId" th:value="${parentC.getCategoryId()}" /> 
+									<input type="hidden" id="childCategoryId" th:value="${parent}? ${parent.getCategoryId()} : null">
+									<input type="hidden" id="parentId" th:value="${parentC.getParentId()}"/>
+									
+									<button
+										class="flex-c-m size4 bg7 bo-rad-15 hov1 s-text14 trans-0-4"
+										id="btn-filter">
+										
+										Filter
+									</button>
+								</div>
+
+								<div class="s-text3 p-t-10 p-b-10">
+									Range: Rs. <span id="value-lower">610</span> - Rs. <span
+										id="value-upper">980</span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="col-sm-6 col-md-8 col-lg-9 p-b-50">
+					<!--  -->
+					<div class="flex-sb-m flex-w p-b-35">
+						<div class="flex-w">
+							<div
+								class="rs2-select2 bo4 of-hidden w-size12 m-t-5 m-b-5 m-r-10">
+								<select class="selection-2" id="filterRateSelection"
+									name="sorting">
+									<option>Default Sorting</option>
+									<option>Popularity</option>
+									<option id="sort-asc">Price: low to high</option>
+									<option id="sort-desc">Price: high to low</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<!-- Product -->
+					<div class="row" id="products-container">
+						<div class="col-sm-12 col-md-6 col-lg-3 p-b-50"
+							th:each="product : ${products}">
+							<!-- Block2 -->
+							<div class="block2">
+
+								<div th:switch="true">
+									<div th:case="${product.availableItems} < 1 "
+										id="product-image-block"
+										class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">
+										<img
+											th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+											alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none"
+												aria-hidden="true"></i>
+
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+												<button th:if="${product.availableItems >= 1}"
+													class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+													th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+													Add to Cart</button>
+											</div>
+										</div>
+									</div>
+
+									<div th:case="${product.discountPercent} > 0"
+										id="product-image-block"
+										class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+										<img
+											th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+											alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none"
+												aria-hidden="true"></i>
+
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+
+												<button th:if="${product.availableItems >= 1}"
+													class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+													th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+													Add to Cart</button>
+											</div>
+										</div>
+									</div>
+
+									<div th:case="${product.isNewProduct()}"
+										id="product-image-block"
+										class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+										<img
+											th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+											alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none"
+												aria-hidden="true"></i>
+
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+
+												<button th:if="${product.availableItems >= 1}"
+													class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+													th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+													Add to Cart</button>
+											</div>
+										</div>
+									</div>
+
+
+									<div th:case="*" id="product-image-block"
+										class="block2-img wrap-pic-w of-hidden pos-relative ">
+										<img
+											th:src="${product.images.empty} ? @{/images/item-01.jpg} : ${product.images.get(0).image}"
+											alt="IMG-PRODUCT">
+
+										<div class="block2-overlay trans-0-4">
+											<a class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none"
+												aria-hidden="true"></i>
+
+											</a>
+
+											<div class="block2-btn-addcart w-size1 trans-0-4">
+												<!-- Button -->
+
+												<button th:if="${product.availableItems >= 1}"
+													class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+													th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+													Add to Cart</button>
+											</div>
+										</div>
+									</div>
+
+								</div>
+								<div class="block2-txt p-t-20">
+									<a id="product-id-url"
+										th:href="@{/products/} + ${product.productId}"
+										href="product-detail.html"
+										class="block2-name dis-block s-text3 p-b-5"
+										th:text="${product.getProductName()}"> </a> <input
+										type="hidden" class="block2-pro-id"
+										th:value="${product.productId}"> <input type="hidden"
+										sec:authorize="isAuthenticated()" class="block2-user-id"
+										th:value="${#authentication.principal.userId}">
+
+									<div th:switch="true">
+										<p th:case="${product.discountPercent} > 0">
+											<span class="block2-oldprice m-text7 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span> <span class="block2-price m-text6 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span>
+										</p>
+
+										<p th:case="${product.discountPercent} == 0">
+											<span class="block2-price m-text6 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span>
+										</p>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<button th:if="${#lists.size(products) == 9}" class="btn" id="load-more">
+						LOAD MORE 
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div id="dropDownSelect2"></div>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+
+	<script type="text/javascript">
+        /*[ No ui ]
+        ===========================================================*/
+        var filterBar = document.getElementById('filter-bar');
+
+
+        noUiSlider.create(filterBar, {
+            start: [0, 200000],
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 200000
+            }
+        });
+
+        var skipValues = [
+            document.getElementById('value-lower'),
+            document.getElementById('value-upper')
+        ];
+
+        filterBar.noUiSlider.on('update', function (values, handle) {
+            skipValues[handle].innerHTML = Math.round(values[handle]);
+        });
+
+
+        //ascending sorting
+        function sorting(type) {
+            let categoryId = $('#categoryId').val();
+            let childCategoryId = $('#childCategoryId').val();
+            console.log("Child category Id is ->" + childCategoryId);
+            let sortType = type;
+            let sUrl;
+            
+		   if(window.location.href.indexOf("parent") > -1) {
+		    	 sUrl = contextPath + "/category/parent/" + categoryId + "/product/sort";
+		    	 console.log("The url called is->" + sUrl);
+		        } 
+		   else{
+			  	 sUrl = contextPath + "/category/" + categoryId + "/" + childCategoryId + "/product/sort";
+              	 console.log("The url called is->" + sUrl);
+  			 }
+		     
+		   window.location = sUrl + "?rate=" + sortType;
+//             $.ajax({
+//                 method: "GET",
+//                 url: sUrl,
+//                 data: {rate: sortType},
+//                 success: function (data) {
+//                     console.log('Success', data);
+//                     window.location = sUrl + "?rate=" + sortType;
+//                     console.log("Modified url is " + sUrl);
+//                 },
+//                 error: function (exception) {
+//                     console.log("Error Message " + exception);
+//                 }
+//             })
+        }
+
+
+        //Filter button click action
+        document.getElementById("btn-filter").onclick = function () {
+            clickFunction();
+        };
+
+        function clickFunction() {
+            let minValue = document.getElementById('value-lower').innerHTML;
+            let maxValue = document.getElementById('value-upper').innerHTML;
+            let childCategoryId = $('#childCategoryId').val();
+            let parentId = $('#parentId').val();
+            let categoryId = $('#categoryId').val();
+            let sUrl;
+            
+            
+            if(window.location.href.indexOf("parent") > -1) {
+            	 sUrl = contextPath + "/category/parent/" + categoryId + "/product/rate";
+		    	 console.log("The url called is->" + sUrl);
+		        } 
+		   else{
+			  	 sUrl = contextPath + "/category/" + parentId + "/" + categoryId + "/product/rate";
+             	 console.log("The url called is->" + sUrl);
+ 			 }
+            window.location = sUrl + "?min=" + minValue + "&max=" + maxValue;
+//             $.ajax({
+//                 method: "GET",
+//                 url: sUrl,
+//                 data: {min: minValue, max: maxValue},
+//                 cache: false,
+//                 success: function (response) {
+//                     console.log('Success', response.data);
+//                     window.location = sUrl + "?min=" + minValue + "&max=" + maxValue;
+//                     console.log("Modified url is " + sUrl + "?min=" + minValue + "&max=" + maxValue);
+
+//                 },
+//                 error: function (exception) {
+//                 }
+//             })
+        }
+    </script>
+	<script th:inline="javascript">
+    let url = contextPath + "/products/parentCategory/" + + /*[[${parentC.categoryId}]]*/ ;
+    let lastSeenId = /*[[${products[products.size() - 1].productId}]]*/;
+    const action = "next";
+
+    let categoryId = $('#categoryId').val();
+    let childCategoryId = $('#childCategoryId').val();
+    
+    if(window.location.href.indexOf("parent") > -1) {
+   		fUrl = contextPath + "/products/parentCategory/" + categoryId;
+   		console.log("You are in the parent category");
+   		console.log("The parent category id is " + categoryId);
+   		console.log("The url called is->" + fUrl);
+    } else {
+// 		fUrl = contextPath + "/category/" + categoryId + "/" + childCategoryId;
+		fUrl = contextPath + "/products/parentCategory/" + childCategoryId;
+     	console.log("You are in the child category");
+     	console.log("The parent category id is " + categoryId);
+     	console.log("The child category id is " + childCategoryId);
+	  	console.log("The url called is->" + fUrl);
+	}
+    
+    
+    
+    
+//     function setLastSeenId(seenId) {
+//         let lastSeenId = seenId;
+//     }
+
+    $("#load-more").on("click", function (event) {
+    	 console.log("lastseenId: " + lastSeenId);
+        $.ajax({
+            url: fUrl + "?last_seen=" + lastSeenId + "&action=" + action,
+            method: "GET",
+            success: function (data) {
+                if (data.data !== undefined && data.data.length > 0) {
+                	console.log("Before ajax call lastseenId: " + lastSeenId);
+                    let length = data.data.length;
+                    lastSeenId = data.data[length - 1].productId;
+                    console.log("After ajax call lastseenId: " + lastSeenId);
+//                     setLastSeenId(data.data[length - 1].productId);
+                    let element = "";
+                    $.each(data.data, function (index, item) {
+                        let productId = item.productId;
+                        let productName = item.productName;
+                        let rate = item.rate;
+                        var element = "";
+                        element += `<div class='col-sm-12 col-md-6 col-lg-4 p-b-50' >
+										<div class="block2">`;
+                        if (item.availableItems >= 1) {
+                            element += `<div  class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">`;
+                        } else {
+                            element += `<div  class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">`;
+                        }
+
+                        element += `<img src=" `;
+                        if (item.images.length > 0) {
+                            element += item.images[0].image + `"`;
+                        } else {
+                            element += "images/item-01.jpg" + `"`;
+                        }
+
+                        element += `alt="IMG-PRODUCT">`;
+                        element += `<div class="block2-overlay trans-0-4">
+											<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">
+												<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+												<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+											</a>
+	
+											<div class="block2-btn-addcart w-size1 trans-0-4">`;
+                        <!-- Button -->
+                        if (item.availableItems >= 1) {
+                            element += `<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"  onclick="NAMESPACE.addToCart(${productId},'${productName}',${rate})">
+												Add to Cart
+											</button>`;
+                        }
+                        element += `
+											</div>
+										</div>
+									</div>
+	
+									<div class="block2-txt p-t-20">
+										<a href="${contextPath}/products/${productId}" class="block2-name dis-block s-text3 p-b-5">
+											${productName}
+										</a>
+	
+										<span class="block2-price m-text6 p-r-5">
+											Rs.<span> ${rate}</span>
+										</span>
+									</div>
+								</div>
+							</div>`;
+
+
+                        $("#products-container").append(element);
+                    });
+
+                } else {
+                    swal({
+                        icon: "info",
+                        text: "Sorry! No more results found! :(",
+                    });
+                }
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

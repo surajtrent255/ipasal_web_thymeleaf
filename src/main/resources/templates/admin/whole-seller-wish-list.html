@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title>Whole-Seller Wish List</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+		background-color: #e65540;
+	}
+
+	.site-color th {
+		text-align: left;
+	}
+
+	table {
+		border: 1px solid #e9ecef;
+	}
+
+	th, td {
+		text-align: left;
+	}
+    td{
+        font-family: Arial;
+        color: #0c5460;
+    }
+     .wish-details{
+        cursor: pointer;
+    }
+	 .wish-details:hover{
+		 color: #e65540;
+	 }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+  							<div class="card-header bg-primary">Wish List Details</div>
+  							<div class="card-body">
+								<table class="table">
+                                    <thead>
+									<tr class="site-color">
+										<th >PRODUCT ID</th>
+										<th >PRODUCT NAME</th>
+										<th >AMOUNT</th>
+									</tr>
+                                    </thead>
+                                    <tbody id="wholeseller-body">
+									<tr class="" th:each="product : ${productList}">
+										<td id="user-id" th:text="${product.productId}">5</td>
+										<td  th:text="${product.productName}">EDT</td>
+										<td  th:text="${product.rate}">EDT</td>
+									</tr>
+                                    </tbody>
+								</table>
+  							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+</body>
+</html>

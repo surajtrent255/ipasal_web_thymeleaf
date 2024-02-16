@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Edit Merchant Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+
+.longText {
+    width: 300px;,
+    overflow: auto;
+}
+
+.error_form {
+	top: 12px;
+	color: rgb(216, 15, 15);
+	font-size: 15px;
+	font-family: Helvetica;
+}
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<h3 class="m-text26  p-b-16">Edit Merchant Information</h3>
+					<hr>
+
+					<div class="container">
+						<div>
+							<h4 style="font-size: 16px; margin-left:5em;">Edit Merchant
+								<span style="margin-left: 60px">
+									<label for="merchant-management-yes">
+										<input type="radio" id="merchant-management-yes" name="merchant-management-status" value="yes" checked/> Yes
+									</label>
+									<label style="margin-left: 20px;" for="merchant-management-no">
+										<input type="radio" id="merchant-management-no" name="merchant-management-status" value="no" /> No
+									</label>
+								</span>
+							</h4>
+							
+						</div><br>
+
+						<div>
+							<h4>Merchant Source</h4> <br>
+							<div style="margin-left: 5em;">
+								<label>
+									Merchant ID: <input type="text" readonly="readonly" th:value="${merchant.merchantId}"/>
+								</label> <br>
+								<label>
+									Merchant Name: <input type="text" class="longtext" readonly="readonly" th:value="${merchant.merchantName}" />
+								</label>
+							</div>
+						</div><br>
+
+						<div >
+							<h4 style="margin-bottom: 15px;">Merchant Information</h4> 
+							<form id="merchantEditForm">
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th>#</th>
+											<td>
+												<input type="text" readonly="readonly" name="merchantId" th:value="${merchant.merchantId}"
+													   data-validation="strip escape"/>
+											</td>
+<!-- 											<td th:text="${product.productId}">1</td> -->
+										</tr>
+										<tr>
+											<th>Merchant Name</th>
+											<td>
+												<input type="text" class="longtext" name="merchantName" id="merchant-name" th:value="${merchant.merchantName}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="merchantName_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>Business Type</th>
+											<td>
+												<input type="text" class="longText" name="businessType" id="business-type" th:value="${merchant.businessType}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="businessType_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>Merchant Type</th>
+											<td>
+												<input type="text" name="merchantType" id="merchant-type" th:value="${merchant.merchantType}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="merchantType_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>Merchant Description</th>
+											<td>
+												<textarea name="description" class="size18 s-text7 p-l-22 p-r-22" id="merchant-description" th:text="${merchant.merchantDesc}"
+														  data-validation="strip escape"></textarea>
+												<span class="error_form" id="merchantDescription_error_message"></span>
+											</td>
+										</tr>
+										<tr>
+											<th>Street Address</th>
+											<td>
+												<input type="text" class="longText" name="street" id="street-address" th:value="${merchant.street}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="street_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>City</th>
+											<td>
+												<input type="text" name="city" id="city" th:value="${merchant.city}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="city_error_message"></span>
+											</td>
+										</tr>
+										<tr>
+											<th>Contact (Primary)</th>
+											<td>
+												<input type="text" name="contactPrimary" id="contact-primary" th:value="${merchant.contactPrimary}"/><br>
+												<span class="error_form" id="contactPrimary_error_message"></span>
+											</td>
+										</tr>
+										<tr>
+											<th>Contact (Secondary)</th>
+											<td>
+												<input type="text" name="contactSecondary" th:value="${merchant.contactSecondary}"/>
+											</td>
+										</tr>
+										
+									</thead>
+								</table>
+							
+								<div class="pull-right">
+									<button class="btn btn-info" type="button" th:onclick="|goBack()|">Cancel</button>
+									<button id="edit-merchant-submit" class="btn btn-success">Done </button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="js/merchant.js" th:src="@{/js/merchant.js}"></script>
+</body>
+</html>

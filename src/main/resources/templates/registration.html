@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>iPasal: Register</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css" th:href="@{/vendor/noui/nouislider.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/checkout.css" th:href="@{/css/checkout.css}" />
+	<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+    rel="stylesheet" type="text/css" />
+    <style>
+        .registration-container {
+            margin: 20px auto;
+        }
+
+        #tac-label {
+            font: #000;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-left: 10px;
+        }
+
+        input,
+        input::-webkit-input-placeholder {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+</header>
+    <div class="container registration-container">
+        <div class="col-md-10 p-b-30 d-block mx-auto">
+            <form id="registration-form" class="leave-comment" th:action="@{/registration/register}" th:object="${user}" method="POST" role="form">
+                <h4 class="m-text26 p-b-36 p-t-15">
+                    Registration Page.
+                </h4>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="fname" 
+                    id="fname" th:field="*{fName}"
+                    data-sanitize="trim strip escape" 
+                    placeholder="First Name" data-validation="required"
+                    data-validation-error-msg="First name is required!">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="mname" th:field="*{mName}" 
+                    placeholder="Middle Name" data-sanitize="trim strip escape">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="lname" 
+                    th:field="*{lName}" placeholder="Last Name" 
+                    data-sanitize="trim strip escape"
+                    data-validation="required" data-validation-error-msg="Last name is required!">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="username" th:field="*{username}" 
+                    placeholder="Username" 
+                    data-sanitize="trim lower strip escape"
+                    data-validation="server" data-validation-url="/registration/checkUserName"
+                    data-validation-error-msg="Username is required!">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" th:field="*{password}" placeholder="Password"
+                    data-validation="strength" data-validation-strength="2"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="pass" data-validation="confirmation"
+                        placeholder="Retype Password" 
+                        data-validation-confirm="password" />
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="street" 
+                        th:field="*{street}" placeholder="Street Address"
+                        data-sanitize="trim lower escape" 
+                        data-validation="required" data-validation-error-msg="We need your address!">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="city" 
+                    th:field="*{city}" placeholder="City" 
+                    data-sanitize="trim lower strip escape"
+                    data-validation="required" data-validation-error-msg="City name is required!">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="phone-number"
+                    th:field="*{phone}" placeholder="Phone Number"
+                    data-validation="required" data-validation-length="10" data-validation-error-msg="Mobile number is important!">
+                </div>
+
+                <div class="form-group">
+                    <input class="form-control" type="text" name="email" th:field="*{email}"
+                        placeholder="Email Address"
+                        data-validation="email server" data-validation-url="/registration/checkEmail">
+                </div>
+                <div class="form-group">
+                    <label id="tac-label-2" for="tac-2">
+                        <input class="" type="checkbox" name="tac-2" id="whole-seller">
+                        I am a Whole-Seller
+                    </label>
+                    <p>Check this option only if you are the whole-seller personnel.</p>
+                    <input type="hidden" id="user-role" th:field="*{roleId}" th:value="${3}" >
+                </div>
+                    <div class="form-group">
+                    <label id="tac-label" for="tac-1">
+                        <input class="" type="checkbox" name="tac-1" id="tac"
+                        data-validation="required" data-validation-error-msg="You must agree to our terms."/>
+                        I agree to <a href="#">terms of use.</a>
+                    </label>
+                </div>
+                <div class="w-size25">
+                    <!-- Button -->
+                    <button class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4">
+                        Send
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- Footer -->
+<!-- Replaces current footer tag with fragments/footer.html -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+
+</footer>
+<div th:replace="~{fragments/scripts :: scripts}">
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+<script th:inline="javascript">
+    $.validate({
+        form: "#registration-form",
+        modules: 'security, sanitize',
+        onModulesLoaded: function() {
+            $('input[name="password"]').displayPasswordStrength();
+        }, 
+        onElementValidate : function(valid, $el, $form, errorMess) {
+        }
+	});
+</script>
+</body>
+</html>

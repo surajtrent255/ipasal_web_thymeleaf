@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title>Sales Report</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+	
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+		background-color: #e65540;
+	}
+	.custom-color {
+		background-color: #515D1E;
+	}
+
+	.user-info-color {
+		background-color: #3ba3e6;
+	}
+
+	.payment-info{
+		background-color: #1086e6;
+	}
+	.user-info-color th {
+		text-align: left;
+	}
+
+	.site-color th {
+		text-align: left;
+	}
+
+	table {
+		border: 1px solid #e9ecef;
+	}
+
+	th, td {
+		text-align: left;
+		font-size: small;
+	}
+    td{
+        font-family: Arial;
+        color: #0c5460;
+    }
+     .wish-details{
+        cursor: pointer;
+    }
+	 .wish-details:hover{
+		 color: #e65540;
+	 }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+    
+   	.selection {
+		border-bottom: 3px solid #238AE6;
+	}
+	
+	.displayNone {
+		display: none;
+	}
+	
+	.displayBlock {
+		display: block;
+	}
+	
+	.displayBorder {
+		border: 1px solid #000 !important;
+	}
+	
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+  							<div class="card-header bg-primary">Sales Report</div>
+  							<div class="card-body">
+								
+								<span class="custom-color">Top Bought Products</span>
+								<table class="table">
+                                    <thead>
+									<tr class="user-info-color">
+										<th>PRODUCT ID</th>
+										<th>PRODUCT NAME</th>
+										<th>QUANTITY</th>
+									</tr>
+                                    </thead>
+                                    <tbody id="wholeseller-body">
+									<tr class="" th:each="topSale : ${topSales}">
+										<td th:text="${topSale.productId}"></td>
+										<td th:text="${topSale.productName}"></td>
+										<td th:text="${topSale.totalSoldQuantity}"></td>
+									</tr>
+                                    </tbody>
+								</table>
+								
+  							</div>
+						
+					
+							<div>
+								<table class="table">
+									<tr>
+										<td><i class="fa fa-circle text-success" aria-hidden="true" style="font-size: 1.2em;"></i><button
+											id="btn_today" class="btn">Today</button></td>
+										<td><i class="fa fa-circle text-warning" aria-hidden="true"></i><button
+											id="btn_thisWeek" class="btn">This Week</button></td>
+										<td><i class="fa fa-circle text-danger" aria-hidden="true"></i><button
+											id="btn_thisMonth" class="btn">This Month</button></td>
+<!-- 										<td><i class="fa fa-circle text-primary" aria-hidden="true"></i><button -->
+<!-- 											id="btn_customDate" class="btn">Custom</button></td> -->
+									</tr>
+								</table>
+							</div>
+							
+							<div id="datePick"> 
+								<span class="s-text12">Start Date: <input type="text" class="displayBorder" id="startDate"></span> &nbsp;
+								<span class="s-text12">End Date: <input type="text" class="displayBorder" id="endDate"></span> &nbsp; &nbsp;
+								<button id="btn_customGo" class="btn btn-success">Go</button>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+	
+	<script th:inline="javascript">
+		var url = contextPath + "/admin";
+
+		var today = new Date();
+// 		var today1 = today.getDate();
+		
+		
+		
+		
+		console.log(today);
+// 		console.log(oneWeekAgo);
+	
+		$("#btn_today").on("click", function (event) {
+			let startDate =  today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+			let endDate = startDate;
+			
+			get_reportsRange(startDate, endDate);
+			
+		});
+		
+		$("#btn_thisWeek").on("click", function (event){
+			let oneWeekAgo = new Date();
+			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+			let endDate = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+			let startDate = oneWeekAgo.getFullYear()+"-"+(oneWeekAgo.getMonth()+1)+"-"+oneWeekAgo.getDate();
+			
+			get_reportsRange(startDate, endDate);
+		});
+		
+		$("#btn_thisMonth").on("click", function(event){
+			let oneMonthAgo = new Date();
+			oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+			
+			let endDate = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+			let startDate = oneMonthAgo.getFullYear()+"-"+(oneMonthAgo.getMonth()+1)+"-"+oneMonthAgo.getDate();
+			
+			get_reportsRange(startDate, endDate);
+			
+		});
+		
+		
+		
+		
+		function get_reportsRange(startDate, endDate) {
+			$.ajax({
+				method: "GET",
+				url: url,
+				data: {startDate: startDate, endDate: endDate},
+				cache:false,
+				success: function(response) {
+					window.location = url + "/salesReport/range?startDate=" + startDate + "&endDate=" + endDate;
+				},
+				error: function(exception) {
+					console.log("Error Message " + exception);
+				}
+			});
+		}
+		
+// 		$("#btn_customDate").on("click", function(){
+// 			$("#datePick").removeClass("displayNone");
+// 			$("#datePick").addClass("displayBlock");
+// ;
+// 		});
+		
+		$(function() {
+		    $("#startDate" ).datepicker({
+		    	dateFormat: "yy-mm-dd" 	
+		    })
+		});
+	
+		$(function() {
+		    $("#endDate" ).datepicker({
+		    	dateFormat: "yy-mm-dd"
+		    });
+		});
+	
+		
+		$("#btn_customGo").on("click", function(){
+			let startDate = $("#startDate").val();
+			let endDate = 	$("#endDate").val();
+			
+			if(startDate != "" && endDate != "" ) {
+				get_reportsRange(startDate, endDate);
+			}
+			else {
+				swal({
+					icon: "error",
+					text: "Enter the date correctly"
+				});
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+		xmlns:th="http://www.thymeleaf.org/">
+<head>
+	
+</head>
+<body>
+	<div th:fragment="customer-sidebar" class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical" style="background-color:#f5f5f5;">
+      	<a class="nav-link active" th:href="@{/customer}" href="." role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa fa-home" aria-hidden="true"></i>
+      	  Home</a>
+      	<a class="nav-link"  th:href="@{/customer/order} +'?userId='+ ${#authentication.principal.userId}" href="./orders" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> My Orders</a>
+     	<a class="nav-link" th:href="@{/customer/reviewList/} + ${#authentication.principal.userId}" href="./reviewList" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-cog" aria-hidden="true"></i>
+			My Reviews</a>   
+   </div>
+</body>
+</html>

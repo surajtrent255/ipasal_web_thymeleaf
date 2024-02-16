@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Review Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+.site-color {
+	background-color: #e65540;
+}
+
+.review-info-color {
+	background-color: #3ba3e6;
+}
+
+.payment-info {
+	background-color: #1086e6;
+}
+
+.review-info-color th {
+	text-align: left;
+}
+
+.site-color th {
+	text-align: left;
+}
+
+table {
+	border: 1px solid #e9ecef;
+}
+
+th, td {
+	text-align: left;
+	font-size: medium;
+}
+
+td {
+	font-family: Arial;
+	color: #0c5460;
+}
+
+.wish-details {
+	cursor: pointer;
+}
+
+.wish-details:hover {
+	color: #e65540;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
+.text-review {
+	font-size: 20px;
+	color: #4050B3;
+}
+
+.text-hidden {
+	display: none;
+}
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+							<div class="card-header bg-primary">Review Details</div>
+							<div class="card-body">
+								<table class="table">
+									<thead>
+										<tr class="review-info-color">
+											<th>FULL NAME</th>
+											<th>USERNAME</th>
+											<th>EMAIL</th>
+											<th>RATING</th>
+											<th>REVIEW DATE</th>
+											<th>STATUS</th>
+										</tr>
+									</thead>
+									<tbody id="reviewer-body">
+										<tr>
+											<td
+												th:text="${review.userDto.fName + ' '+ review.userDto.lName}"></td>
+											<td th:text="${review.userDto.username}"></td>
+											<td th:text="${review.userDto.email}"></td>
+											<td th:text="${review.rating}"></td>
+											<td th:text="${review.reviewDate}"></td>
+											<td th:text="${review.status}"></td>
+										</tr>
+									</tbody>
+								</table>
+								<div>
+									<h4 style="color: red; margin-bottom: 15px;">Review
+										Details</h4>
+									<form id="productEditForm">
+										<table class="table">
+											<tbody class="review-info-color">
+												<tr>
+													<th>#:</th>
+													<td><span class="text-review"
+														th:text="${review.productId}"></span></td>
+												</tr>
+												<tr>
+													<th>Product Name:</th>
+													<td><span class="text-review"
+														th:text="${review.productName}"></span></td>
+												</tr>
+												<tr>
+													<th>Review ID:</th>
+													<td><span class="text-review"
+														th:text="${review.reviewId}" th:value="${review.reviewId}"></span>
+														<input class="text-hidden" readonly="readonly"
+														id="review-id" th:value="${review.reviewId}"></span></td>
+												</tr>
+												<tr>
+													<th>Title of the Review:</th>
+													<td><span class="text-review"
+														th:text="${review.reviewTitle}"></span></td>
+												</tr>
+												<tr>
+													<th>Current Status:</th>
+													<td><span class="text-review"
+														th:text="${review.status}"></span></td>
+												</tr>
+												<tr>
+													<th>Review in Detail:</th>
+													<td><span class="text-review"
+														th:text="${review.reviewDesc}"></span></td>
+												</tr>
+												<tr>
+													<th>Pros:</th>
+													<td><span class="text-review" th:text="${review.pros}"></span>
+													</td>
+												</tr>
+												<tr>
+													<th>Cons:</th>
+													<td><span class="text-review" th:text="${review.cons}"></span>
+													</td>
+												</tr>
+												<tr>
+													<th>Rating:</th>
+													<td><span class="text-review"
+														th:text="${review.rating}"></span></td>
+												</tr>
+											</tbody>
+
+										</table>
+										<div>
+											<span>Change Status</span><br> <select
+												class="sizehalf s-text20 p-l-22 p-r-22" id="review-status">
+												<option th:value=1>Processing</option>
+												<option th:value=2>Approved</option>
+												<option th:value=3>Rejected</option>
+											</select>
+										</div>
+
+										<div class="pull-right">
+											<button id="btn-cancel" type="button" class="btn btn-info"
+												th:onclick="|goBack()|">Cancel</button>
+											<button id="reviewStatus-btn-submit" class="btn btn-success">Done
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="js/review.js" th:src="@{/js/review.js}"></script>
+</body>
+</html>

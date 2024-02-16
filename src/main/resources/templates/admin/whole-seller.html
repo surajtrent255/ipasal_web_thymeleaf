@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Whole Seller List</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+		background-color: #e65540;
+	}
+
+	.site-color th {
+		text-align: left;
+	}
+
+	table {
+		border: 1px solid #e9ecef;
+	}
+
+	th, td {
+		text-align: left;
+	}
+    td{
+        font-family: Arial;
+        color: #0c5460;
+    }
+     .wish-details{
+        cursor: pointer;
+    }
+	 .wish-details:hover{
+		 color: #e65540;
+	 }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+  							<div class="card-header bg-primary">Whole Seller Users List</div>
+  							<div class="card-body">
+                                <div class="bo4 of-hidden size15 m-b-20">
+                                    <input type="text" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Enter Whole Seller Id (Search)" id="search-whole-seller"/>
+                                </div>
+								<table class="table">
+                                    <thead>
+									<tr class="site-color">
+										<th >USER ID</th>
+										<th >NAME</th>
+										<th >PHONE</th>
+										<th >EMAIL</th>
+                                        <th> WISH LIST</th>
+									</tr>
+                                    </thead>
+                                    <tbody id="wholeseller-body">
+									<tr class="" th:each="wholeSeller : ${wholeSellerList}">
+										<td id="user-id" th:text="${wholeSeller.getUserId()}">5</td>
+										<td  th:text="${wholeSeller.getfName()+ ' '+ wholeSeller.getlName()}">EDT</td>
+										<td  th:text="${wholeSeller.getPhone()}">98</td>
+										<td  th:text="${wholeSeller.getEmail()}">az</td>
+                                        <td class="wish-details">Details</td>
+									</tr>
+                                    </tbody>
+								</table>
+  							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+	//If you have to use thymeleaf variables
+	//inside script tag, use following syntax.
+	var contextPath = /*[[${#request.contextPath}]]*/ '/index';
+    $(document).on("click", ".wish-details", function(e) {
+        var index = $(this).index(); //this is event.target, which is the clicked tr element in this case
+        let userId = $(this).closest("tr").find('td:eq(0)').text();
+        console.log(index);
+        console.log("The user id for the clicked whole seller is ->"+userId);
+        let wUrl = contextPath +'/admin/whole-seller/'+userId+"/all";
+        $.ajax({
+            method: 'GET',
+            url: wUrl,
+            success: function (response) {
+                window.location = wUrl;
+            },
+			error: function () {
+				swal({
+					icon: "error",
+					text: "Wish List is empty for the selected user"
+				});
+			}
+        })
+    });
+
+    $("#search-whole-seller").on('keyup', function (e) {
+        let wholeSellerId = $(this).val();
+        let tBody = $("#wholeseller-body");
+        if (e.keyCode == 13) {
+            // Do something
+            let sUrl = contextPath +"/admin/whole-seller/"+wholeSellerId;
+            $.ajax({
+                method: 'GET',
+                url: sUrl,
+                success: function (response) {
+                    if (response.fName !== undefined){
+                        tBody.empty();
+                        tBody.append(
+                            `<tr>
+                  <td>`+response.userId+`</td>
+                  <td>`+response.fName+' '+response.lName+`</td>
+                  <td>`+response.phone+`</td>
+                  <td>`+response.email+`</td>
+                  <td class="wish-details">`+"Details"+`</td>
+                </tr>`);
+                        tBody.show();
+                        console.log("The retrieved whole seller is ->"+response.fName);
+                    }else {
+						swal({
+							icon: "error",
+							text: "No whole-seller found with the searched Id"
+						});
+                    }
+                },error: function (error) {
+                    swal({
+                       icon: "error",
+                       text: "No whole-seller found with the searched Id"
+                    });
+
+                }
+            });
+
+        }
+    });
+</script>
+</body>
+</html>

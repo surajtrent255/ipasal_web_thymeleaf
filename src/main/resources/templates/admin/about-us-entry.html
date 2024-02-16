@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> ABout Us Entry Page.</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.feature-group-container {
+		margin: 20px auto;
+	}
+
+	.featured-group {
+		color: #757582;
+		margin: 10px 20px;
+		font-size: 13px;
+		vertical-align: center;
+	}
+	.submit-btn {
+		margin-top: 20px;
+	}
+	
+	.btn_container {
+  position: relative;
+}
+
+.btn_centered-element {
+  height: 50px;
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  top: 65%;
+  margin-top: -50px;
+ }
+	
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card mb-3">
+  							<div class="card-header bg-primary">About Us Entry Form</div>
+  							<div class="card-body" th:if="${aboutInfo != null && aboutInfo.data != null && aboutInfo.data.size()>0}">
+    							<form id="aboutUs_entry_form">
+    							<label>Story Message:</label>
+    								<div class="bo4 of-hidden size15 m-b-20">
+    									<textarea type="text" style="height:100px" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Story Message" id="story-message" th:text="${aboutInfo.data[0].storyMessage}"></textarea>
+    								</div>
+    								<label>Quote Message:</label>
+    								<div class="bo4 of-hidden size15 m-b-20">
+    									<textarea type="text" style="height:100px" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Quote Message" id="quote-message" th:text="${aboutInfo.data[0].quoteMessage}"></textarea>
+    								</div>
+
+				
+										
+<!-- 									</div> -->
+    								<div class="w-size25 submit-btn">
+    									<button type="submit" class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4" id="submit_btn">Submit</button>
+									</div>
+    							</form>
+    							
+    							<span class="d-block p-l-5 m-t-15 m-b-10 fs-14"
+													style="background-color: #e3e3e3;"> About Image </span>
+												<div class="row bg-light m-b-10"
+													style="height: 150px; border: 2px solid #e3e3e3;">
+													<div class="col-md-3">
+														<span> <i class="fa fa-picture-o fs-150"
+															aria-hidden="true"></i>
+														</span>
+													</div>
+													
+													<div class="col-md-6">
+														<div class="m-t-10 m-b-10"
+															style="background-color: #e3e3e3; height: 130px;">
+															<form id="banner-image-upload-form">
+															<label class="p-l-10 m-t-10 fs-14"> Change/Upload
+																About Banner Image</label> <input class="p-l-20 m-t-20 fs-12"
+																type="file" name="imageb" id="about-banner-image" />
+																</form>
+														</div>
+													</div>
+												
+													<div class="col-md-3 btn_container">
+														<button id="aboutBannerSubmit" type="button" class="btn bg1 btn_centered-element hov1 m-text3 trans-0-4">Save</button>
+													</div>
+												</div>
+												<div class="row bg-light m-b-10"
+													style="height: 150px; border: 2px solid #e3e3e3;">
+													<div class="col-md-3">
+														<span> <i class="fa fa-picture-o fs-150"
+															aria-hidden="true"></i>
+														</span>
+													</div>
+													
+													<div class="col-md-6">
+														<div class="m-t-10 m-b-10"
+															style="background-color: #e3e3e3; height: 130px;">
+															<form id="story-image-upload-form">
+															<label class="p-l-10 m-t-10 fs-14"> Change/Upload
+																About Story Image</label> <input class="p-l-20 m-t-20 fs-12"
+																type="file" name="images" id="about-story-image" />
+																</form>
+														</div>
+													</div>
+													
+													<div class="col-md-3 btn_container">
+														<button id="aboutStorySubmit" type="button" class="btn bg1 btn_centered-element hov1 m-text3 trans-0-4">Save</button>
+													</div>
+												</div>
+    							</div>
+    			
+  							</div>
+						</div>
+					</div>
+					
+			</div>
+		</div>
+		</div>
+	</section>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+$("#submit_btn").on('click', function(event) {
+	event.preventDefault();
+	var aboutDetails = {};
+	var storyMessage = $("#story-message").val();
+	var quoteMessage = $("#quote-message").val();
+	
+	aboutDetails.storyMessage = storyMessage;
+	aboutDetails.quoteMessage = quoteMessage;
+	
+	$.ajax({
+		method: "POST",
+		url: contextPath + "/about",
+		data: JSON.stringify(aboutDetails),
+		contentType: "application/json",
+
+		success: function(result) {
+			swal({
+				text: "About Us updated successfully!",
+				icon: "success",
+				closeOnClickOutside: true,
+				closeOnEsc: true
+			})
+			.then(function() {
+				window.location.href = contextPath;
+			});
+		}, 
+
+		error: function(error) {
+			$(".loader-holder").hide();
+			swal({
+				text: error.responseJSON.message,
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			})
+			.then(function() {
+				window.location.href = contextPath;
+			});
+		}
+	});
+});
+
+//for uploading the about banner image
+$("#aboutBannerSubmit").on('click', function(event) {
+	event.preventDefault();
+	var form = document.getElementById('banner-image-upload-form');
+	var formData = new FormData(form);
+	$(".loader-holder").show();
+	$.ajax({
+		method: "POST",
+		url: contextPath + "/about/uploadBannerImage",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			$(".loader-holder").hide();
+			swal({
+				text: "Image uploaded successfully!",
+				icon: "success",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		},
+		error: function(error){
+			$(".loader-holder").hide();
+			swal({
+				text: "Something went wrong while uploading image!",
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		}
+	});
+});
+// about banner image uploading ends
+
+//for uploading the about story image
+$("#aboutStorySubmit").on('click', function(event) {
+	event.preventDefault();
+	var form = document.getElementById('story-image-upload-form');
+	var formData = new FormData(form);
+	$(".loader-holder").show();
+	$.ajax({
+		method: "POST",
+		url: contextPath + "/about/uploadStoryImage",
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			$(".loader-holder").hide();
+			swal({
+				text: "Image uploaded successfully!",
+				icon: "success",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		},
+		error: function(error){
+			$(".loader-holder").hide();
+			swal({
+				text: "Something went wrong while uploading image!",
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		}
+	});
+});
+// about story image uploading ends
+
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+    
+    <var name="userInfo" class="com.ipasal.ipasalwebapp.dto.UserDTO" />
+    <var name="paymentInfo" class="com.ipasal.ipasalwebapp.dto.PaymentDTO" />
+    <var name="selectedShipping" class="com.ipasal.ipasalwebapp.dto.ShippingRateDTO" />
+                    
+    <on-start>
+    	<evaluate expression="categoryServiceImpl.getAllCategories().getData()" result="flowScope.categories" />
+    	<evaluate expression="categoryServiceImpl.getFeaturedCategories().getData()" result="flowScope.featuredCategories" />
+    	<evaluate expression="checkoutHandlerNational.init()" result="flowScope.checkoutDTO"/>
+    	<evaluate expression="shippingRateServiceImpl.getAllShippingRateInfo().getData()" result="flowScope.shippingRateInfo" />
+    	<evaluate expression="paymentMethodServiceImpl.getAllActivePaymentMethods().getData()" result="flowScope.paymentMethodInfo" />
+    </on-start>
+    
+    <decision-state id="cartItems">
+    	<if test="externalContext.globalSessionMap.cart != null" then="calculateTotalPrice" else="home"/>
+    </decision-state> 
+        
+    <action-state id="calculateTotalPrice">
+    	<evaluate expression="cartController.calculateTotalPrice(externalContext.globalSessionMap.cart)" result="flowScope.totalPrice" />
+    	<transition to="personalInfo"/>
+    </action-state>
+    
+	<view-state id="personalInfo" view="flows/checkout/national/checkout-personalInfo" model="userInfo">
+		<transition on="paymentMethod" to="validatePersonalInfo"/>
+		<on-exit>
+			<evaluate expression="checkoutHandlerNational.addUserInfo(flowScope.checkoutDTO, userInfo)"></evaluate>
+		</on-exit>
+	</view-state>
+	
+	<action-state id="validatePersonalInfo">
+		<evaluate expression="checkoutHandlerNational.validateUserInfo(userInfo, messageContext)" />
+		<transition on="success" to="paymentMethod"/>
+		<transition on="failure" to="personalInfo"/>
+		<on-exit>
+			<evaluate expression="checkoutHandlerNational.addShippingRateInfo(userInfo, flowScope.shippingRateInfo)" result="flowScope.selectedShipping"></evaluate>
+		</on-exit>
+	</action-state>
+	
+	<view-state id="paymentMethod" view="flows/checkout/national/checkout-payment-method" model="paymentInfo">
+		<transition on="personalInfo" to="personalInfo"/>
+		<transition on="submit" to="confirmPayment"/>
+		<on-exit>
+			<evaluate expression="checkoutHandlerNational.addPaymentInfo(flowScope.checkoutDTO, paymentInfo)"/>
+		</on-exit>
+	</view-state>
+	
+	<action-state id="confirmPayment">
+		<evaluate expression="checkoutHandlerNational.checkPayment(externalContext.nativeRequest.session, flowScope.checkoutDTO, flowScope.paymentMethodInfo)" />
+		<transition on="paid" to="success" />
+		<transition on="unpaid" to="failure" />
+	</action-state>
+	
+	<end-state id="success" view="flows/checkout/national/checkout-thank-you" />
+	<end-state id="failure" view="flows/checkout/national/checkout-failure" />
+	<end-state id="home" view="externalRedirect:contextRelative:/" />
+	
+	
+	<global-transitions>
+		<transition on="home" to="home"/>
+	</global-transitions>
+</flow>

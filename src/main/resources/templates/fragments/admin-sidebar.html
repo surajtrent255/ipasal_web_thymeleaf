@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+		xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<style> 
+		a {
+			color: #555;
+		}
+		
+		.active {
+			background-color: #458bcb;
+			color: #fff;
+		}
+		
+		#sidebar {
+			height: 100%;
+			border: 1px solid #cecece;
+			border-radius:5px;
+		}
+	</style>
+</head>
+<body>
+	<div th:fragment="admin-sidebar" id="sidebar">
+      	<a class="nav-link active" th:href="@{/admin}" href="." role="tab" aria-controls="v-pills-home" aria-selected="true"><i class="fa fa-home" aria-hidden="true"></i>
+      	  Home</a>
+		<a class="nav-link" th:href="@{/admin/category/parent/all}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i>  Category</a>
+		<a class="nav-link" th:href="@{/admin/customers}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-user-circle-o" aria-hidden="true"></i>  Customers</a>
+      	<a class="nav-link" th:href="@{/admin/orders}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-briefcase" aria-hidden="true"></i>  Orders</a>
+      	
+      	<a class="nav-link" th:href="@{/admin/ordersreport}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-indent" aria-hidden="true"></i>  Orders Report</a>
+      	<a class="nav-link" th:href="@{/admin/salesreport}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-pie-chart" aria-hidden="true"></i>  Sales Report</a>
+      	<a class="nav-link" th:href="@{/admin/productEntry}" href="./productEntry" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-plus-circle" aria-hidden="true"></i>
+      	  Product Entry</a>
+      	<a class="nav-link" th:href="@{/admin/promoSalesList}" href="./promoSalesList" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-money" aria-hidden="true"></i>Promotional Sales</a>
+		<a class="nav-link" th:href="@{/admin/reviewList}" href="./reviewList" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-bars" aria-hidden="true"></i>
+		Review List</a>
+      	<a class="nav-link" th:href="@{/admin/merchantEntry}" href="./merchantEntry" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-crosshairs" aria-hidden="true"></i>
+      	  Merchant Entry</a>
+      	<a class="nav-link" th:href="@{/admin/merchantList}" href="./merchantList" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-list" aria-hidden="true"></i>
+			Merchant List</a>
+      	<a class="nav-link" th:href="@{/admin/categoryEntry}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-list-alt" aria-hidden="true"></i>
+      	  Create Category</a>
+      	<a class="nav-link" th:href="@{/admin/stocks}" role="tab" aria-controls="v-pills-home" aria-selected="false"><i class="fa fa-area-chart" aria-hidden="true"></i>
+      	  Stock</a>
+      	<a class="nav-link" th:href="@{/admin/accountSetting}" href="./admin/accountSetting" role="tab" aria-controls="v-pills-profile" aria-selected="false"><i class="fa fa-user-circle" aria-hidden="true"></i>
+      	  Profile</a>
+      	<a class="nav-link" th:href="@{/admin/toolbarEntry}" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa fa-plus-square-o" aria-hidden="true"></i>
+      	  ToolBar Entry</a>
+      	<a class="nav-link" th:href="@{/admin/hotDealsEntry}" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa fa-edit" aria-hidden="true"></i>
+      	  Hot Deals Entry</a>
+      	<a class="nav-link" th:href="@{/admin/sliderEntry}" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa fa-slideshare" aria-hidden="true"></i>
+      	  Slider Content Entry</a>
+      	  <a class="nav-link" th:href="@{/admin/aboutUsEntry}" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false"><i class="fa fa-address-card" aria-hidden="true"></i>
+      	  About Us</a>
+      	<a class="nav-link" th:href="@{/admin/shipping-rate}" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-plus-square" aria-hidden="true"></i>
+      	  Shipping Details Entry</a>
+		<a class="nav-link" th:href="@{/admin/whole-seller}" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-list-ul" aria-hidden="true"></i>
+			Whole Seller List</a>
+		<a class="nav-link" th:href="@{/admin/payment-methods}" role="tab" aria-controls="v-pills-settings" aria-selected="false"><i class="fa fa-cc-mastercard" aria-hidden="true"></i>
+			Payment Methods</a>
+		
+   </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+    
+    <var name="userInfo" class="com.ipasal.ipasalwebapp.dto.UserDTO" />
+    <var name="billingShippingInfo" class="com.ipasal.ipasalwebapp.dto.AddressDTO" />
+    <var name="paymentInfo" class="com.ipasal.ipasalwebapp.dto.PaymentDTO" />
+    <var name="selectedShipping" class="com.ipasal.ipasalwebapp.dto.ShippingRateDTO" />
+                    
+    <on-start>
+    	<evaluate expression="categoryServiceImpl.getAllCategories().getData()" result="flowScope.categories" />
+    	<evaluate expression="categoryServiceImpl.getFeaturedCategories().getData()" result="flowScope.featuredCategories" />
+    	<evaluate expression="checkoutHandler.init()" result="flowScope.checkoutDTO"/>
+    	<evaluate expression="shippingRateServiceImpl.getAllShippingRateInfo().getData()" result="flowScope.shippingRateInfo" />
+    	<evaluate expression="paymentMethodServiceImpl.getAllActivePaymentMethods().getData()" result="flowScope.paymentMethodInfo" />
+    </on-start>
+    
+    <decision-state id="cartItems">
+    	<if test="externalContext.globalSessionMap.cart != null" then="calculateTotalPrice" else="home"/>
+    </decision-state> 
+        
+    <action-state id="calculateTotalPrice">
+    	<evaluate expression="cartController.calculateTotalPrice(externalContext.globalSessionMap.cart)" result="flowScope.totalPrice" />
+    	<transition to="personalInfo"/>
+    </action-state>
+    
+	<view-state id="personalInfo" view="flows/checkout/international/checkout-personalInfo" model="userInfo">
+		<!-- <on-entry>
+			<set name="flowScope.userInfo" value=""/>
+		</on-entry> -->
+		<transition on="billingShippingInfo" to="validatePersonalInfo"/>
+		<on-exit>
+			<evaluate expression="checkoutHandler.addUserInfo(flowScope.checkoutDTO, userInfo)"></evaluate>
+		</on-exit>
+	</view-state>
+	
+	<action-state id="validatePersonalInfo">
+		<evaluate expression="checkoutHandler.validateUserInfo(userInfo, messageContext)" />
+		<transition on="success" to="billingShippingInfo"/>
+		<transition on="failure" to="personalInfo"/>
+	</action-state>
+	
+	<view-state id="billingShippingInfo" view="flows/checkout/international/checkout-billing-shipping" model="billingShippingInfo">
+		<transition on="personalInfo" to="personalInfo" />
+		<transition on="deliveryMethod" to="deliveryMethod"/>
+		<on-exit>
+			<evaluate expression="checkoutHandler.addBillingShippingInfo(flowScope.checkoutDTO, billingShippingInfo)" />
+		</on-exit>
+	</view-state>
+	
+	<view-state id="deliveryMethod" view="flows/checkout/international/checkout-delivery-method" model="selectedShipping">
+		<transition on="paymentMethod" to="paymentMethod"/>
+		<transition on="billingShippingInfo" to="billingShippingInfo"/>
+		<on-exit>
+			<evaluate expression="checkoutHandler.addShippingRateInfo(selectedShipping, flowScope.shippingRateInfo)" result="flowScope.selectedShipping" />
+		</on-exit>
+	</view-state>
+	
+	<view-state id="paymentMethod" view="flows/checkout/international/checkout-payment-method" model="paymentInfo">
+		<transition on="personalInfo" to="personalInfo"/>
+		<transition on="billingShippingInfo" to="billingShippingInfo"/>
+		<transition on="submit" to="confirmPayment"/>
+		<on-exit>
+			<evaluate expression="checkoutHandler.addPaymentInfo(flowScope.checkoutDTO, paymentInfo)"/>
+		</on-exit>
+	</view-state>
+	
+	<action-state id="confirmPayment">
+		<evaluate expression="checkoutHandler.checkPayment(externalContext.nativeRequest.session, flowScope.checkoutDTO, flowScope.paymentMethodInfo)" />
+		<transition on="paid" to="success" />
+		<transition on="unpaid" to="failure" />
+	</action-state>
+	
+	<end-state id="success" view="flows/checkout/international/checkout-thank-you" />
+	<end-state id="failure" view="flows/checkout/international/checkout-failure" />
+	<end-state id="home" view="externalRedirect:contextRelative:/" />
+	
+	
+	<global-transitions>
+		<transition on="home" to="home"/>
+	</global-transitions>
+</flow>

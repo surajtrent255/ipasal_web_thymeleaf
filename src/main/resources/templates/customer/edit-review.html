@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Edit Review</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+
+.longText {
+    width: 300px;,
+    overflow: auto;
+}
+
+.error_form{
+			top: 12px;
+			color: rgb(216, 15, 15);
+		    font-size: 15px;
+		    font-family: Helvetica;
+		}
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/customer-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<h3 class="m-text26  p-b-16">Edit Review Details</h3>
+					<hr>
+
+					<div class="container">
+						<div>
+							<h4 style="font-size: 16px; margin-left:5em;">Edit Review
+								<span style="margin-left: 60px">
+									<label for="review-management-yes">
+										<input type="radio" id="review-management-yes" name="review-management-status" value="yes" checked/> Yes
+									</label>
+									<label style="margin-left: 20px;" for="review-management-no">
+										<input type="radio" id="review-management-no" name="review-management-status" value="no" /> No
+									</label>
+								</span>
+							</h4>
+							
+						</div><br>
+
+						<div>
+							<h4>Review Source</h4> <br>
+							<div style="margin-left: 5em;">
+								<label>
+									Review ID: <input type="text" readonly="readonly" th:value="${review.reviewId}"/>
+								</label> <br>
+								<label>
+									Product Name: <input type="text" class="longtext" readonly="readonly" th:value="${review.productName}" />
+								</label>
+								<label>
+									Review Name: <input type="text" class="longtext" readonly="readonly" th:value="${review.reviewTitle}" />
+								</label>
+								<label>
+									Current Rating: <input type="text" class="longtext" readonly="readonly" th:value="${review.rating}" />
+								</label>
+								<label>
+									Current Status: <input type="text" class="longtext" readonly="readonly" th:value="${review.status}" />
+								</label>
+								<label>
+									Review Date: <input type="text" class="longtext" readonly="readonly" th:value="${review.reviewDate}" />
+								</label>
+							</div>
+						</div><br>
+
+						<div >
+							<h4 style="margin-bottom: 15px;">Review Details</h4> 
+							<form id="reviewEditForm">
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th>#</th>
+											<td>
+												<input type="text" readonly="readonly" name="reviewId" th:value="${review.reviewId}"
+													   data-validation="strip escape"/>
+											</td>
+<!-- 											<td th:text="${product.productId}">1</td> -->
+										</tr>
+										<tr>
+											<th>Review Title</th>
+											<td>
+												<input id="review-title" type="text" name="reviewTitle" th:value="${review.reviewTitle}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="reviewTitle_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>Review Description</th>
+											<td>
+												<textarea id="review-description" name="reviewDesc" class="size18 s-text7 p-l-22 p-r-22" th:text="${review.reviewDesc}"
+														  data-validation="strip escape"></textarea>
+												<span class="error_form" id="reviewDesc_error_message"></span>
+											</td>
+										</tr>
+										<tr>
+											<th>Pros</th>
+											<td>
+												<input type="text" class="longText" name="pros" th:value="${review.pros}"
+													   data-validation="strip escape"/>
+											</td>
+										</tr>
+										<tr>
+											<th>Cons</th>
+											<td>
+												<input type="text" class="longText" name="cons" th:value="${review.cons}"
+													   data-validation="strip escape"/>
+											</td>
+										</tr>
+										
+										<tr>
+											<th>Rating</th>
+											<td>
+												<select class="sizehalf s-text7 p-l-22 p-r-22" name="rating" id="rating">
+													<option th:value = 1>1</option>
+													<option th:value = 2>2</option>
+													<option th:value = 3>3</option>
+													<option th:value = 4>4</option>
+													<option th:value = 5>5</option>
+												</select>
+											</td>
+										</tr>
+										
+									</thead>
+								</table>
+							
+								<div class="pull-right">
+									<button id="btn-cancel" type="button" class="btn btn-info" th:onclick="|goBack()|">Cancel</button>
+									<button id="edit-review-submit" class="btn btn-success">Done </button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+	<script src="js/review.js" th:src="@{/js/review.js}"></script>
+</body>
+</html>

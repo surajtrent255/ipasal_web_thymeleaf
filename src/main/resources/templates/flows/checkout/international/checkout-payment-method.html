@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org">
+<head>
+<title>Payment Option Page.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	href="vendor/noui/nouislider.min.css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="css/checkout.css"
+	th:href="@{/css/checkout.css}" />
+<link
+	href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+	rel="stylesheet" type="text/css" />
+<script src="https://khalti.com/static/khalti-checkout.js"></script>
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<header th:replace="~{fragments/header :: header}" class="header1">
+
+	</header>
+	<div th:unless="${session.containsKey('cart') && session.cart == null}" id="shipping_detail_container">
+		<div class="row checkout-status-container">
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">1</span>PERSONAL
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">2</span>SHIPPING
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">3</span>DELIVERY
+				</div>
+			</div>
+			<div class="col-20">
+				<div class="badge-container">
+					<span class="badge badge-selected">4</span>PAYMENT
+				</div>
+			</div>
+			<div class="col-20">
+				<div>
+					<span class="badge badge-normal">5</span>FINISH
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-50">
+				<div class="container">
+					<h2>Payment Method</h2>
+					<hr>
+					<form method="POST" th:object="${paymentInfo}" id="paymentMethod">
+						<div class="form-group">
+							<input type="hidden" name="amount" th:field="*{amount}"
+								th:value="${(totalPrice + selectedShipping.amount)}" /> <small
+								class="form-text text-danger"
+								th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></small>
+						</div>
+
+						<div class="form-group"
+							th:each="paymentType: ${paymentMethodInfo}">
+							<label class="form-check-label"
+								th:for="${paymentType.paymentName}" for="khalti"> <input
+								type="radio" th:field="*{paymentMethodId}"
+								name="paymentMethodId" th:id="${paymentType.paymentName}"
+								th:value="${paymentType.id}" /> <img src=""
+								th:src="${'/images/' + paymentType.paymentName + '-logo.png'}" />
+							</label> <small class="form-text text-danger"
+								th:if="${#fields.hasErrors('paymentMethodId')}"
+								th:errors="*{paymentMethodId}"></small>
+						</div>
+						<div class="form-group">
+							<input type="hidden" name="token" th:field="*{token}" id="token" />
+						</div>
+						<div class="form-group">
+							<input type="hidden" name="uniqueOrderIdentifier"
+								th:field="*{uniqueOrderIdentifier}" id="uniqueOrderIdentifier" />
+						</div>
+						<button class="btn" id="addPaymentMethodBtn">Confirm
+							Order</button>
+						<button class="btn d-none" name="_eventId_submit" type="submit"
+							id="submit">Confirm Payment</button>
+					</form>
+				</div>
+			</div>
+			<div class="col-50">
+				<div class="container">
+					<h4>
+						Items In Cart <span class="price" style="color: black"> <i
+							class="fa fa-shopping-cart"></i> <b
+							th:text="${#arrays.length(session.cart)}">0</b>
+						</span>
+					</h4>
+					<p th:each="product : ${session.cart}">
+						<a th:href="@{/products/} + ${product.productId}"
+							href="product-detail.html" th:text="${product.productName}">Product
+							Name X 2</a> x <span th:text="${product.quantity}"> </span> <span
+							class="price"
+							th:text="'Rs. ' + ${product.rate * product.quantity}">Rs.0</span>
+					</p>
+					<p>
+						Sub Total &#61; <span class="price" style="color: black"
+							th:text="${'Rs. ' + totalPrice}">Rs.0</span>
+					</p>
+					<p>
+						Shipping Cost &#61; <span id="shipping-amount" class="price"
+							style="color: black" th:text="${'Rs.' + selectedShipping.amount}">Rs.0</span>
+					</p>
+					<p>
+						Total &#61; <span id="total-amount" class="price"
+							style="color: black"
+							th:text="${'Rs.' + (totalPrice + selectedShipping.amount)}">Rs.0</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div th:if="${!session.containsKey('cart') || session.cart == null}">
+		There are no items in your cart. Please add product to cart to
+		finalize the order.</div>
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="js/checkout.js" th:src="@{/js/checkout.js}">
+</script>
+	<script
+		src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+
+	<script type="text/javascript" th:inline="javascript">	
+	let totalAmount = /*[[${(totalPrice + selectedShipping.amount)}]]*/ '';
+	function generateRandomUniqueString() {
+		return Math.random().toString(36).substr(2, 18);
+	}
+	
+    function pay(paymentType, amount) {
+    	let orderString = generateRandomUniqueString();
+    	$("input[name=uniqueOrderIdentifier]").val(orderString);
+    	switch(paymentType) {
+    		case '1':
+					alert("eSewa Payment Option is under review. We will let you know when this option is available. Please select other payment option.");
+    			break;
+    			
+    		case '2':
+    			 var config = {
+    	            "publicKey": /*[[${paymentMethodInfo[1].publicApiKey}]]*/ '',
+    	            "productIdentity": orderString,
+    	            "productName": "Order " + orderString,
+    	            "productUrl": contextPath + "/admin/order/" + orderString,
+    	            "eventHandler": {
+    	                onSuccess (payload) {
+    	                    //$("#submit").removeClass('d-none').addClass('d-block');
+    	                    $("input[name=amount]").val(totalAmount);
+    	                    $("#token").val(payload.token)
+    	                    $("#addPaymentMethodBtn").hide();
+    	                    $("#submit").click();
+    	                },
+    	                onError (error) {
+    	                    console.log(error);
+    	                },
+    	                onClose () {
+    	                    console.log('widget is closing');
+    	                }
+    	            }
+    	        };
+    		
+    			let checkout = new KhaltiCheckout(config);
+    			checkout.show({amount: amount});
+    			break;
+    		
+    		default:
+    			$("input[name=amount]").val(totalAmount);
+    			$("#addPaymentMethodBtn").hide();
+    			$("#submit").click();
+    			break;
+    	}
+    }
+    
+    $("#addPaymentMethodBtn").on('click', function(event) {
+    	event.preventDefault();
+    	pay($("input[name=paymentMethodId]:checked").val(), (totalAmount * 100));//khalti accept money in paisa not rupaiya
+    });
+</script>
+</body>
+</html>

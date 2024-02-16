@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title>Order Detail</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+		background-color: #e65540;
+	}
+
+	.user-info-color {
+		background-color: #3ba3e6;
+	}
+	
+	.update-bar-color{
+		background-color: #468f7d;
+	}
+
+	.payment-info{
+		background-color: #1086e6;
+	}
+	.user-info-color th {
+		text-align: left;
+	}
+
+	.site-color th {
+		text-align: left;
+	}
+
+	table {
+		border: 1px solid #e9ecef;
+	}
+
+	th, td {
+		text-align: left;
+		font-size: small;
+	}
+    td{
+        font-family: Arial;
+        color: #0c5460;
+    }
+     .wish-details{
+        cursor: pointer;
+    }
+	 .wish-details:hover{
+		 color: #e65540;
+	 }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+  							<div class="card-header bg-primary">Order Updates</div>
+  							<div class="card-body">
+							<table class="table" th:each="orderUpdate: ${orderUpdates}">
+									<thead>
+									<tr class="update-bar-color">
+										<th th:text="${orderUpdate.user.fName} + ' ' + ${orderUpdate.user.lName} + ' on ' + ${orderUpdate.commentDate}">Umesh Bhujel on Aug 24, 12:30 </th>
+									</tr>
+									</thead>
+									<tbody id="user-body">
+									<tr >
+										<td th:text="${orderUpdate.commentMsg}"></td>
+									</tr>
+									</tbody>
+								</table>
+								<div th:if="${specificOrder.orderStatus == 1}">
+								<textarea rows="3" cols="86" class="table" id="updatetextarea"></textarea>
+								<button class="update-bar-color pull-right btn" id="updatebutton">Update</button>
+  								</div>
+  							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+$("#updatebutton").click(function(event) {
+	event.preventDefault();
+	/*<![CDATA[*/
+	var orderId = /*[[${orderId}]]*/ ;
+	/*]]>*/
+	var commentMsg = $("#updatetextarea").val();
+	
+	var orderUpdate = {};
+	
+	orderUpdate.orderId = orderId;
+	orderUpdate.commentMsg = commentMsg;
+	
+	$.ajax({
+		method: "POST",
+		url: contextPath + "/order/orderUpdate/add",
+		data: JSON.stringify(orderUpdate),
+		contentType: "application/json",
+		success: function(result) {
+			swal({
+				text: "Order Update added Successfully.",
+				icon: "success",
+				closeOnClickOuside: false,
+				closeOnEsc: false,
+			}).then(function (){
+				window.location = contextPath + "/admin/order/" + orderId + "/updates";
+			});
+		},
+		error: function(error) {
+			alert(error);
+		}
+	});
+	
+});	
+	
+</script>
+</body>
+</html>

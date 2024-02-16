@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/">
+<head>
+	<title>iPasal: Payment Options</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css"
+		  th:href="@{/vendor/noui/nouislider.min.css}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+
+	<script src="https://khalti.com/static/khalti-checkout.js"></script>
+	<!--===============================================================================================-->
+	<style>
+		.payment{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: auto;
+			margin: 10px 10px;
+			padding: 10px 10px;
+		}
+		.btn-pay{
+			margin: 5px 5px;
+			padding: 10px 10px;
+			color: white;
+			border-radius: 5px;
+		}
+		.khalti{
+			background-color: #4F276E;
+
+		}
+		.cash-delivery{
+			background-color: #062c33;
+		}
+		.esewa{
+			background-color: #41A124;
+		}
+		.payment-header{
+			display: flex;
+			width: auto;
+			height: auto;
+			justify-content: center;
+			margin: 10px 10px;
+			padding: 10px 10px;
+			text-align: center;
+			background-color: #dc3545;
+			color: whitesmoke;
+			border-radius: 10px;
+		}
+
+	</style>
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+
+</header>
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6 col-md-8 col-lg-12 p-b-50">
+				<div class="payment-header">
+				<h3>Choose your payment option</h3>
+				</div>
+				<div class="payment">
+				<button
+						class="btn-pay"
+						th:if="${not checkoutPayment.?[paymentName == 'Paypal' and paymentStatus == 'offline'].isEmpty()}">
+					<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" />
+				</button>
+
+                    <input type="hidden" id="total-price-cart" th:value="${totalPrice}">
+					<input type="hidden" id="khalti-public-key" th:value="${khaltiPublicKey}">
+				<!-- Place this where you need payment button -->
+				<button
+						th:if="${not checkoutPayment.?[paymentName == 'Khalti' and paymentStatus == 'online'].isEmpty()}"
+						class="btn-pay khalti" id="payment-button">
+					Pay with Khalti
+				</button>
+				<button class="btn-pay cash-delivery"
+						th:if="${not checkoutPayment.?[paymentName == 'Cash' and paymentStatus == 'online'].isEmpty()}"
+						id="cash"> Cash On Delivery</button>
+				<button
+						class="btn-pay esewa" id="esewa"
+						th:if="${not checkoutPayment.?[paymentName == 'eSewa' and paymentStatus == 'online'].isEmpty()}"> Pay with eSewa</button>
+
+					<form action="/payment-methods/stripe" method="POST">
+						<input type='hidden' th:value='${amount}' name='amount' />
+						<!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
+						<script
+								src='https://checkout.stripe.com/checkout.js'
+								class='stripe-button'
+								th:attr='data-key=${stripePublicKey},
+                         data-amount=${amount},
+                         data-currency=${currency}'
+								data-name='iPasal'
+								data-description='Shopping items Checkout'
+								data-image='http://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
+								data-locale='auto'
+								data-zip-code='false'>
+						</script>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<!-- Footer -->
+<!-- Replaces current footer tag with fragments/footer.html -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+</footer>
+<div th:replace="~{fragments/scripts :: scripts}">
+</div>
+<script th:inline="javascript">
+	var  khaltiPublicKey = $("#khalti-public-key").val();
+	console.log("Khalti Public key is ->"+khaltiPublicKey);
+
+	var config = {
+		// replace the publicKey with yours
+		"publicKey": khaltiPublicKey,
+		"productIdentity": "1234567890",
+		"productName": "Dragon",
+		"productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+		"eventHandler": {
+			onSuccess (payload) {
+				let payloadData = {};
+				payloadData.token = payload.token;
+				payloadData.amount = payload.amount;
+
+				$.ajax({
+					method: 'POST',
+					url: contextPath+"/payment-methods/verify",
+					data: JSON.stringify(payloadData),
+					contentType: "application/json",
+					success:function (response) {
+						if (response.amount = "50000") {
+							window.location = ctxPath+"/order/order-success";
+						}else{
+							alert("Payment could not be made...")
+						}
+
+					},
+					error:function () {
+						alert("Could not make the payment...")
+					}
+				})
+			},
+			onError (error) {
+				console.log(error);
+			},
+			onClose () {
+				console.log('widget is closing');
+			}
+		}
+	};
+
+	var checkout = new KhaltiCheckout(config);
+	var btn = document.getElementById("payment-button");
+	btn.onclick = function () {
+	    let totalAmount = $("#total-price-cart").val();
+	    console.log("Total amount to be paid is ->"+totalAmount);
+		checkout.show({amount: parseInt(50000)});
+
+	}
+
+	let btnEsewa = document.getElementById("esewa");
+	btnEsewa.onclick = function () {
+		window.location = contextPath+"/order/order-success";
+	}
+</script>
+</body>
+</html>

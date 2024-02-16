@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>ipasal: Admin Panel - Review Information (All Reviews)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<style>
+.site-color {
+	background-color: #e65540;
+}
+
+.selection {
+	border-bottom: 3px solid #238AE6;
+}
+
+th {
+	color: aliceblue;
+}
+
+th, td {
+	text-align: left;
+	font-size: small;
+}
+
+table {
+	border: 1px solid #e9ecef;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
+#blue-btn {
+	background-color: #3333FF;
+	border-radius: circle;
+	color: #1EF20F;
+	font-weight: bold;
+}
+
+#red-btn {
+	background-color: #E71919;
+	border-radius: circle;
+	color: #FFFF00;
+	font-weight: bold;
+}
+
+#orange-btn {
+	background-color: #FFAE19;
+	border-radius: circle;
+	color: #468847;
+	font-weight: bold;
+}
+
+#green-btn {
+	background-color: #65F62A;
+	border-radius: circle;
+	color: #000000;
+	font-weight: bold;
+}
+
+table a {
+			border-bottom: none;
+}
+</style>
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card">
+							<div class="card-header" id="card-header">
+								All The Reviews [ <span th:text="${totalReviews}"></span> ]
+							</div>
+							<div class="card-body">
+								<div>
+									<table class="table">
+										<tr>
+											<td><a th:href="@{/admin/approved}"><i class="fa fa-circle text-success" aria-hidden="true"></i><button
+														class="btn">Approved</button></a></td>
+											<td><a th:href="@{/admin/processing}"><i class="fa fa-circle text-warning" aria-hidden="true"></i><button
+														class="btn">Unapproved</button></a></td>
+											<td><a th:href="@{/admin/rejected}"><i class="fa fa-circle text-danger" aria-hidden="true"></i><button
+														class="btn">Rejected</button></a></td>
+											<td ><a class="selection" th:href="@{/admin/reviewList}"><i class="fa fa-circle text-primary" aria-hidden="true" style="font-size: 1.2em;"></i><button
+														class="btn">All Reviews</button></a></td>
+										</tr>
+									</table>
+								</div>
+								<table th:if="${reviewList.size() > 0}" class="table"
+									id="review-table">
+									<thead class="site-color">
+										<tr>
+											<th scope="col">REVIEW ID</th>
+											<th scope="col">PRODUCT NAME</th>
+											<th scope="col">REVIEW TITLE</th>
+											<th scope="col">RATING</th>
+											<th scope="col">DATE OF REIVEW</th>
+											<th scope="col">REVIEW BY</th>
+											<th>STATUS</th>
+											<th>DELETE</th>
+										</tr>
+									</thead>
+									<tbody id="review-container">
+										<tr th:each="review : ${reviewList}">
+											<td th:text="${review.reviewId}"></td>
+											<td th:text="${review.productName}"></td>
+											<td><a th:href="@{/admin/review/} + ${review.reviewId}"><span
+													class="l-text8" th:text="${review.reviewTitle}"></span></a></td>
+											<td th:text="${review.rating}"></td>
+											<td th:text="${review.reviewDate}"></td>
+											<td th:text="${review.userDto.username}"></td>
+											<td th:text="${review.status}"></td>
+											<td>
+												<button class="btn btn-danger pull-right"
+													th:onclick="|deleteReview(${review.reviewId})|">Delete
+													Review</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div th:if="${reviewList.size() < 1}">
+									<div>
+										<p>No reviews under process are found in the system.</p>
+									</div>
+								</div>
+							</div>
+							<div th:if="${reviewList.size() >= 9}">
+								<button id="load-more" class="btn">LOAD MORE</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script th:inline="javascript" th:if="${#arrays.length(reviewList) > 0}">
+		let lastSeenId = /*[[${reviewList[#arrays.length(reviewList) - 1].reviewId}]]*/ 0;
+	</script>
+	<script src="js/review.js" th:src="@{/js/review.js}"></script>
+</body>
+</html>

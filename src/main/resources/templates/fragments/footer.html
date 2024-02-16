@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org">
+<title></title>
+<body>
+
+<!-- Footer -->
+<footer th:fragment="footer" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	<div class="loader-holder">
+		<div class="loader">
+		</div>
+	</div>
+	<div class="flex-w p-b-90">
+		<div class="w-size6 p-t-30 p-l-15 p-r-15 respon3">
+			<h4 class="s-text12 p-b-30">
+				GET IN TOUCH
+			</h4>
+
+			<div>
+				<p class="s-text7 w-size27">
+					Any questions? Let us know via email at contact@iPasal.com or call us on (+977)1234567890.
+				</p>
+<!-- 				<div class="flex-m p-t-30" th:if="${socialTools == null}"> -->
+<!-- 					<a href="#"><i class="topbar-social-item fa fa-external-link" aria-hidden="true">&nbsp; No active social media.</i></a> -->
+<!-- 				</div> -->
+				<div class="flex-m p-t-30" th:if="${socialTools != null}">
+					<a th:each="soc : ${socialTools}" th:href="${soc.socialLink}" class="topbar-social-item" th:classappend="${soc.socialIcon}"></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+			<h4 class="s-text12 p-b-30">
+				Categories
+			</h4>
+			<ul th:if="${featuredCategories == null}">
+				<li><a href="#">No featured categories.</a> </li>
+			</ul>
+			<ul th:each="category : ${featuredCategories}">
+				<li class="p-b-9">
+					<a th:href="@{/category/parent/{id}/product/sort(id=${category.categoryId})}"
+					   class="s-text7"
+					th:text="${category.getCategoryName()}">
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+			<h4 class="s-text12 p-b-30">
+				Links
+			</h4>
+
+			<ul>
+				<!--<li class="p-b-9">-->
+					<!--<a href="#" class="s-text7">-->
+						<!--Search-->
+					<!--</a>-->
+				<!--</li>-->
+
+				<li class="p-b-9">
+					<a th:href="@{/about}" class="s-text7">
+						About Us
+					</a>
+				</li>
+
+				<li class="p-b-9">
+					<a th:href="@{/contact}" class="s-text7">
+						Contact Us
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="w-size7 p-t-30 p-l-15 p-r-15 respon4">
+			<h4 class="s-text12 p-b-30">
+				Help
+			</h4>
+
+			<ul>
+				<li class="p-b-9">
+					<a href="#" class="s-text7">
+						Track Order
+					</a>
+				</li>
+
+				<li class="p-b-9">
+					<a href="#" class="s-text7">
+						Returns
+					</a>
+				</li>
+
+				<li class="p-b-9">
+					<a href="#" class="s-text7">
+						Shipping
+					</a>
+				</li>
+
+				<li class="p-b-9">
+					<a href="#" class="s-text7">
+						FAQs
+					</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="w-size8 p-t-30 p-l-15 p-r-15 respon3">
+			<h4 class="s-text12 p-b-30">
+				Newsletter
+			</h4>
+
+			<form >
+				<div class="effect1 w-size9">
+					<input class="s-text7 bg6 w-full p-b-5" type="text" name="email" placeholder="email@example.com">
+					<span class="effect1-line"></span>
+				</div>
+
+				<div class="w-size2 p-t-20">
+					<!-- Button -->
+					<button class="flex-c-m size2 bg4 bo-rad-23 hov1 m-text3 trans-0-4">
+						Subscribe
+					</button>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<!--Deleted footer payment view from this place-->
+	<div class="t-center p-l-15 p-r-15">
+		<a href="https://khalti.com">
+			<img class="h-size2" th:src="@{/images/icons/khaltilogo.png}" src="images/icons/khaltilogo.png" alt="IMG-KHALTI">
+		</a>
+
+		<a href="#">
+			<img class="h-size2" th:src="@{/images/icons/CASH-logo.png}" src="images/icons/visa.png" alt="IMG-CASH">
+		</a>
+
+		<a href="https://esewa.com.np">
+			<img class="h-size2" th:src="@{/images/icons/esewa-logo.png}" src="images/icons/mastercard.png" alt="IMG-ESEWA">
+		</a>
+
+<!-- 		<a href="#"> -->
+<!-- 			<img class="h-size2" th:src="@{/images/icons/express.png}" src="images/icons/express.png" alt="IMG-EXPRESS"> -->
+<!-- 		</a> -->
+
+<!-- 		<a href="#"> -->
+<!-- 			<img class="h-size2" th:src="@{/images/icons/discover.png}" src="images/icons/discover.png" alt="IMG-DISCOVER"> -->
+<!-- 		</a> -->
+	</div>
+</footer>
+</body>
+</html>

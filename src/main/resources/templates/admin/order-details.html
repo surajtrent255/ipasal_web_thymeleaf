@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title>Order Detail</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+		background-color: #e65540;
+	}
+
+	.user-info-color {
+		background-color: #3ba3e6;
+	}
+
+	.payment-info{
+		background-color: #1086e6;
+	}
+	.user-info-color th {
+		text-align: left;
+	}
+
+	.site-color th {
+		text-align: left;
+	}
+
+	table {
+		border: 1px solid #e9ecef;
+	}
+
+	th, td {
+		text-align: left;
+		font-size: small;
+	}
+    td{
+        font-family: Arial;
+        color: #0c5460;
+    }
+     .wish-details{
+        cursor: pointer;
+    }
+	 .wish-details:hover{
+		 color: #e65540;
+	 }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+  							<div class="card-header bg-primary">Order Details</div>
+  							<div class="card-body">
+								<!--<div class="bo4 of-hidden size20 m-b-10">
+									<p>
+									<h4  th:text="${userInfo.fName+' '+userInfo.lName}"></h4><br>
+									<h4 th:text="${userInfo.phone}">raskin0maharjan@gmail.com</h4>
+									</p>
+								</div>-->
+								<table class="table">
+									<thead>
+									<tr class="user-info-color">
+										<th >FULL NAME</th>
+										<th >EMAIL</th>
+										<th>PHONE</th>
+										<th >ADDRESS</th>
+										<th >PAYMENT ID</th>
+										<th >PAYMENT TYPE</th>
+										<th >STATUS</th>
+									</tr>
+									</thead>
+									<tbody id="user-body">
+									<tr >
+										<td  th:text="${userInfo.fName + ' '+ userInfo.lName}">5</td>
+										<td  th:text="${userInfo.email}">EDT</td>
+										<td th:text="${userInfo.phone}"></td>
+										<td  th:text="${userInfo.street}? ${userInfo.street} : 'Not Available'">EDT</td>
+										<td th:unless="${paymentInfo == null}" th:text="${paymentInfo.paymentId}">0001-29</td>
+										<td th:unless="${paymentInfo == null}" th:text="${paymentInfo.paymentMethod.paymentName}">Khalti</td>
+										<td th:unless="${paymentInfo == null}" th:text="${(paymentInfo.status == true ? 'Paid' : 'Unpaid')}">Paid</td>
+									</tr>
+									</tbody>
+								</table>
+								<table class="table">
+                                    <thead>
+									<tr class="site-color">
+										<th >PRODUCT ID</th>
+										<th >PRODUCT NAME</th>
+										<th>QUANTITY</th>
+										<th >AMOUNT [/UNIT] (Rs.)</th>
+									</tr>
+                                    </thead>
+                                    <tbody id="wholeseller-body">
+									<tr class="" th:each="product : ${orderDetail}">
+										<td id="user-id" th:text="${product.productId}">5</td>
+										<td  th:text="${product.productName}">EDT</td>
+										<td th:text="${product.quantity}"></td>
+										<td  th:text="${product.rate}">EDT</td>
+									</tr>
+                                    </tbody>
+								</table>
+		<!-- shipping and billing details -->
+						<div>
+						<span class="text-black">Shipping Details</span>
+						<table class="table">
+									<thead>
+									<tr class="user-info-color">
+<!-- 										<th >EMAIL</th> -->
+										<th>PHONE</th>
+										<th >ADDRESS</th>
+										<th >CITY</th>
+										<th >STATE</th>
+										<th >ZIP</th>
+									</tr>
+									</thead>
+									<tbody id="user-body">
+									<tr >
+<!-- 										<td  th:text="${shippingInfo.email}">EDT</td> -->
+										<td th:text="${shippingInfo.phone}"></td>
+										<td  th:text="${shippingInfo.address}? ${shippingInfo.address} : 'Not Available'">EDT</td>
+										<td th:unless="${shippingInfo == null}" th:text="${shippingInfo.city}">0001-29</td>
+										<td th:unless="${shippingInfo == null}" th:text="${shippingInfo.state}">Khalti</td>
+										<td th:unless="${shippingInfo == null}" th:text="${shippingInfo.zipcode}">Paid</td>
+									</tr>
+									</tbody>
+								</table>
+						</div>		
+								
+								
+		<!-- shipping and billing details ends -->	
+		<a th:href= "@{/admin/order/{orderId}/updates(orderId=${orderId})}"><button class="btn btn-success">Order Updates</button></a>
+							
+  							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+</body>
+</html>

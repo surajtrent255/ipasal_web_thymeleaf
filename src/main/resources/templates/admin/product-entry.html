@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>iPasal: Product Entry</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<!-- Section for bootstrap tag input  -->
+<link th:href="@{/vendor/tagsinput/tagsinput.css}" rel="stylesheet" type="text/css">
+<!--===============================================================================================-->
+<style>
+.feature-group-container {
+	margin: 20px auto;
+}
+
+.error_form{
+	top: 12px;
+	color: rgb(216, 15, 15);
+    font-size: 15px;
+    font-family: Helvetica;
+}
+
+.featured-group {
+	color: #757582;
+	margin: 10px 20px;
+	font-size: 13px;
+	vertical-align: center;
+}
+
+.submit-btn {
+	margin-top: 20px;
+}
+
+.displayNone {
+	display: none;
+}
+
+.displayBlock {
+	display: block;
+}
+
+.lower-case {
+    text-transform: lowercase;
+}
+
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container displayBlock" id="category-selection">
+						<div class="card mb-3">
+							<div class="card-header bg-danger">Category Selection Page</div>
+							<div class="card-body">
+								<div class="row">
+									<div class="col-md-4" style="border: 1px solid #ccc;">
+										<div class="m-t-10">
+											<h6 class="font-weight-bold">Categories</h6>
+											<div>
+												<a href="#" id="collapseCategory"
+													class="fs-12 font-weight-bold"> collapse all</a> | <a
+													href="#" id="expandCategory" class="fs-12 font-weight-bold">
+													expand all</a>
+											</div>
+											<div class="m-t-10 text-primary">
+												<ul class="fs-13 font-weight-bold" id="categoryHierarchy">
+													<!-- <li th:each="category: ${categories}"> 
+								    					<i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp;<span class="m-r-3" th:text="${category.categoryName}"></span> <i class="fa fa-caret-down" aria-hidden="true"></i>
+								    				</li> -->
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-8" style="border: 1px solid #ccc;">
+										<div class="m-t-10" style="background-color: #e3e3e3;">
+											<h6 class="m-l-10 p-t-15 p-b-15" id="category-select">Select
+												the Category for Product</h6>
+										</div>
+										<div class="w-size25 submit-btn">
+											<button type="button"
+												class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4"
+												id="next_btn">Next</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="container displayNone" id="entry-form">
+						<div class="card mb-3">
+							<div class="card-header bg-primary">Product Entry Form</div>
+							<div class="card-body">
+								<form id="product_entry_form" enctype="multipart/form-data">
+									<input type="hidden" name="productId" id="product-id" /> <input
+										type="hidden" name="productCategoryId"
+										id="product-category-id" /> <label class="p-b-15"
+										id="category-name"></label>
+									<div class="form-group">
+										<input type="text" name="product-name" class="form-control"
+											placeholder="Product Name" id="product-name"
+											data-validation="required" /> <span class="error_form"
+											id="productName_error_message"></span>
+									</div>
+									<div class="form-group">
+										<textarea type="text" name="product-short-desc"
+											class="form-control" placeholder="Short Description"
+											id="product-short-desc" data-validation="required"></textarea>
+										<span class="error_form" id="shortDesc_error_message"></span>
+									</div>
+									<div class="form-group">
+										<textarea type="text" name="product-highlights"
+											class="form-control" placeholder="Highlights"
+											id="product-highlights" data-validation="required"></textarea>
+										<span class="error_form" id="highlights_error_message"></span>
+									</div>
+									<div class="form-group">
+										<textarea type="text" name="product-description"
+											class="form-control" placeholder="Description"
+											id="product-description" data-validation="required"></textarea>
+										<span class="error_form" id="description_error_message"></span>
+									</div>
+									<!-- 									<div class="bo4 of-hidden size15 m-b-20">
+											<select class="sizefull s-text7 p-l-22 p-r-22"
+												id="product-category">
+												<option value="">Choose Category</option>
+												<option th:each="category : ${categories}"
+													th:value="${category.categoryId}"
+													th:text="${category.categoryName}">Computer And
+													Peripherals</option>
+											</select>
+										</div>
+	
+										<div class="bo4 of-hidden size15 m-b-20">
+											<select class="sizefull s-text7 p-l-22 p-r-22"
+												id="sub-category">
+												<option value="">Sub Categories</option>
+											</select>
+										</div> -->
+
+									<div class="bo4 of-hidden size15 m-b-20">
+										<select class="sizefull s-text7 p-l-22 p-r-22" id="merchant">
+											<option value="">Merchant</option>
+											<option th:each="merchant : ${merchants}"
+												th:value="${merchant.merchantId}"
+												th:text="${merchant.merchantName}"></option>
+										</select>
+									</div>
+									<div class="form-group">
+										<input type="text" name="price" placeholder="Price"
+											class="form-control" id="price" data-validation="required" />
+										<span class="error_form" id="price_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text"
+											placeholder="Discount    [Leave Empty if No Discount]"
+											class="form-control" id="discount-percent" />
+									</div>
+									<div class="form-group">
+										<input type="text" name="unit" placeholder="Unit"
+											class="form-control" id="unit" data-validation="required" />
+										<span class="error_form" id="unit_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="quantity" placeholder="Quantity"
+											class="form-control" id="quantity" data-validation="required" />
+										<span class="error_form" id="quantity_error_message"></span>
+									</div>
+
+									<div class="row bg-secondary m-b-10"
+										style="height: 150px; border: 2px solid #e3e3e3;"
+										id="img-prod">
+										<div class="col-md-4">
+											<span> <i class="fa fa-picture-o fs-150"
+												aria-hidden="true"></i></span>
+										</div>
+										<div class="col-md-8">
+											<input type="hidden" name="productId" id="product-id" /> <label
+												for="featured"> Choose Images For Upload: Standard
+												Size () </label> <input type="file" name="images" id="product-image"
+												multiple />
+										</div>
+										<span class="error_form" id="productImg_error_message"></span>
+									</div>
+
+									<div
+										class="bo4 of-hidden size15 m-b-20p feature-group-container">
+										<div class="featured-group">
+											<label for="featured"> Display In Featured Section: </label>
+											<input type="checkbox" name="feature" id="featured"
+												value="true" />
+											<button id="add-related-product" class="btn btn-link">Add
+												Related Product</button>
+										</div>
+									</div>
+
+									<div class="sizefull s-text7 p-l-22 p-r-22" id="related-div">
+										<table class="related-table">
+											<tr>
+												<td><b>Related Products</b></td>
+											</tr>
+											<tr>
+												<td>Product ID</td>
+												<td>Product Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+													&nbsp;</td>
+												<td class="pull-right">Remove</td>
+											</tr>
+											<tbody id="related-table-data">
+											</tbody>
+										</table>
+									</div>
+									<div class="form-group">
+<!-- 										<label>Enter product tags</label> -->
+<!-- 										<select multiple data-role="tagsinput" class="lower-case" id="product_tags"> -->
+<!--     									</select> -->
+										<input type="text" class="lower-case" data-role="tagsinput" id="product_tags" placeholder="Enter Product Tags"/>
+									</div>
+									<div class="w-size25 submit-btn">
+										<button type="button"
+											class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4"
+											id="prev_btn">Prev</button>
+									</div>
+									<div class="w-size25 submit-btn">
+										<button type="submit"
+											class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4"
+											id="submit_btn">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Modal View For Related Products Entry-->
+	<div class="modal fade" id="related-product-entry-modal"
+		data-keyboard="false" data-backdrop="false" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Add Related Product</h5>
+				</div>
+				<div class="modal-content-body">
+					<div class="row" style="margin: 5px 20px;">
+						<div style="width: 100%; margin: 10px auto;">
+							<select class="sizefull s-text7 p-l-22 p-r-22" id="cat-id">
+								<option>Select Category</option>
+								<option th:each="category: ${categories}"
+									th:value="${category.categoryId}"
+									th:text="${category.categoryName}">Technology</option>
+							</select>
+						</div>
+
+
+						<div class="input-group" style="margin: 10px auto;">
+							<input
+								class="form-control py-2 font-size-12 border-right-0 border"
+								type="search" placeholder="Search items..." id="search-input">
+							<span class="input-group-append">
+								<button id="searchBtn"
+									class="btn btn-outline-secondary border-left-0 border"
+									type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+						<div>
+							<table class="table">
+								<thead id="table-header">
+									<tr>
+										<th>SNo.</th>
+										<th>Product Name</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="table-data">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button id="relatedOkBtn" class='btn btn-primary'>OK</button>
+					<button id="cancelBtn" class="btn btn-danger">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script th:inline="javascript">
+	
+	let relatedProduct = {
+		selectedCategory: '',
+		searchKey: '',
+		selectedItems: [],
+	};
+	
+	var merchantId = [];
+	var relatedProductId = [];
+	var relatedProductIdFinal = [];
+	var productTags = []
+	
+	var categoryName;
+	var parentId = 0;
+	var categoryId = 0;
+	
+// 	$("#sub-category").hide(); //hides subcategory
+	$("#related-div").hide(); //hides the related product table on the start 
+
+	
+	$(function() {
+		createCategoryList();
+	});
+	
+	
+	//Creation of the category listing on first page load	
+	function createCategoryList() {
+		$("#categoryHierarchy").empty();
+			
+		let categoriesData = /*[[${categories}]]*/ '';
+		let categoryHierarchyDom = "";
+		function createCategoryHierarchy(categories) {
+			categories.forEach(function(category) {
+				categoryHierarchyDom += `<li><i class="fa fa-plus-square" aria-hidden="true" data-target="${category.categoryId}" data-parent="${category.parentId}"></i>&nbsp <span class="m-r-3">${category.categoryName}</span> <i class="fa fa-caret-down" data-toggle="collapse" data-target="#data${category.categoryId}" aria-hidden="true"></i>` ;
+				if(category.childCategories && category.childCategories.length > 0) {
+					categoryHierarchyDom += "<ul id='data" + category.categoryId+"' class='p-l-5 collapse'>";
+					createCategoryHierarchy(category.childCategories)
+					categoryHierarchyDom += "</li></ul>";
+				}
+				categoryHierarchyDom += "</li>";
+			});
+		}
+		
+		createCategoryHierarchy(categoriesData);
+		$("#categoryHierarchy").append(categoryHierarchyDom);
+		
+		//expands all categories and sub-categories
+		$("#expandCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('show');
+			});
+		});
+		
+		//Collapses all the category and subcategories
+		$("#collapseCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('hide');
+			});
+		});
+	}
+	
+	
+	//Gets the clicked category and sets it as current category
+	$("#categoryHierarchy").on('click', ".fa.fa-plus-square", function(event) {
+		event.preventDefault();
+		parentId = 0;
+		categoryId = 0;
+		categoryId = $(this).attr("data-target");
+		parentId = $(this).attr("data-parent");
+		categoryName = $(this).parent().find("span:first").text();
+		$("#category-select").text('New Product in ' + categoryName);
+	});
+	
+	
+	//Button to go to Product Details entry page after selection of the category
+	$("#next_btn").on('click' , function(event) {
+		event.preventDefault();
+		//Checks for empty selection of category
+		if(categoryId == 0 && parentId == 0) {
+			swal({
+				text: "Please select a category first!",
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			})
+		}
+		//Checks for selection of parent category (entry at parent/root category is not allowed)
+		if(parentId == 0 && categoryId != 0) {
+			swal({
+				text: "Please select a child category!",
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			})
+		}	
+		//Checks for correct selection of category and alerts if the selected category is final selection
+		if(parentId != 0 && categoryId != 0) {
+			swal({
+				title : "Category Selection!",
+				text : "Are you sure you want to add product to " + categoryName + "?",
+				icon : "warning",
+				dangerMode : true,
+				buttons : true,
+				closeOnClickOutside : false,
+				closeOnEsc : false
+			})
+			.then(function(clickedOk) {
+				$(".loader-holder").show();
+				if (clickedOk) {
+					$(".loader-holder").hide();
+						
+					$("#product-category-id").val(categoryId);  //assigning the categoryId
+					$("#category-name").text('Category: ' + categoryName); // assigning the categoryName
+						
+					$("#entry-form").removeClass("displayNone");
+					$("#entry-form").addClass("displayBlock");
+						
+					$("#category-selection").removeClass("displayBlock");
+					$("#category-selection").addClass("displayNone");
+				}
+				$(".loader-holder").hide();
+			});
+		}	
+	});
+	
+	
+	//Button to go back to the category selection
+	$("#prev_btn").on('click' , function(event) {
+		event.preventDefault();
+		swal({
+			title : "Go Back!",
+			text : "Are you sure you want to go back to category selection?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		}).then(function(clickedOk) {
+			$(".loader-holder").show();
+			if (clickedOk) {
+				$(".loader-holder").hide();
+				window.location.href = contextPath + "/admin/productEntry";
+			}
+			$(".loader-holder").hide();
+		});
+	});
+	
+	
+	//Form Validaiton of product entry
+	$(function() {
+		$("#productName_error_message").hide();
+		$("#shortDesc_error_message").hide();
+		$("#highlights_error_message").hide();
+		$("#description_error_message").hide();
+		$("#price_error_message").hide();
+		$("#unit_error_message").hide();
+		$("#quantity_error_message").hide();
+		$("#productImg_error_message").hide();
+		
+		var error_productName = false;
+		var error_shortDesc = false;
+		var error_highlights = false;
+		var error_description = false;
+		var error_price = false;
+		var error_unit = false;
+		var error_quantity = false;
+		var error_productImg = false;
+		
+		$("#product-name").focusout(function() {
+			check_productName();
+		});
+		
+		$("#product-short-desc").focusout(function() {
+			check_shortDesc();
+		});
+		
+		$("#product-highlights").focusout(function() {
+			check_highlights();
+		});
+		
+		$("#product-description").focusout(function() {
+			check_description();
+		});
+		
+		$("#price").focusout(function() {
+			check_price();
+		});
+		
+		$("#unit").focusout(function() {
+			check_unit();
+		});
+		
+		$("#quantity").focusout(function() {
+			check_quantity();
+		});
+		
+		$("#img-prod").mouseout(function() {
+			check_productImg();
+		});
+		
+		function check_productName() {
+			var productName = $("#product-name").val();
+			if(productName !== '') {
+				$("#productName_error_message").hide();
+				$("#product-name").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#productName_error_message").html("Please enter the Product Name!");
+				$("#productName_error_message").show();
+				$("#product-name").css("border-bottom", "2px solid #F90A0A");
+				error_productName = true;
+			}
+		}
+		
+		function check_shortDesc() {
+			var productShortDesc = $("#product-short-desc").val();
+			if(productShortDesc !== '') {
+				$("#shortDesc_error_message").hide();
+				$("#product-short-desc").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#shortDesc_error_message").html("Please enter the Short Description!");
+				$("#shortDesc_error_message").show();
+				$("#product-short-desc").css("border-bottom", "2px solid #F90A0A");
+				error_shortDesc = true;
+			}
+		}
+		
+		function check_highlights() {
+			var productHighlights = $("#product-highlights").val();
+			if(productHighlights !== '') {
+				$("#highlights_error_message").hide();
+				$("#product-highlights").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#highlights_error_message").html("Please enter the Highlights!");
+				$("#highlights_error_message").show();
+				$("#product-highlights").css("border-bottom", "2px solid #F90A0A");
+				error_highlights = true;
+			}
+		}
+		
+		function check_description() {
+			var productDescription = $("#product-description").val();
+			if(productDescription !== '') {
+				$("#description_error_message").hide();
+				$("#product-description").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#description_error_message").html("Please enter the Product Description!");
+				$("#description_error_message").show();
+				$("#product-description").css("border-bottom", "2px solid #F90A0A");
+				error_description = true;
+			}
+		}
+		
+		function check_price() {
+			var price = $("#price").val();
+			if(price !== '') {
+				$("#price_error_message").hide();
+				$("#price").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#price_error_message").html("Please enter the Price!");
+				$("#price_error_message").show();
+				$("#price").css("border-bottom", "2px solid #F90A0A");
+				error_price = true;
+			}
+		}
+		
+		function check_unit() {
+			var unit = $("#unit").val();
+			if(unit !== '') {
+				$("#unit_error_message").hide();
+				$("#unit").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#unit_error_message").html("Please enter the unit!");
+				$("#unit_error_message").show();
+				$("#unit").css("border-bottom", "2px solid #F90A0A");
+				error_unit = true;
+			}
+		}
+		
+		function check_quantity() {
+			var quantity = $("#quantity").val();
+			if(quantity !== '') {
+				$("#quantity_error_message").hide();
+				$("#quantity").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#quantity_error_message").html("Please enter the Quantity!");
+				$("#quantity_error_message").show();
+				$("#quantity").css("border-bottom", "2px solid #F90A0A");
+				error_quantity = true;
+			}
+		}
+		
+		function check_productImg() {
+			var productImage = $("#product-image").get(0).files.length;
+			if(productImage !== 0) {
+				$("#productImg_error_message").hide();
+				$("#product-img").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#productImg_error_message").html("Please select some pictures to go with the Product!");
+				$("#productImg_error_message").show();
+				$("#product-img").css("border-bottom", "2px solid #F90A0A");
+				error_productImg = true;
+			}
+		}
+		
+		$("#submit_btn").click(function(event) {
+			event.preventDefault();
+			
+			error_productName = false;
+			error_shortDesc = false;
+			error_highlights = false;
+			error_description = false;
+			error_price = false;
+			error_unit = false;
+			error_quantity = false;
+			error_productImg = false;
+			
+			check_productName();
+			check_shortDesc();
+			check_highlights();
+			check_description();
+			check_price();
+			check_unit();
+			check_quantity();
+			check_productImg();
+			
+			if(error_productName === false && error_shortDesc === false && 
+					error_highlights === false && error_description === false && 
+					error_price === false && error_unit === false && error_quantity === false && error_productImg === false) {
+			
+			var productName = $("#product-name").val();
+			var productShortDesc = $("#product-short-desc").val();
+			var productHighlights = $("#product-highlights").val();
+			var productDescription = $("#product-description").val();
+// 			var subCategoryValue = parseInt($("#sub-category").val());
+			var productCategoryId = parseInt($("#product-category-id").val());
+// 			if(Number.isInteger(subCategoryValue)) {
+// 				console.log("SubCategoryValue: " + subCategoryValue);
+// 				productCategoryId = subCategoryValue;
+// 			} else {
+// 				productCategoryId = $("#product-category").val();
+// 			}
+			var price = $("#price").val();
+			var discountPercent = $("#discount-percent").val();
+			
+			if(discountPercent > 0) {
+				var actualRate = price;
+				price = (price - ((discountPercent / 100) * price));
+			} else {
+				var actualRate = price;
+			}
+			var unit = $("#unit").val();
+			var quantity = $("#quantity").val();
+// 			var featured = $("#featured").val() || false;
+			var featured = $("input[name='feature']:checked").val() || false;	
+			productTags = $("#product_tags").tagsinput('items');
+			merchantId.push(parseInt($("#merchant").val()));
+			
+			//Every data retrieved from form should be validated and sanitized. 
+			//For now data is not sanitized. Always validate form data before sending it to server.
+			var productDetail = {};
+			productDetail.productName = productName;
+			productDetail.shortDesc = productShortDesc;
+			productDetail.highlights = productHighlights;
+			productDetail.description = productDescription;
+			productDetail.categoryId = productCategoryId;
+			productDetail.rate = price;
+			productDetail.unit = unit;
+			productDetail.availableItems = quantity;
+			productDetail.featured = featured;
+			productDetail.relatedProducts = relatedProductIdFinal;
+			productDetail.discountPercent = discountPercent;
+			productDetail.actualRate = actualRate;
+			productDetail.merchantId = merchantId;
+			productDetail.productTags = productTags;
+			//Now create an ajax request to send product detail to server.
+			$.ajax({
+				method: "POST",
+				url: contextPath + "/products/add",
+				data: JSON.stringify(productDetail),
+				contentType: "application/json",
+				success: function(result) {
+					$("#product-id").val(result);
+					productImageUpload(event);
+				},
+				error: function(error) {
+					alert(error);
+				} 
+			});
+			} else {
+				swal({
+	            	icon: "info",
+	            	text: "Please enter the required fields correctly :(",
+	        	});
+			}	
+		});
+	});
+
+/* 	$("#product-category").on('change', function(event) {
+		var parentId = (this.value);
+		if(parentId !== undefined && parentId !== null && parentId != '') {
+			$.ajax({
+				method: "GET",
+				url: contextPath + "/category/productEntry/parent/" + parentId,
+				success: function(data) {
+					var subCategory = $("#sub-category");
+					if(data.data !== undefined || data.data.length > 0) {
+						subCategory.empty();
+						var option = "";
+						$.each(data.data, function(index, element) {
+							option += "<option value='" + element.categoryId +"' >" + element.categoryName + "</option>";
+						});
+					
+						subCategory.append(option);
+						subCategory.show();
+					}
+				},
+				error: function(error) {
+					swal({
+						icon: "error",
+						text: error.responseJSON.message
+					});
+				}
+			});
+		}
+	}); */
+	
+	
+	//Function for uploading of the image of product
+	function productImageUpload(event) {
+		event.preventDefault();
+		var form = document.getElementById('product_entry_form');
+		var formData = new FormData(form);
+		$(".loader-holder").show();
+		$.ajax({
+			method: "POST",
+			url: contextPath + "/products/uploadImage",
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function(data){
+				$(".loader-holder").hide();
+				swal({
+					text: "Image uploaded successfully!",
+					icon: "success",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+
+			},
+			error: function(error){
+				$(".loader-holder").hide();
+				swal({
+					text: "Something went wrong while uploading image!",
+					icon: "error",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+			}
+		});
+	};
+	
+	
+	//button to display the related products modal
+	$("#add-related-product").on("click", function(event){
+		event.preventDefault();
+		$("#table-data").empty();
+		$("#table-header").hide();
+		$("#related-product-entry-modal").modal("show");
+	});
+	
+	//Cancel button to close the repated products modal
+	$("#cancelBtn").on("click", function(event){
+		$("#table-data").empty();
+		$("#table-header").hide();
+		$("#related-product-entry-modal").modal("hide");
+	});
+
+
+	//On click event listener fot the searchbox
+	$("#searchBtn").on("click", function(event) {
+		event.preventDefault();
+		let searchKey = $("#search-input").val().trim();
+		let url = "/category/";
+		let categoryId = parseInt($("#cat-id").val());
+		
+		if(Number.isInteger(categoryId)) {
+			$("#table-header").show();
+			$.ajax({
+				url: contextPath+ url + categoryId + "/product/search?searchKey=" + encodeURI(searchKey),
+				method: "GET",
+				success: function(data){
+					let returnedData = data.data;
+					let tableData ="";
+					returnedData.forEach(element => {
+						tableData += "<tr>";
+						tableData += "<td>" + element.productId + "</td>";
+						tableData += "<td>" + element.productName + "</td>";
+						tableData += "<td><input type='checkbox' value='" + element.productId  + "' /> </td>";
+						tableData += "</tr>";
+					});
+					
+					$("#table-data").empty();
+					$("#table-data").append(tableData);
+					
+				},
+				error: function(error){
+					alert(JSON.stringify(error));
+				}
+			});
+		} else {
+			swal({
+				icon: "error",
+				text: "Must select the category from category list."
+			});
+		}
+	});
+	
+	
+	// Getting the Related Product ids for main product 
+	$("#relatedOkBtn").click(function(event){
+		  event.preventDefault();
+		  $("#table-data input:checkbox:checked").each(function(){
+		    relatedProductId.push(parseInt($(this).val()));
+		  });
+		  
+		  if(relatedProductId.length > 0) {
+// 		  	console.log(relatedProductId);
+		  	$("#related-product-entry-modal").modal("hide");
+		  	
+		  	$.each(relatedProductId, function(i, el){
+		  	    if($.inArray(el, relatedProductIdFinal) === -1) relatedProductIdFinal.push(el);
+		  	});
+		  	
+// 		  	console.log("Final Related Products " + relatedProductIdFinal);
+		  	getRelatedProducts(relatedProductIdFinal);
+		  }
+		  else {
+				swal({
+					icon: "error",
+					text: "Must select the category form category list."
+				});
+		  }
+	});
+	
+	
+	//Function to display all the related products in the tabular form
+	function getRelatedProducts(relatedArray) {
+		if(relatedArray.length != 0) {
+			$("#related-div").show();
+			relatedArray.sort();
+			$("#related-table-data").empty();
+		  	for(let i = 0; i < relatedArray.length; i++){
+// 		  	   console.log(relatedArray[i]);
+		  	   let prodIndex = relatedArray[i];
+				$.ajax({
+					url: contextPath + "/products/byId/" + prodIndex,
+					method: "GET",
+					success: function(data){
+						let returnedData = data.data;
+						let tableData ="";
+							tableData += "<tr>";
+							tableData += "<td>" + returnedData[0].productId + "</td>";
+							tableData += "<td>" + returnedData[0].productName + "</td>";
+							tableData += "<td><button class='fa fa-window-close pull-right' style='text-align: center;' onclick='removeRelatedProduct(" + returnedData[0].productId + ")'></button></td>";
+							tableData += "</tr>";
+						$("#related-table-data").append(tableData);
+					},
+					error: function(error){
+						alert(JSON.stringify(error));
+					}
+				});
+		  	}
+		} else {
+			$("#related-div").hide();
+		}
+	}
+	
+	
+	//Function to remove a product from list of related products
+	function removeRelatedProduct(productId) {
+		$(".loader-holder").show();
+		//Getting the index of the product to be removed in the related product array
+		let removeIndex = relatedProductIdFinal.indexOf(productId);
+		
+		//Splicing the product id from the array of related product
+		relatedProductIdFinal.splice(removeIndex , 1);
+		
+		//Displaying the related products array in the table
+		getRelatedProducts(relatedProductIdFinal);
+		
+		//Assigning the new related product array into the old one
+		relatedProductId = relatedProductIdFinal;
+		$(".loader-holder").hide();
+		event.preventDefault();
+	}
+	
+</script>
+</body>
+</html>

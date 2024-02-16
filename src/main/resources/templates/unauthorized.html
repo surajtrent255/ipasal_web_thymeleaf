@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>iPasal: Authorization Failure</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css" th:href="@{/vendor/noui/nouislider.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/checkout.css" th:href="@{/css/checkout.css}" />
+	<link href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+    rel="stylesheet" type="text/css" />
+    <style>
+    	#error-page-container {
+    		height: 50em;
+    		background:url("/images/unauthorized-warning.jpg");
+    	}
+    	
+    	.jumbo-box {
+    		height:30%;
+    		width: 500px;
+    		margin-top: 15em;
+    		padding: 3em;
+    		background-color: #416e37;
+    		opacity: 0.4;
+			
+    	}
+		.sub-text{
+			margin: 10px auto;
+			font-weight: bold;
+		}
+    </style>
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+
+</header>
+
+<div id="error-page-container">
+	<div class="jumbo-box pull-right">
+        <h1 class="text-warning"> Wait There! </h1>
+        <p class="text-warning sub-text ">You are trying to access unauthorized page. You can't access this page.</p>
+	</div>
+</div>
+
+
+<!-- Footer -->
+<!-- Replaces current footer tag with fragments/footer.html -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	
+</footer>
+<div th:replace="~{fragments/scripts :: scripts}">
+</div>
+</body>
+</html>

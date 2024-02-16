@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Hot Deals Entry Page.</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+
+<!--===============================================================================================-->	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+<!--===============================================================================================-->  
+<style>
+	.inventory-heading {
+	border-top: 1px solid #e9ecef;
+	border-bottom: 1px solid #e9ecef;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.inputtext {
+	width: 100%;
+  	padding: 12px 20px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc !important;
+  	border-radius: 4px;
+  	box-sizing: border-box;
+	}
+
+
+.m-t-8 {
+	margin-top: 8px;
+}
+
+.m-t-15 {
+	margin-top: 15px;
+}
+
+.m-t-20 {
+	margin-top: 20px;
+}
+
+.btn {
+	color: #ccc;
+}
+
+.h-50 {
+	height: 50%;
+}
+
+.border-2 {
+	border: 2px solid #ccc;
+	width: 30%;
+}
+
+#sm-pagination a, #sm-pagination p {
+	display: inline;
+}
+
+#sm-pagination p {
+	margin-left: 8px;
+	margin-right: 8px;
+	font-size: 16px;
+}
+
+.color-gray {
+	background-color: #e7e7e8;
+}
+
+.dropdown span, #sm-pagination span {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.font-size-12 {
+	font-size: 12px;
+}
+.site-color {
+	background-color: #e65540;
+}
+
+.site-color th {
+	text-align: center; 
+}
+
+table {
+	border: 1px solid #e9ecef;
+}
+
+th, td {
+	text-align: center;
+}
+
+.parentum {
+    list-style: none;
+    width: 100%;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+	
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+				<div class="row" style="border: 1px solid #f2f2f2;">
+					<div class="col-md-3 p-b-30 m-t-15" style="border-right: 1px solid #ccc;">
+						<h6 class="font-weight-bold"> Categories</h6>
+						<div>
+							<a href="#" id="collapseCategory" class="fs-12 font-weight-bold"> collapse all</a> | <a href="#" id="expandCategory" class="fs-12 font-weight-bold"> expand all</a>
+						</div>
+						<ul class="fs-13 font-weight-bold" id="categoryHierarchy">
+							
+						</ul>
+					</div>
+					<div class="col-md-9 p-b-30">
+						<h3 class="inventory-heading">Inventory Details<a th:href="@{/admin/productEntry}"
+								class="btn btn-sm btn-secondary pull-right">Add Product</a></h3>
+
+						
+						<div class="row m-t-20">
+							<div class="input-group col-md-6">
+								<input
+									class="form-control py-2 font-size-12 border-right-0 border"
+									type="search" placeholder="Search items..."
+									id="search-input"> <span
+									class="input-group-append">
+									<button id="searchBtn" class="btn btn-outline-secondary border-left-0 border"
+										type="button">
+										<i class="fa fa-search"></i>
+									</button>
+								</span>
+							</div>
+							<div class="col-md-6">
+								<div class="btn-group pull-right" role="group">
+									<button class="btn btn-sm btn-light">
+										<i class="fa fa-eye" aria-hidden="true"></i> View
+									</button>
+									<span class="linedivide1"></span>
+									<button class="btn btn-sm btn-light">
+										<i class="fa fa-cog" aria-hidden="true"></i> Settings
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="row m-t-20">
+							<div class="col-md-6">
+								<div class="dropdown">
+									<span>Filter by: </span> <a class="btn btn-sm color-gray"
+										data-toggle="dropdown" aria-haspopup="true"
+										aria-expanded="false"> <i class="fa fa-chevron-down"
+										aria-hidden="true"></i>
+									</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" id="in-stock" href="#">In-Stock</a>
+										 <a class="dropdown-item" id="out-of-stock" href="#">Out-Of-Stock</a>
+									</div>
+									
+								</div>
+							</div>
+
+							<div class="col-md-6">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="dropdown">
+											<span id="pageSizeCounter">9</span>items <a class="btn btn-sm color-gray"
+												data-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false"> <i class="fa fa-chevron-down"
+												aria-hidden="true"></i>
+											</a>
+											<div class="dropdown-menu" id="pageSize">
+												<a class="dropdown-item" href="#">10</a> 
+												<a class="dropdown-item" href="#">20</a>
+												<a class="dropdown-item" href="#">30</a>
+											</div>
+											<span> per page.</span>
+										</div>
+
+									</div>
+									<div class="col-md-6">
+										<div id="sm-pagination" class="pull-right">
+											<a class="btn btn-sm color-gray" id="prev" href="#"> <i
+												class="fs-12 fa fa-chevron-left" aria-hidden="true"></i>
+											</a> <span id="sm-pagination-text">1 of 20</span> <a
+												class="btn btn-sm color-gray" id="next" href="#"> <i
+												class="fs-12 fa fa-chevron-right" aria-hidden="true"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="m-t-20">
+							<table class="table">
+								<thead>
+									<tr class="site-color">
+										<th>Product ID</th>
+										<th>Name</th>
+										<th>Price</th>
+										<th>Quantity</th>
+										<th>Status</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody id="table-body">
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="container">
+						<div class="card mb-3">
+  							<div class="card-header bg-primary">Hot Deals List</div>
+  							<table class="table">
+									<thead class="site-color">
+										<tr>
+											<th>Product Id</th>
+											<th scope="col">Product</th>
+											<th>Old Rate</th>
+											<th>New Rate</th>
+											<th>Finish Date</th>
+											<th>Edit</th>
+											<th>Delete</th>
+										</tr>
+									</thead>
+									<tbody id="orders-container">
+											<tr th:each="hotDeal, iteration: ${hotDeals}">
+												<td th:text="${hotDeal.productId}"></td>
+												<td th:text="${hotDeal.productName}">  </td>
+												<td th:text="${hotDeal.oldRate}">  </td>
+												<td th:text="${hotDeal.newRate}">  </td>
+												<td th:text="${hotDeal.finishDate}">  </td>
+												<td>
+													<button
+														class="btn btn-success" th:onclick="|showEditModal(${hotDeal.hotDealId})|"
+														>Edit
+													</button>
+<!-- 													th:onclick="|showEditModal(${socialMedia.socialMediaId})|" th:id = "'editSocialMedia' + ${socialMedia.socialMediaId}" -->
+												</td>
+												<td >
+													<button
+														class="btn btn-danger"th:onclick="|deleteHotDeal(${hotDeal.hotDealId})|"
+														>Delete
+													</button>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+    			
+  							</div>
+						</div>
+					
+					</div>
+					
+					</div>
+					
+			</div>
+		</div>
+	</section>
+	
+	<div id="modalArea"></div>
+	
+	<div th:each="hotDeal, iteration: ${hotDeals}">
+	<div class="modal fade" th:id="'hotdeal-modal-edit' + ${hotDeal.hotDealId}"
+												data-keyboard="false" data-backdrop="false" role="dialog" aria-hidden="true">
+											<div class="modal-dialog modal-lg modal-dialog-centered"
+												role="document">
+												<div class="modal-content editmediaback">
+													<div class="modal-header">
+														<h5 class="modal-title">Edit Hot Deal</h5>
+													</div>
+													<div class="modal-content-body">
+														<div style="margin: 5px 20px;">
+														<div class="parentum"><form th:id="'hotDealImageForm' + ${hotDeal.hotDealId}" style="display:inline-block;"><span>Change Hot Deal Picture: </span><input type="file" th:name="'imageh'+ ${hotDeal.hotDealId}"></form><button class="btn btn-success" th:id="'hotDealImageUpload' + ${hotDeal.productId}" style="display:inline-block;" th:onclick="|uploadHotDealImage(${hotDeal.hotDealId})|">Upload</button></div>
+															<input class="inputtext lower-case" readonly="true" type="hidden" th:name="'editHotDealId' + ${hotDeal.hotDealId}" th:value="${hotDeal.hotDealId}"><br>
+															<span>Product Id: </span><input class="inputtext lower-case" readonly="true" type="text" th:name="'editProductId' + ${hotDeal.hotDealId}" th:value="${hotDeal.productId}"><br>
+															<span>Product Name: </span><input class="inputtext lower-case" readonly="true" type="text" th:name="'editProductName' + ${hotDeal.hotDealId}" th:value="${hotDeal.productName}"><br>
+															<span>Old Rate: </span><input class="inputtext lower-case" readonly="true" type="text" th:name="'editProductOldRate' + ${hotDeal.hotDealId}" th:value="${hotDeal.oldRate}"><br>
+															<span>New Rate: </span><input class="inputtext lower-case" type="text" th:name="'editProductNewRate' + ${hotDeal.hotDealId}" th:value="${hotDeal.newRate}"><br>
+															<span>Finish Date: </span><input class="inputtext lower-case" type="text" th:id="'editDealDate' + ${hotDeal.hotDealId}" th:name="'editDealFinishDate' + ${hotDeal.hotDealId}" th:value="${hotDeal.finishDate}"><br>
+															
+														</div>
+													</div>
+													<div class="modal-footer">
+														<button th:id="'editHotDealBtn' + ${hotDeal.hotDealId}" th:onclick="|editHotDeal(${hotDeal.hotDealId})|" class="btn btn-primary">Submit</button>
+														<button th:id="'editCancelBtn' + ${hotDeal.hotDealId}" th:onclick="|hideEditModal(${hotDeal.hotDealId})|" class="btn btn-danger">Cancel</button>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+										</div>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+		<script type="text/javascript" th:src="@{/vendor/bootstrap/js/popper.min.js}"></script>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+	<script type="text/javascript" th:src="@{/js/hotDeals.js}"></script>
+<script th:inline="javascript">
+
+
+function showEditModal(hotDealId){
+	let editModalId = "hotdeal-modal-edit" + hotDealId;
+	$('#' + editModalId).modal("show");
+	let finishDateField = "editDealDate" + hotDealId;
+	 $('#' + finishDateField).datepicker({
+	    	dateFormat: "yy-mm-dd" 	
+	    });
+}
+
+function hideEditModal(hotDealId){
+	let editModalId = "hotdeal-modal-edit" + hotDealId;
+	$('#' + editModalId).modal("hide");
+}
+
+//Edit Hot Deal
+function editHotDeal(hotDealId){
+	let hotDealModalhId = "editHotDealId" + hotDealId;
+	let hotDealModalId = "editProductId" + hotDealId;
+	let hotDealModalName = "editProductName" + hotDealId;
+	let hotDealModalOldRate = "editProductOldRate" + hotDealId;
+	let hotDealModalNewRate = "editProductNewRate" + hotDealId;
+	let hotDealModalFinishDate = "editDealFinishDate" + hotDealId;
+	let hotDeal = {};
+	hotDeal.hotDealId = $("input[name=" + hotDealModalhId + "]").val();
+	hotDeal.productId = $("input[name=" + hotDealModalId + "]").val();
+	hotDeal.productName= $("input[name=" + hotDealModalName + "]").val();
+	hotDeal.oldRate= $("input[name=" + hotDealModalOldRate + "]").val();
+	hotDeal.newRate= $("input[name=" + hotDealModalNewRate + "]").val();
+	hotDeal.finishDate= $("input[name=" + hotDealModalFinishDate + "]").val();
+	hotDeal.hotDeal = 1;
+	console.log(hotDeal.productName);
+	console.log(contextPath);
+	swal({
+		title : "Add!",
+		text : "Are you sure you want to Edit this Hot Deal?",
+		icon : "warning",
+		dangerMode : true,
+		buttons : true,
+		closeOnClickOutside : false,
+		closeOnEsc : false
+	})
+	.then(function(clickedOk) {
+		if (clickedOk) {
+			$(".loader-holder").show();
+			$.ajax({			
+				url : contextPath + "/hot-deals",
+				method : "PUT",
+				contentType: "application/json",
+				data: JSON.stringify(hotDeal),
+				success : function(response) {
+					$(".loader-holder").hide();
+						swal({
+							icon : "success",
+							text : "Hot Deal updated successfully"
+						})
+						.then(function(clickedOk) {
+							window.location.href = contextPath;
+						});
+				},
+				error : function(error) {
+					$(".loader-holder").hide();
+					swal({
+						icon : "error",
+						text : error
+					});
+				}
+			});
+		}
+	});
+}
+
+//Delete Hot Deal
+function deleteHotDeal(hotDealId){
+	swal({
+		title : "Add!",
+		text : "Are you sure you want to Delete this Hot Deal?",
+		icon : "warning",
+		dangerMode : true,
+		buttons : true,
+		closeOnClickOutside : false,
+		closeOnEsc : false
+	})
+	.then(function(clickedOk) {
+		if (clickedOk) {
+			$(".loader-holder").show();
+			$.ajax({			
+				url : contextPath + "/hot-deals/" + hotDealId,
+				method : "DELETE",
+				success : function(response) {
+					$(".loader-holder").hide();
+						swal({
+							icon : "success",
+							text : "Hot Deal deleted successfully"
+						})
+						.then(function(clickedOk) {
+							window.location.href = contextPath;
+						});
+				},
+				error : function(error) {
+					$(".loader-holder").hide();
+					swal({
+						icon : "error",
+						text : error
+					});
+				}
+			});
+		}
+	});
+}
+
+//for uploading the hot deal image
+function uploadHotDealImage(hotDealId) {
+	swal({
+		title : "Add!",
+		text : "Are you sure you want to Upload this Hot Deal Image?",
+		icon : "warning",
+		dangerMode : true,
+		buttons : true,
+		closeOnClickOutside : false,
+		closeOnEsc : false
+	})
+	.then(function(clickedOk) {
+		if (clickedOk) {
+	$(".loader-holder").show();
+	var formId = 'hotDealImageForm' + hotDealId;
+	var form = document.getElementById(formId);
+	var formData = new FormData(form);
+	$.ajax({
+		method: "POST",
+		url: contextPath + "/hot-deals/uploadImage/" + hotDealId,
+		data: formData,
+		contentType: false,
+		processData: false,
+		success: function(data){
+			$(".loader-holder").hide();
+			swal({
+				text: "Image uploaded successfully!",
+				icon: "success",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		},
+		error: function(error){
+			$(".loader-holder").hide();
+			swal({
+				text: "Something went wrong while uploading image!",
+				icon: "error",
+				closeOnClickOutside: false,
+				closeOnEsc: false
+			}).then(function() {
+				window.location.href = contextPath;
+			});
+		}
+	});
+		}
+	});
+}
+</script>
+</body>
+</html>

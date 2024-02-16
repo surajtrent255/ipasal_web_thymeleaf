@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/">
+<head>
+	<title>SALES !!!</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+
+</header>
+
+	<!-- Content page -->
+	<section class="bgwhite p-t-55 p-b-65" th:if="${allSales} != null">
+		<div class="container">
+			<div class="row">
+			<div class="col-sm-6 col-md-8 col-lg-12 p-b-50">
+					<!-- Product -->
+					<!--<div class="sec-title p-b-60">-->
+						<!--<h3 class="m-text5 t-center">Featured Products</h3>-->
+					<!--</div>-->
+					<div class="row" id="products-container">
+						<div class="col-sm-12 col-md-6 col-lg-2 p-b-50"  th:each="product : ${allSales}" >
+							<!-- Block2 -->
+								<div class="block2">
+									<div th:switch="true">
+											<div th:case="${product.availableItems} < 1 " class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">
+												<img th:if="${product.images != null && #arrays.length(product.images) > 0}" th:src="${product.images[0].image}" alt="IMG-PRODUCT">
+												<img th:if="${product.images == null}" th:src="@{/images/gallery-01.jpg}" alt="" />
+													<div class="block2-overlay trans-0-4">
+														<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+																	class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+																	class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+														</a>
+								
+														<div class="block2-btn-addcart w-size1 trans-0-4">
+																<!-- Button -->
+															<button
+																th:if="${product.availableItems >= 1}"
+																th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+																class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+																Add to Cart
+															</button>
+														</div>
+													</div>
+												</div>
+												
+												<div th:case="${product.discountPercent} > 0" class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+													<img th:if="${product.images != null && #arrays.length(product.images) > 0}" th:src="${product.images[0].image}" alt="IMG-PRODUCT">
+													<img th:if="${product.images == null}" th:src="@{/images/gallery-01.jpg}" alt="" />
+														<div class="block2-overlay trans-0-4">
+															<a href="#"
+																class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+																class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+																class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+															</a>
+								
+															<div class="block2-btn-addcart w-size1 trans-0-4">
+																<!-- Button -->
+																<button
+																	th:if="${product.availableItems >= 1}"
+																	th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+																	class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+																	Add to Cart
+																</button>
+															</div>
+														</div>
+												</div>
+												
+												<div th:case="${product.isNewProduct()}" class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+													<img th:if="${product.images != null && #arrays.length(product.images) > 0}" th:src="${product.images[0].image}" alt="IMG-PRODUCT">
+													<img th:if="${product.images == null}" th:src="@{/images/gallery-01.jpg}" alt="" />
+														<div class="block2-overlay trans-0-4">
+															<a href="#"
+																class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+																class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+																class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+															</a>
+															<div class="block2-btn-addcart w-size1 trans-0-4">
+																<!-- Button -->
+																<button
+																	th:if="${product.availableItems >= 1}"
+																	th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+																	class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+																	Add to Cart
+																</button>
+															</div>
+														</div>
+												</div>
+												
+												<div th:case="*" class="block2-img wrap-pic-w of-hidden pos-relative ">
+													<img th:if="${product.images != null && #arrays.length(product.images) > 0}" th:src="${product.images[0].image}" alt="IMG-PRODUCT">
+													<img th:if="${product.images == null}" th:src="@{/images/gallery-01.jpg}" alt="" />
+														<div class="block2-overlay trans-0-4">
+															<a href="#"
+																class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+																class="icon-wishlist icon_heart_alt" aria-hidden="true"></i> <i
+																class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>
+															</a>
+																<div class="block2-btn-addcart w-size1 trans-0-4">
+																	<!-- Button -->
+																	<button
+																		th:if="${product.availableItems >= 1}"
+																		th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|"
+																		class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+																		Add to Cart
+																	</button>
+																</div>
+														</div>
+												</div>
+								</div>
+
+							<div class="block2-txt p-t-20">
+								<a th:href="@{/products/{id}(id=${product.productId})}" class="block2-name dis-block s-text3 p-b-5"> 
+									<span th:text="${product.productName}"></span>
+								</a>
+								<input type="hidden" class="block2-pro-id" th:value="${product.productId}">
+								<input type="hidden" sec:authorize="isAuthenticated()" class="block2-user-id" th:value="${#authentication.principal.userId}">
+
+
+								<div th:switch="true">
+									<p th:case="${product.discountPercent} > 0">
+										<span class="block2-oldprice m-text7 p-r-5"> Rs. 
+											<span th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span> 
+										<span class="block2-price m-text6 p-r-5"> Rs. 
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span>
+									</p>
+									<p th:case="${product.discountPercent} == 0">
+										<span class="block2-price m-text6 p-r-5"> Rs. 
+											<span th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')} "> 
+											</span>
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+					<button th:if="${#lists.size(allSales) == 9}" class="btn btn-block" id="load-more" style="background-color: #e65540; color: #fff;">
+						Load More &gt;
+					</button>
+				</div>
+				</div>
+			</div>
+	</section>
+	
+	<section class="bgwhite p-t-55 p-b-65" th:if="${allSales} == null">
+		<div class="container">
+			<div class="row">
+				<h1 th:text="${allSalesError}" class="t-center"></h1>
+			</div>	
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+	<script>
+	</script>
+</body>
+</html>

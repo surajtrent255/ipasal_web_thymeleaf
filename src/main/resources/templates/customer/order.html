@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>My Orders Information</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2 p-b-30">
+					<div th:replace="~{fragments/customer-sidebar}"></div>
+				</div>
+
+				<div class="col-md-10 p-b-30">
+					<div class="container">
+						<div class="card">
+							<div class="card-header">My Orders</div>
+							<div class="card-body">
+								<table th:if="${orders.data.size() > 0}" class="table">
+									<thead>
+										<tr>
+											<th scope="col">Order No.</th>
+											<th scope="col">Order ID</th>
+											<th scope="col">Status</th>
+											<th scope="col">Ordered Date</th>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody id="orders-container">
+										<tr th:each="order, iteration: ${orders.data}">
+											<td th:text="'#Order ' + ${iteration.index + 1}"></td>
+											<td th:text="${order.orderId}"></td>
+											<td th:text="${order.status}"></td>
+											<td th:text="${#calendars.format(order.orderDate, 'dd/MM/yyyy')}">2018-10-12</td>
+											<td><a href="#" th:href="@{/order/} + ${order.orderId}">View
+													Order Detail</a></td>
+											<td colspan="7"><button
+													class="btn btn-danger pull-right"
+													th:onclick="|cancelOrderByCustomer(${userId},${order.orderId})|">Cancel
+													Order</button></td>
+										</tr>
+									</tbody>
+								</table>
+								<div th:if="${orders.data.size() < 1}">
+									<div>
+										<p> No orders are found in the system. </p>
+									</div>
+								</div>
+							</div>
+							<div th:if="${orders.data.size() >= 9}">
+								<button id="load-more-customer" class="btn"> LOAD MORE</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+ 	<script th:inline="javascript">
+		let lastSeenId = /*[[${orders.data[#arrays.length(orders.data) - 1].orderId}]]*/ 0;
+		let userId = /*[[${#authentication.principal.userId}]]*/ 0;
+		const action = "next";
+	</script>
+	<script src="js/orders.js" th:src="@{/js/orders.js}"></script>
+</body>
+</html>

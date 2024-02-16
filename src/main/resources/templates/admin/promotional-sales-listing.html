@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title>Promotional Sales Entry Page.</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.feature-group-container {
+		margin: 20px auto;
+	}
+
+	.featured-group {
+		color: #757582;
+		margin: 10px 20px;
+		font-size: 13px;
+		vertical-align: center;
+	}
+	.submit-btn {
+		margin-top: 20px;
+	}
+	
+	.btn_container {
+  position: relative;
+}
+
+.btn_centered-element {
+  height: 50px;
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  top: 65%;
+  margin-top: -50px;
+  }
+  
+		.site-color {
+			background-color: #e65540;
+		}
+		th{
+			color: aliceblue;
+		}
+		th, td {
+			text-align: left;
+			font-size: small;
+		}
+		table {
+			border: 1px solid #e9ecef;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}  
+.editmediaback {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+		
+.inputtext {
+	width: 100%;
+  	padding: 12px 20px;
+  	margin: 8px 0;
+  	display: inline-block;
+  	border: 1px solid #ccc !important;
+  	border-radius: 4px;
+  	box-sizing: border-box;
+	}
+
+.lower-case {
+    text-transform: lowercase;
+}
+	
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}" >
+						
+					</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card mb-3">
+  							<div class="card-header bg-primary">Promotional Sales Listing</div>
+  							<span>Promotions Listing</span>
+  							<table class="table">
+								<thead class="site-color">
+									<tr>
+										<th> #</th>
+										<th>Promotional Title</th>
+										<th>Promotion Tag</th>
+										<th>Current Status</th>
+										<th>Display</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody id="promotion-container">
+									<tr th:each="pro, iteration: ${promotionals}">
+										<td th:text="${pro.promotionalSalesId}"></td>
+										<td th:text="${pro.promotionalTitle}">  </td>
+										<td th:text="${pro.promotionalTag}">  </td>
+										<td>
+										<span th:text="${pro.active} ? 'Active' : 'Inactive'"></span>
+										</td>
+										<td >
+											<button
+												class="btn btn-info"
+												th:onclick="|setActive(${pro.promotionalSalesId})|">Show
+											</button>
+											<button
+												class="btn btn-danger"
+												th:onclick="|setInactive(${pro.promotionalSalesId})|">Do not Show
+											</button>
+										</td>
+										<td>
+											<button
+												class="btn btn-success" th:onclick="|showEditModal(${pro.promotionalSalesId})|" th:id = "'editPromotion' + ${pro.promotionalSalesId}">Edit
+											</button>
+											<a href="#" th:href="@{/admin/promoEdit/} + ${pro.promotionalSalesId}"><button 
+	 											class="btn btn-success">
+												Add Products
+											</button></a>
+	- 									</td>
+									</tr>
+								</tbody>
+							</table>
+  						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<div th:each="promo, iteration: ${promotionals}">
+	<div class="modal fade" th:id="'promotional-change-modal' + ${promo.promotionalSalesId}"
+		data-keyboard="false" data-backdrop="false" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content editmediaback">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit Promotional Details</h5>
+				</div>
+ <!-- 				<form method="post">  -->
+				<div class="modal-content-body">
+					<div style="margin: 5px 20px;">
+						
+						<span>Promotional Title: </span><input class="inputtext" type="text" th:value="${promo.promotionalTitle}" th:name="'promotionalTitle' + ${promo.promotionalSalesId}"><br>
+						<span>Promotional Tag: </span><input class="inputtext lower-case" type="text" th:value="${promo.promotionalTag}" th:name="'promotionalTag' + ${promo.promotionalSalesId}"><br>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<a><button id="changeOkBtn" th:onclick="|updatePromotion(${promo.promotionalSalesId})|" class="btn btn-primary">Change</button></a>
+					<button th:onclick= "|hideEditModal(${promo.promotionalSalesId})|" th:id="'changeCancelBtn' + ${promo.promotionalSalesId}" class="btn btn-danger">Cancel</button>
+				</div>
+<!--  				</form>  -->
+			</div>
+		</div>
+	</div>
+	</div>
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+	
+	function showEditModal(promotionalSalesId){
+		let promotionModalId = "promotional-change-modal" + promotionalSalesId;
+		$('#' + promotionModalId).modal("show");
+	}
+	
+	function hideEditModal(promotionalSalesId){
+		let promotionModalId = "promotional-change-modal" + promotionalSalesId;
+		$('#' + promotionModalId).modal("hide");
+	}
+	
+	
+	//Update the info of promotion
+	function updatePromotion(promotionalSalesId){
+		let promotionalTitle = "promotionalTitle" + promotionalSalesId;
+		let promotionalTag = "promotionalTag" + promotionalSalesId;
+		let promotion = {};
+		promotion.promotionalTitle = $("input[name=" + promotionalTitle + "]").val();
+		promotion.promotionalTag= $("input[name=" + promotionalTag + "]").val().toLowerCase();
+		console.log(promotion.promotionalTitle);
+		console.log(promotion.promotionalTag);
+		swal({
+			title : "Update!",
+			text : "Are you sure you want to update this Promotion?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/promotionalSales/" + promotionalSalesId,
+					method : "PUT",
+					contentType: "application/json",
+					data: JSON.stringify(promotion),
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+	
+	function setActive(promotionalSalesId) {
+		swal({
+			title : "Set Active!",
+			text : "Are you sure you want to set this as active",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/promotionalSales/setActive/" + promotionalSalesId,
+					method : "POST",
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+
+	function setInactive(promotionalSalesId) {
+		swal({
+			title : "Set Inactive!",
+			text : "Are you sure you want to set this as Inactive",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/promotionalSales/setInactive/" + promotionalSalesId,
+					method : "POST",
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : response
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+</script>
+</body>
+</html>

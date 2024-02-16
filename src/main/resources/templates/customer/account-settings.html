@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Edit Account Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/customer-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<h3 class="m-text26  p-b-16">Edit Account Information</h3>
+					<hr>
+
+					<div class="container">
+					<div class="p-b-16">
+					<button id="passwordChangeBtn" class="btn btn-success">Change Password</button>
+					</div>
+						<div>
+							<h4 style="font-size: 16px; margin-left:5em;">Edit Account 
+								<span style="margin-left: 60px">
+									<label for="stock-management-yes">
+										<input type="radio" id="stock-management-yes" name="stock-management-status" value="yes" checked/> Yes
+									</label>
+									<label style="margin-left: 20px;" for="stock-management-no">
+										<input type="radio" id="stock-management-no" name="stock-management-status" value="no" /> No
+									</label>
+								</span>
+							</h4>
+							
+						</div><br>
+
+						<div>
+							<h4>Account Source</h4> <br>
+							<div style="margin-left: 5em;">
+								<label>
+									Account ID: <input type="text" th:value="${user.userId}"/>
+								</label> <br>
+								<label>
+									User Name: <input type="text" th:value="${user.username}" />
+								</label>
+							</div>
+						</div><br>
+
+						<div >
+							<h4 style="margin-bottom: 15px;">User Information</h4> 
+							<form id="productEditForm">
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th>#</th>
+											<td>
+												<input type="text" readonly="readonly" name="userId" th:value="${user.userId}"
+													   data-validation="strip escape" />
+											</td>
+<!-- 											<td th:text="${product.productId}">1</td> -->
+										</tr>
+										<tr>
+											<th>User Name</th>
+											<td>
+												<input type="text" name="userName" th:value="${user.username}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										<tr>
+											<th>Name</th>
+											<td>
+												<input type="text" name="fName" th:value="${user.fName}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+											<td>
+												<input type="text" name="mName" th:value="${user.mName}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+											<td>
+												<input type="text" name="lName" th:value="${user.lName}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										<tr>
+											<th>Email</th>
+											<td>
+												<input type="text" name="email" th:value="${user.email}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										<tr>
+											<th>Phone no.</th>
+											<td>
+												<input type="text" name="phone" th:value="${user.phone}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										<tr>
+											<th>City</th>
+											<td>
+												<input type="text" name="city" th:value="${user.city}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										<tr>
+											<th>Street</th>
+											<td>
+												<input type="text" name="street" th:value="${user.street}"
+													   data-validation="strip escape" value="Razor Blade" />
+											</td>
+										</tr>
+										
+										
+									</thead>
+									<tbody id="table-body">	
+										
+									</tbody>
+								</table>
+							
+								<div class="pull-right">
+									<button class="btn btn-info">Cancel</button>
+									<button id="submit" class="btn btn-success">Done </button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+<!-- Modal View For Password Change-->
+	<div id="password-change-modal" class="modal fade" data-keyboard="false" data-backdrop="false" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Reset Password</h5>
+				</div>
+				<div class="modal-content-body">
+					<div class="row" style="margin: 5px 20px;">
+						
+
+
+						<div class="loader-holder">
+            <div class="loader"></div>
+        </div>
+  <div class="sc-container">
+<!--   <input id="old-password" type="password" placeholder="Old Password" /> -->
+    <input id="password-reset" type="password" placeholder="New Password" />
+      <input id="password-repeat" type="password" placeholder="Re-enter password" />
+      <input id="user-id-pw-reset" type="hidden" th:value="${user.userId}" />
+    <input id="button-reset" type="submit" value="Reset Password" />
+<!--     <span th:text="${user.fName}"></span> -->
+<!--     <span th:text="${user.password}"></span> -->
+<!--     <span th:text="${user.username}"></span> -->
+<!--     <span th:text="${user.token}"></span> -->
+<!--     <span th:text="${pword}"></span> -->
+  </div>
+						
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<button id="passwordChangeCancelBtn" class="btn btn-danger">Cancel</button>
+				</div>
+			</div>
+		</div>
+        
+</div>
+<!-- Modal View For Password Change ends-->
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+	<script th:inline="javascript">
+		
+		
+		var UserInfo = {};
+		var updateUserInfo = function() {
+			UserInfo.userId = $("input[name='userId']").val();
+			UserInfo.username = $("input[name='userName']").val();
+			UserInfo.fName = $("input[name='fName']").val();
+			UserInfo.mName = $("input[name='mName']").val();
+			UserInfo.lName = $("input[name='lName']").val();
+			UserInfo.email = $("input[name='email']").val();
+			UserInfo.phone = $("input[name='phone']").val();
+			UserInfo.city = $("input[name='city']").val();
+			UserInfo.street = $("input[name='street']").val();
+			//UserInfo.authorities = user.authorities;
+			
+			
+			if(UserInfo != null) {
+				$(".loader-holder").show();
+				$.ajax({
+					url: contextPath + "/customer/user/" + UserInfo.userId,
+					method: "PUT",
+					contentType: "application/json",
+					data: JSON.stringify(UserInfo),
+					success: function(data) {
+						$(".loader-holder").hide();
+						swal({
+							text: data,
+							icon: "success",
+							//buttons: true
+						}).then(function(btnVal) {
+							if(btnVal) {
+								window.location =  contextPath + "/logout" /*+ "/admin/editItem/" + productInfo.productId*/;
+							}
+						});
+					},
+					error: function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon: "error",
+							text: error.responseText
+						});
+					}
+				});
+			}
+		}
+
+				
+		//calls product info update function when done button is clicked.
+		$("#submit").on("click", function(event) {
+			event.preventDefault();
+			var editMode = $("input[name='stock-management-status']:checked").val();
+			if(editMode == "yes") {
+				swal({
+					text: "Do you really want to update user info?",
+					icon: "info",
+					buttons: true
+				}).then(function(confirmation) {
+					if(confirmation) {
+						updateUserInfo();
+					}
+				});
+			} else {
+				swal({
+					text: "Please enable edit mode first!",
+					icon: "info"
+				});
+			}
+			
+		});
+		
+		$("#passwordChangeBtn").on("click", function(event){
+			event.preventDefault();
+			$("#password-change-modal").modal("show");
+		});
+		$("#passwordChangeCancelBtn").on("click", function(event){
+
+			$("#password-change-modal").modal("hide");
+		});
+	</script>
+</body>
+</html>

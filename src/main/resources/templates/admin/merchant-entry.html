@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Merchant Entry Page.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+
+<link
+	href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+	rel="stylesheet" type="text/css" />
+<!--===============================================================================================-->
+<style>
+.feature-group-container {
+	margin: 20px auto;
+}
+
+.error_form {
+	top: 12px;
+	color: rgb(216, 15, 15);
+	font-size: 15px;
+	font-family: Helvetica;
+}
+
+.featured-group {
+	color: #757582;
+	margin: 10px 20px;
+	font-size: 13px;
+	vertical-align: center;
+}
+
+.submit-btn {
+	margin-top: 20px;
+}
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card text-white  mb-3">
+							<div class="card-header bg-primary">Merchant Detail
+								Information Form</div>
+							<div class="card-body">
+								<form id="merchant-entry-form">
+									<div class="form-group">
+										<input type="text" name="merchant-name" class="form-control"
+											placeholder="Merchant Name" id="merchant-name"
+											data-validation="required" /> <span class="error_form"
+											id="merchantName_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="business-type" class="form-control"
+											placeholder="Business Type" id="business-type" /> <span
+											class="error_form" id="businessType_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="merchant-type" class="form-control"
+											placeholder="Merchant Type (Manufacturer/Distributer/Retail)"
+											id="merchant-type" /> <span class="error_form"
+											id="merchantType_error_message"></span>
+									</div>
+
+
+
+									<!---------- Pre-made merchant type for (Wholeseller/Manufacturer/Distributor) using dropdown
+									can be implemented in future  ----------->
+
+
+									<!-- 								<div class="bo4 of-hidden size15 m-b-20"> -->
+									<!-- 									<form class="bo4 of-hidden size15 m-b-20"> <p>Select the type of Merchant</p> -->
+									<!-- 									<input type="checkbox" id="wholeSeller" value="wholeSeller"> -->
+									<!-- 										<label for="wholeSeller"> Whole Seller</label><br> -->
+									<!-- 									<input type="checkbox" id="retail" value="retail"> -->
+									<!-- 										<label for="retail"> Retail</label><br> -->
+									<!-- 									<input type="checkbox" id="manufacturer" value="manufacturer"> -->
+									<!-- 										<label for="manufacturer"> Manufacturer</label><br> -->
+									<!-- 									<input type="checkbox" id="distributer" value="distributer"> -->
+									<!-- 										<label for="distributer"> DistrIbuter</label><br>  -->
+									<!-- 									</form>  -->
+
+									<!-- 									<input type="text" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Street Address" id="street-address"/> -->
+									<!-- 								</div> -->
+
+									<div class="bo4 of-hidden size18 m-b-20">
+										<!-- 									<input type="text" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Merchant Description" id="merchant-description"> -->
+										<textarea class="size18 s-text7 p-l-22 p-r-22"
+											name="merchant-description"
+											placeholder="Merchant Description" id="merchant-description"></textarea>
+										<span class="error_form"
+											id="merchantDescription_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="street-address" class="form-control"
+											placeholder="Street Address" id="street-address" /> <span
+											class="error_form" id="street_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="city" class="form-control"
+											placeholder="City" id="city" /> <span class="error_form"
+											id="city_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" name="contact-primary" class="form-control"
+											placeholder="Phone Number (Primary)" id="contact-primary" />
+										<span class="error_form" id="contactPrimary_error_message"></span>
+									</div>
+									<div class="form-group">
+										<input type="text" class="form-control"
+											placeholder="Phone Number (Secondary)" id="contact-secondary"
+											value="" />
+									</div>
+
+									<div class="w-size25 submit-btn">
+										<button type="submit"
+											class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4"
+											id="merchant-entry-submit">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="js/merchant.js" th:src="@{/js/merchant.js}"></script>
+</body>
+</html>

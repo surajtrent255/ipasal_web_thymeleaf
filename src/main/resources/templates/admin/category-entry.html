@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>iPasal: Admin - Category Entry</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+.feature-group-container {
+	margin: 20px auto;
+}
+
+.featured-group {
+	color: #757582;
+	margin: 10px 20px;
+	font-size: 13px;
+	vertical-align: center;
+}
+
+.submit-btn {
+	margin-top: 20px;
+}
+
+.featured-selection {
+	border-bottom: 3px solid #238AE6;
+}
+
+.task-selection {
+	border-bottom: 3px solid #238AE6;
+}
+
+.displayNone {
+	display: none;
+}
+
+.displayBlock {
+	display: block;
+}
+
+.error_form{
+	top: 12px;
+	color: rgb(216, 15, 15);
+    font-size: 15px;
+    font-family: Helvetica;
+}
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card" style="width: 100%;">
+							<div class="card-body">
+								<div class="row m-b-20 font-weight-bold">
+									<h2>Category</h2>
+								</div>
+								<div class="row m-b-10">
+									<a href="#" class="btn btn-primary" id="category-parent"> <i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create Parent Category</a>
+									<!--<a href="#" class="btn btn-default m-l-10" style="border: 1px solid #ccc;"> -->
+									<!--<i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create Sub Category -->
+									<!--</a> -->
+									<a href="#" class="btn btn-default m-l-10" id="delete-category-list" style="border: 1px solid #ccc;">
+										<i class="fa fa-minus" aria-hidden="true"></i>&nbsp; Delete Category</a>
+								</div>
+								<div class="row">
+									<div class="col-md-4" style="border: 1px solid #ccc;">
+										<div class="m-t-10">
+											<h6 class="font-weight-bold">Categories</h6>
+											<div>
+												<a href="#" id="collapseCategory" class="fs-12 font-weight-bold"> collapse all</a> | <a href="#" id="expandCategory" class="fs-12 font-weight-bold">expand all</a>
+											</div>
+											<div class="m-t-10 text-primary">
+												<ul class="fs-13 font-weight-bold" id="categoryHierarchy">
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-8" style="border: 1px solid #ccc;">
+										<div class="m-t-10" style="background-color: #e3e3e3;">
+											<h6 class="m-l-10 p-t-15" id="category-creation">New Parent Category</h6>
+											<nav class="nav nav-tab">
+												<a href="#" class="nav-item nav-link text-primary task-selection" id="generate-category-tab"> Generate </a>
+												<a href="#" class="nav-item nav-link text-body" id="delete-category-tab"> Delete </a>
+											</nav>
+										</div>
+										<div id="entry-container" class="container m-t-15">
+											<form id="img-upload-form" enctype="multipart/form-data">
+												<input type="hidden" name="categoryId" id="category-id" />
+												<div class="row">
+													<div class="col-md-7 m-t-10">
+														<label class="d-block p-l-5 fs-14" style="background-color: #e3e3e3;">Name</label>
+														<input id="category-name" type="text" class="d-block w-100" placeholder="New category name.." />
+													</div>
+													<div class="col-md-5 bg-light m-t-10" style="background-color: #e3e3e3;">
+														<div class="m-t-10">
+															<h6 class="text-body fs-14">Featured</h6>
+															<span id="feature-true"> <i class="fa fa-check fs-13" aria-hidden="true"></i>
+															<a href="#" id="feature-txt-true" class="fs-13">Enable</a></span>
+															<span id="feature-false" class="m-l-5 featured-selection text-danger"><i class="fa fa-times fs-13" aria-hidden="true"></i>
+															<a href="#" id="feature-txt-false" class="fs-13 text-danger">Disable</a></span>
+														</div>
+													</div>
+												</div>
+                                               <!--For Offered  -->
+													<div class="row">
+													<div class="col-md-7 m-t-10">
+														
+													</div>
+													<div class="col-md-5 bg-light m-t-10" style="background-color: #e3e3e3;">
+														<div class="m-t-10">
+															<h6 class="text-body fs-14">Offered</h6>
+															<span id="offer-true"> <i class="fa fa-check fs-13" aria-hidden="true"></i>
+															<a href="#" id="offer-txt-true" class="fs-13">Enable</a></span>
+															<span id="offer-false" class="m-l-5 featured-selection text-danger"><i class="fa fa-times fs-13" aria-hidden="true"></i>
+															<a href="#" id="offer-txt-false" class="fs-13 text-danger">Disable</a></span>
+														</div>
+													</div>
+												</div>
+
+												<span class="error_form" id="categoryName_error_message"></span>
+												<span class="d-block p-l-5 m-t-15 m-b-10 fs-14" style="background-color: #e3e3e3;"> Category Image </span>
+												<div class="row bg-light m-b-10" style="height: 150px; border: 2px solid #e3e3e3;">
+													<div class="col-md-4">
+														<span> 
+															<i class="fa fa-picture-o fs-150" aria-hidden="true"></i>
+														</span>
+													</div>
+													<div class="col-md-8">
+														<div class="m-t-10 m-b-10" style="background-color: #e3e3e3; height: 130px;">
+															<label class="p-l-10 m-t-10 fs-14"> Change/Upload Category Banner Image</label> 
+															<input class="p-l-20 m-t-20 fs-12" type="file" name="imageb" id="category-banner-image" />
+														</div>
+													</div>
+												</div>
+												<span class="error_form" id="categoryBannerImg_error_message"></span>
+												<div class="row bg-light m-b-10" style="height: 150px; border: 2px solid #e3e3e3;">
+													<div class="col-md-4">
+														<span> 
+															<i class="fa fa-picture-o fs-150" aria-hidden="true"></i>
+														</span>
+													</div>
+													<div class="col-md-8">
+														<div class="m-t-10 m-b-10" style="background-color: #e3e3e3; height: 130px;">
+															<label class="p-l-10 m-t-10 fs-14"> Change/Upload Featured Image</label>
+															<input class="p-l-20 m-t-20 fs-12" type="file" name="imagef" id="category-featured-image" />
+														</div>
+													</div>
+												</div>
+												<span class="error_form" id="categoryFeaturedImg_error_message"></span>
+												<div class="row m-b-10">
+													<button class="btn btn-success btn-block font-weight-bold w-100" id="submit_btn">SAVE</button>
+												</div>
+											</form>
+										</div>
+
+										<div id="delete-container" class="container m-t-15 displayNone">
+											<div class="row">
+												<div id="delete-body-listing"></div>
+											</div>
+											<div class="row m-b-10">
+												<button
+													class="btn btn-danger btn-block font-weight-bold w-100" id="delete_btn">DELETE</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script th:inline="javascript">
+	
+	let categoryDetails = {};
+	let selectedCategories = [];
+	let selectedCategoriesName = [];
+	
+	categoryDetails.parentId = 0;
+	categoryDetails.featured = false;
+	categoryDetails.offered = false;
+	$(function() {
+		createCategoryList();
+	});
+			
+	//Creation of the category listing on first page load	
+	function createCategoryList() {
+		$("#delete-category-tab").removeClass("task-selection");
+		$("#generate-category-tab").addClass("task-selection");
+		$("#category-parent").removeClass("btn-default");
+		$("#category-parent").addClass("btn-primary");
+		$("#delete-category-list").removeClass("btn-primary");
+		$("#delete-category-list").addClass("btn-default");
+			
+		$("#categoryHierarchy").empty();
+			
+		let categoriesData = /*[[${categories}]]*/ '';
+		let categoryHierarchyDom = "";
+		function createCategoryHierarchy(categories) {
+			categories.forEach(function(category) {
+				categoryHierarchyDom += `<li> <i class="fa fa-plus-square" aria-hidden="true" data-target="${category.categoryId}"> </i>&nbsp` ;
+				if(category.childCategories && category.childCategories.length > 0) {
+					categoryHierarchyDom += `<span class="m-r-3">${category.categoryName}</span> <i class="fa fa-caret-down" data-toggle="collapse" data-target="#data${category.categoryId}" aria-hidden="true"></i>`;
+					categoryHierarchyDom += "<ul id='data" + category.categoryId+"' class='p-l-5 collapse'>";
+					createCategoryHierarchy(category.childCategories)
+					categoryHierarchyDom += "</li></ul>";
+				} else {
+					categoryHierarchyDom += `<span class="m-r-3">${category.categoryName}</span>`;
+				}
+				categoryHierarchyDom += "</li>";
+			});
+		}
+		
+		/* if(categoriesData.data && categories.data.length > 0) {
+			createCategoryHierarchy(categoriesData);
+		} */
+		createCategoryHierarchy(categoriesData);
+		$("#categoryHierarchy").append(categoryHierarchyDom);
+		
+		//expands all categories and sub-categories
+		$("#expandCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('show');
+			});
+		});
+		
+		//Collapses all the category and subcategories
+		$("#collapseCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('hide');
+			});
+		});
+	}
+		
+	//Gets the clicked category and sets it as parent category
+	$("#categoryHierarchy").on('click', ".fa.fa-plus-square", function(event) {
+		event.preventDefault();
+		categoryDetails.parentId = $(this).attr("data-target");
+		var catName = $(this).parent().find("span:first").text();
+		$("#category-creation").text('New Category in ' + catName);
+	});
+			
+	//Sets the featured flag to true
+	$("#feature-true").on("click", function(event) {
+		event.preventDefault();
+		$("#feature-false").removeClass("featured-selection");
+		$("#feature-false").removeClass("text-danger");
+		$("#feature-txt-false").removeClass("text-danger");
+		$("#feature-true").addClass("featured-selection");
+		$("#feature-true").addClass("text-success");
+		$("#feature-txt-true").addClass("text-success");
+		categoryDetails.featured = true;
+	});
+		
+	//Sets the featured flag to false
+	$("#feature-false").on("click", function(event) {
+		event.preventDefault();
+		$("#feature-true").removeClass("featured-selection");
+		$("#feature-true").removeClass("text-success");
+		$("#feature-txt-true").removeClass("text-success");
+		$("#feature-false").addClass("featured-selection");
+		$("#feature-false").addClass("text-danger");
+		$("#feature-txt-false").addClass("text-danger");
+		categoryDetails.featured = false;
+	});
+	
+	//Sets the offered flag to true
+	$("#offer-true").on("click", function(event) {
+		event.preventDefault();
+		$("#offer-false").removeClass("featured-selection");
+		$("#offer-false").removeClass("text-danger");
+		$("#offer-txt-false").removeClass("text-danger");
+		$("#offer-true").addClass("featured-selection");
+		$("#offer-true").addClass("text-success");
+		$("#offer-txt-true").addClass("text-success");
+		categoryDetails.offered = true;
+	});
+	
+	//Sets the offered flag to false
+	$("#offer-false").on("click", function(event) {
+		event.preventDefault();
+		$("#offer-true").removeClass("featured-selection");
+		$("#offer-true").removeClass("text-success");
+		$("#offer-txt-true").removeClass("text-success");
+		$("#offer-false").addClass("featured-selection");
+		$("#offer-false").addClass("text-danger");
+		$("#offer-txt-false").addClass("text-danger");
+		categoryDetails.offered = false;
+	});
+		
+	//Form validation for the category entry
+	$(function() {
+		$("#categoryName_error_message").hide();
+		$("#categoryBannerImg_error_message").hide();
+		$("#categoryFeaturedImg_error_message").hide();
+		
+		
+		let error_categoryName = false;
+		let error_categoryBannerImg = false;
+		let error_categoryFeaturedImg = false;
+		
+		$("#category-name").focusout(function() {
+			check_categoryName();
+		});
+		
+		$("#category-banner-image").mouseout(function(){
+			check_categoryBannerImg();
+		});
+		
+		$("#category-featured-image").mouseout(function(){
+			check_categoryFeaturedImg();
+		});
+		
+		
+		function check_categoryName() {
+			let categoryName = $("#category-name").val();
+			if(categoryName !== '') {
+				$("#categoryName_error_message").hide();
+				$("#category-name").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#categoryName_error_message").html("Please enter the Category Name!");
+				$("#categoryName_error_message").show();
+				$("#category-name").css("border-bottom", "2px solid #F90A0A");
+				error_categoryName = true;
+			}
+		}
+		
+		function check_categoryBannerImg() {
+			var categoryBannerImage = $("#category-banner-image").get(0).files.length;
+			if(categoryBannerImage !== 0) {
+				$("#categoryBannerImg_error_message").hide();
+				$("#category-banner-img").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#categoryBannerImg_error_message").html("Please select a banner image for the category!");
+				$("#categoryBannerImg_error_message").show();
+				$("#category-banner-img").css("border-bottom", "2px solid #F90A0A");
+				error_categoryBannerImg = true;
+			}
+		}
+		
+		function check_categoryFeaturedImg() {
+			var categoryFeaturedImage = $("#category-featured-image").get(0).files.length;
+			if(categoryFeaturedImage !== 0) {
+				$("#categoryFeaturedImg_error_message").hide();
+				$("#category-featured-img").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#categoryFeaturedImg_error_message").html("Please select a featured image for the category!");
+				$("#categoryFeaturedImg_error_message").show();
+				$("#category-featured-img").css("border-bottom", "2px solid #F90A0A");
+				error_categoryFeaturedImg = true;
+			}
+		}
+		
+		//Submit button to add the category
+		$("#submit_btn").on('click', function(event) {
+			event.preventDefault();
+			
+			error_categoryName = false;
+			error_categoryBannerImg = false;
+			error_categoryFeaturedImg = false;
+			
+			
+			check_categoryName();
+			check_categoryBannerImg();
+			check_categoryFeaturedImg();
+			
+			
+			if(error_categoryName === false && error_categoryBannerImg === false && error_categoryFeaturedImg === false) { 
+			
+				//console.log("parent id:" + categoryDetails.parentId);
+				//console.log("featured: " + categoryDetails.featured);
+				var categoryName = $("#category-name").val();
+				categoryDetails.categoryName = categoryName;
+				$(".loader-holder").show();
+				$.ajax({
+					method: "POST",
+					url: contextPath + "/category",
+					data: JSON.stringify(categoryDetails),
+					contentType: "application/json",
+					success: function(result) {
+						$("#category-id").val(result);
+						uploadCategoryImage(event);
+					}, 
+					error: function(error) {
+						$(".loader-holder").hide();
+						swal({
+							text: error.responseJSON.message,
+							icon: "error",
+							closeOnClickOutside: false,
+							closeOnEsc: false
+						})
+						.then(function() {
+							window.location.href = contextPath;
+						});
+					}
+				});
+			} else {
+				swal({
+	            	icon: "info",
+	            	text: "Please enter the required fields correctly :(",
+	        	});
+			}		
+		});
+	});
+		
+		
+	//function for uploading the category image
+	function uploadCategoryImage(event) {
+		event.preventDefault();
+		var form = document.getElementById('img-upload-form');
+		var formData = new FormData(form);
+		$(".loader-holder").show();
+		$.ajax({
+			method: "POST",
+			url: contextPath + "/category/uploadCategoryImage",
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function(data){
+				$(".loader-holder").hide();
+				swal({
+					text: "Image uploaded successfully!",
+					icon: "success",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+			},
+			error: function(error){
+				$(".loader-holder").hide();
+				swal({
+					text: "Something went wrong while uploading image!",
+					icon: "error",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+			}
+		});
+	};
+		
+		
+	//Gets the listing for delete category along with side view
+	function getDeleteCategoryList(event) {
+		event.preventDefault();
+		deleteCategoryList();
+		$("#entry-container").removeClass("displayBlock");
+		$("#entry-container").addClass("displayNone");
+		
+		$("#delete-container").removeClass("displayNone");
+		$("#delete-container").addClass("displayBlock");
+			
+		$("#delete-body-listing").empty();
+		$("#delete-body-listing").append("Please Select Category to delete");
+	};
+		
+	$("#delete-category-list").on('click', function(event) {
+		getDeleteCategoryList(event);
+	});
+				
+	$("#delete-category-tab").on('click', function(event) {
+		getDeleteCategoryList(event);
+	});		
+			
+		
+	//Gets the listing for create category along with side view
+	function getCreateCategoryList(event) {
+		event.preventDefault();
+		
+		$("#entry-container").removeClass("displayNone");
+		$("#entry-container").addClass("displayBlock");
+			
+		$("#delete-container").removeClass("displayBlock");
+		$("#delete-container").addClass("displayNone");
+		
+		selectedCategories = []
+		categoryDetails.parentId = 0;
+		createCategoryList();
+		$("#category-creation").text("New Parent Category");
+	}
+		
+	$("#category-parent").on('click', function(event) {
+		getCreateCategoryList(event);
+	});
+		
+	$("#generate-category-tab").on('click', function(event) {
+		getCreateCategoryList(event);
+	});
+		
+		
+	//Generates the delete category listing
+	function deleteCategoryList() {
+		$("#generate-category-tab").removeClass("task-selection");
+		$("#delete-category-tab").addClass("task-selection");
+		$("#category-parent").removeClass("btn-primary");
+		$("#category-parent").addClass("btn-default");
+		$("#delete-category-list").removeClass("btn-default");
+		$("#delete-category-list").addClass("btn-primary");
+			
+		$("#category-creation").text("Select Category to delete");
+		$("#categoryHierarchy").empty();
+		let categoriesData = /*[[${categories}]]*/ '';
+		let categoryHierarchyDom = "";
+		function createCategoryHierarchy(categories) {
+			categories.forEach(function(category) {
+				categoryHierarchyDom += `<li><i class="fa fa-minus-square" style="color:red" aria-hidden="true" data-target="${category.categoryId}"></i>&nbsp <span class="m-r-3">${category.categoryName}</span> <i class="fa fa-caret-down" data-toggle="collapse" data-target="#data${category.categoryId}" aria-hidden="true"></i>` ;
+				if(category.childCategories && category.childCategories.length > 0) {
+					categoryHierarchyDom += "<ul id='data" + category.categoryId+"' class='p-l-5 collapse'>";
+					createCategoryHierarchy(category.childCategories)
+					categoryHierarchyDom += "</li></ul>";
+				}
+				categoryHierarchyDom += "</li>";
+			});
+		}
+			
+		/* if(categoriesData.data && categories.data.length > 0) {
+			createCategoryHierarchy(categoriesData);
+		} */
+		createCategoryHierarchy(categoriesData);
+		$("#categoryHierarchy").append(categoryHierarchyDom);
+			
+		//expands all categories and sub-categories
+		$("#expandCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('show');
+			});
+		});
+			
+		//Collapses all the category and subcategories
+		$("#collapseCategory").on("click", function(event) {
+			event.preventDefault();
+			$("#categoryHierarchy ul").each(function(element) {
+				$(this).collapse('hide');
+			});
+		});
+	}
+
+
+	//Gets the clicked category and sets it as active category for deletetion (along with all child categories)
+	$("#categoryHierarchy").on('click', ".fa.fa-minus-square", function(event) {
+		event.preventDefault();
+		let categoriesData = /*[[${categories}]]*/ '';
+		selectedCategories = [];
+		selectedCategoriesName = [];
+		let catId = parseInt(($(this).attr("data-target")));
+		let listItems = $(this).parent().find("li");
+		selectedCategoriesName.push($(this).parent().find("span:first").text());
+		selectedCategories.push(catId);
+		$.each(listItems, function(index, data) {
+			selectedCategories.push(parseInt($(this).find("i").attr("data-target")));
+			selectedCategoriesName.push($(this).find("span:first").text());
+		});
+			
+		$("#delete-body-listing").empty();
+		$("#delete-body-listing").append("The following categories will be deleted");
+			
+		$.each(selectedCategoriesName, function(index, data){			
+			let element = `<tr>
+							<td>${data}</td>
+							</tr>`;
+			$("#delete-body-listing").append(element);
+		});
+			
+	});	
+		
+	
+	//Function for click of delete button
+	$("#delete_btn").on('click', function(event) {
+		if(selectedCategories.length > 0){
+			swal({
+				title : "Delete Categories!",
+				text : "Are you sure you want to delete this category?",
+				icon : "warning",
+				dangerMode : true,
+				buttons : true,
+				closeOnClickOutside : false,
+				closeOnEsc : false
+			})
+			.then(function(clickedOk) {
+				if (clickedOk) {
+					$(".loader-holder").show();
+	              	$.ajax({
+						url: contextPath + "/category/delete",  
+						type: "DELETE",  
+						contentType: "application/json",  
+						data: JSON.stringify(selectedCategories),  
+						success: function (data) {
+							$(".loader-holder").hide();
+							swal({
+								text: "Category Deleted successfully!",
+								icon: "success",
+								closeOnClickOutside: false,
+								closeOnEsc: false
+							}).then(function() {
+								window.location.reload();
+							});
+			    	    },  
+				    	error: function(error){
+				    		$(".loader-holder").hide();
+				    		swal({
+				    			text: "Something went wrong while deleting the category!",
+				    			icon: "error",
+				    			closeOnClickOutside: false,
+				    			closeOnEsc: false
+				    		}).then(function() {
+				    			window.location.reload();
+				   			});
+				   		}
+					});  
+				}
+			}); 
+		} else {
+			swal({
+				text: "Please select category to delete!",
+				icon: "error"
+			})
+		}
+	}); 
+	</script>
+</body>
+</html>

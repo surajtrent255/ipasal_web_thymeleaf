@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Customer Dashboard </title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2 p-b-30">
+						<div th:replace="~{fragments/customer-sidebar}" >
+						</div>
+				</div>
+
+				<div class="col-md-10 p-b-30">
+					<h3 class="m-text26  p-b-16">
+						Welcome Back, <span th:text="${#authentication.getPrincipal().getfName()}"> </span>
+					</h3>
+
+					<div class="container">
+					<div class="row">
+						<a th:href="@{/customer/order} + '?userId=' +${#authentication.getPrincipal().getUserId()} + '&page=1&size=10'" class="col-md-3 card bg-primary" style="margin: 0 5px; max-width: 18rem;">
+								<div class="card-header text-white">
+									Orders <span class="badge badge-light" th:text="${totalOrders}">20</span>
+								</div>
+								<div class="card-body text-white" style="text-align: center;">
+									<i class="fa fa-cart-arrow-down" aria-hidden="true" style="font-size: 120px;"></i>
+								</div>
+						</a>
+						
+						<a href="#" class="col-md-3 card bg-secondary" style="margin: 0 5px; max-width: 18rem;">
+							<div class="card-header text-white">
+								Messages <span class="badge badge-light">20</span>
+							</div>
+  							<div class="card-body text-white" style="text-align: center;">
+    							<i class="fa fa-envelope" aria-hidden="true" style="font-size:120px;"></i>
+  							</div>
+						</a>
+					
+						<a th:href="@{/customer/reviewList/} + ${#authentication.getPrincipal().getUserId()}" class="col-md-3 card bg-success" style="margin: 0 5px; max-width: 18rem;">
+							<div class="card-header text-white">
+								Reviews <span class="badge badge-light" th:text="${totalReviews}"></span>
+							</div>
+  							<div class="card-body text-white" style="text-align:center;">
+    							<i class="fa fa-list-alt" aria-hidden="true" style="font-size: 120px;"></i>
+  							</div>
+						</a>
+						
+												
+<!-- 						<a href="#" class="col-md-3 card bg-success" style="margin: 0 5px; max-width: 18rem;"> -->
+<!-- 							<div class="card-header text-white"> -->
+<!-- 								Requests <span class="badge badge-light">55</span> -->
+<!-- 							</div> -->
+<!--   							<div class="card-body text-white" style="text-align:center;"> -->
+<!--     							<i class="fa fa-paper-plane" aria-hidden="true" style="font-size: 120px;"></i> -->
+<!--   							</div> -->
+<!-- 						</a> -->
+	
+					</div>
+					</div>
+					
+			</div>
+		</div>
+		</div>
+	</section>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	
+	</footer>
+	
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+</body>
+</html>

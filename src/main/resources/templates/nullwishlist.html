@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>iPasal: Your Wish List</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/noui/nouislider.min.css" th:href="@{/vendor/noui/nouislider.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+	<!--===============================================================================================-->
+    <style>
+    	#error-page-container {
+    		height: 25em;
+    	}
+    	.jumbo-box {
+    		height:100%;
+    		margin:0px auto;
+    	}
+    	.success-circle-container {
+    		margin: 10px auto;
+    		text-align:center;
+    	}
+    	.danger {
+    		color: #e65540;
+    		font-size:8em;
+    	}
+		.sub-text{
+			margin: 10px auto;
+			font-weight: bold;
+		}
+    </style>
+</head>
+<body class="animsition">
+
+<!-- Header -->
+<header th:replace="~{fragments/header :: header}" class="header1">
+
+</header>
+
+<div id="error-page-container">
+	<div class="jumbotron text-success jumbo-box">
+		<div class="success-circle-container">
+			<span class="fa fa-exclamation-circle danger"></span>
+		</div>
+        <h1 class="text-center text-danger"> You have no items in your wish list. </h1>
+        <p class="text-center text-danger sub-text" >Browse our numbers of categories to add items in your wish list.</p>
+	</div>
+</div>
+
+
+<!-- Footer -->
+<!-- Replaces current footer tag with fragments/footer.html -->
+<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	
+</footer>
+<div th:replace="~{fragments/scripts :: scripts}">
+</div>
+</body>
+</html>

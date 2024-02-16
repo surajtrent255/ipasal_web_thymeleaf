@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:text="'iPasal: ' + ${product.productName}"></title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<link
+	href="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/theme-default.min.css"
+	rel="stylesheet" type="text/css" />
+<!--===============================================================================================-->
+
+<style>
+#more {
+	display: none;
+}
+
+.error_form {
+	top: 12px;
+	color: rgb(216, 15, 15);
+	font-size: 15px;
+	font-family: Helvetica;
+}
+
+.stars-outer {
+	position: relative;
+	display: inline-block;
+}
+
+.stars-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 0;
+}
+
+.stars-outer::before {
+	content: "\f005 \f005 \f005 \f005 \f005";
+	font-family: "FontAwesome";
+	font-weight: 900;
+	color: #ccc;
+}
+
+.stars-inner::before {
+	content: "\f005 \f005 \f005 \f005 \f005";
+	font-family: "FontAwesome";
+	font-weight: 900;
+	color: #f8ce0b;
+}
+</style>
+</head>
+<body class="animsition">
+
+	<!-- Header -->
+	<header th:replace="~{fragments/header :: header}" class="header1">
+
+	</header>
+
+	<!-- breadcrumb -->
+	<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
+		<span th:each="i : ${#numbers.sequence(ancestors.size() - 1, 0, -1)}">
+			<a th:if="${product.categoryId} != ${ancestors[i].categoryId}"  th:href="@{/category/parent/{id}/product/sort(id=${ancestors[i].getCategoryId()})}"
+				class="s-text16" th:inline="text"> [[${ancestors[i].categoryName}]] <i
+				class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
+			</a>
+			<a th:if="${product.categoryId} == ${ancestors[i].categoryId}"  th:href="@{/category/{parentId}/{id}/product/sort(parentId = ${product.getParentId()}, id=${product.getCategoryId()})}"
+				class="s-text16" th:inline="text"> [[${ancestors[i].categoryName}]] <i
+				class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
+			</a> 
+		</span>
+		<span>
+		<a th:href="@{/products/{id}(id=${product.productId})}"
+			class="s-text17" th:text="${product.productName}"></a>
+		</span>
+	</div>
+
+	<!-- Product Detail -->
+	<div class="container bgwhite p-t-35 p-b-80">
+		<div class="flex-w flex-sb">
+			<div class="w-size13 p-t-30 respon5">
+				<div class="wrap-slick3 flex-sb flex-w">
+					<div class="wrap-slick3-dots"></div>
+
+					<div class="slick3">
+						<div th:each="image, iteration: ${product.images}" th:remove="tag">
+							<div class="item-slick3" th:data-thumb="${image.image}"
+								data-thumb="/images/thumb-item-01.jpg">
+								<div class="wrap-pic-w">
+									<img th:src="${image.image}" alt="IMG-PRODUCT" />
+								</div>
+							</div>
+						</div>
+						<!-- <th:block th:if="${product.images.size() <= 0}" >
+						<div class="item-slick3" data-thumb="/images/thumb-item-01.jpg">
+							<div class="wrap-pic-w">
+								<img th:src="@{/images/product-detail-01.jpg}" alt="IMG-PRODUCT"/>
+							</div>
+						</div>
+					</th:block> -->
+					</div>
+				</div>
+			</div>
+
+			<div class="w-size14 p-t-30 respon5">
+
+				<h4 class="product-detail-name m-text16 p-b-13" id="product-name"
+					th:text="${product.productName}"></h4>
+				<div th:if="${product.getNosReview()} != 0">
+					Rating: <span class="font-weight-bold"
+						th:text="${#numbers.formatDecimal(product.avgRating, 0,'POINT', 2, 'POINT')}"></span><span
+						class="font-weight-bold"> / 5.0</span>
+					<!-- 				Average Rating: <span class="font-weight-bold"></span><span class="font-weight-bold" th:text="${#numbers.formatDecimal(product.avgRating, 0,'POINT', 2, 'POINT')}" >  / 5.0</span> -->
+					<!-- 					Rating:  -->
+					<div class="avgRating" id="avgRating">
+						<div class="stars-outer">
+							<div class="stars-inner"></div>
+						</div>
+						<span class="number-rating"
+							th:text="'( '+ ${product.getNosReview()} +' )'"></span>
+					</div>
+
+
+
+				</div>
+				<div th:unless="${product.getNosReview()} != 0">No Reviews
+					Yet!!!</div>
+				<!-- 			<span class="m-text17"> -->
+				<!-- 					Rs. <span th:text="${product.rate}" ></span> -->
+				<!-- 				</span> -->
+
+				<!-- 				<div th:switch="true" th:each="mer : ${product.merchant}"> -->
+				<!-- 					<span class="s-text8">Sold By: </span><span th:text="${mer.merchantName}"></span> -->
+
+
+				<!-- 	
+				*********
+				Displaying 	the merchant in the product details if it exists		
+				*********
+			 -->
+
+				<div th:switch="true" th:each="mer: ${product.merchant}">
+					<p th:case="${product.merchantId[0]} > 0 ">
+						<span class="s-text8">Sold By: </span><span
+							th:text="${mer.merchantName}"></span>
+					</p>
+
+
+
+					<!-- 					<p th:case="(${product.merchantId[0]} == 0) || (${product.merchantId} == NULL)"> -->
+					<!-- 					<span class="s-text8">Sold By: Ipasal Shop</span></p> -->
+
+
+				</div>
+
+				<div th:switch="true">
+
+					<p th:case="${product.discountPercent} > 0">
+						<span class="block2-oldprice m-text7 p-r-5"> Rs. <span
+							th:text="${#numbers.formatDecimal(product.actualRate, 0,'COMMA', 0, 'POINT')}">
+						</span>
+						</span> <span class="m-text17"> Rs. <span
+							th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+						</span>
+						</span> <br> <span class="block2-price m-text6 p-r-5 text-danger">
+							You Save <span th:text="${product.discountPercent} + ' %'"></span>
+						</span>
+					</p>
+					<p th:case="${product.discountPercent} == 0">
+						<span class="m-text17"> Rs. <span
+							th:text="${#numbers.formatDecimal(product.rate, 0,'COMMA', 0, 'POINT')}">
+						</span>
+						</span>
+					</p>
+				</div>
+
+
+				<p class="s-text8 p-t-10" th:text="${product.getShortDesc()}"></p>
+
+				<!--  -->
+				<div class="p-t-33 p-b-60">
+					<!--<div class="flex-m flex-w p-b-10">-->
+					<!--<div class="s-text15 w-size15 t-center">-->
+					<!--Size-->
+					<!--</div>-->
+
+					<!--<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">-->
+					<!--<select class="selection-2" name="size">-->
+					<!--<option>Choose an option</option>-->
+					<!--<option>Size S</option>-->
+					<!--<option>Size M</option>-->
+					<!--<option>Size L</option>-->
+					<!--<option>Size XL</option>-->
+					<!--</select>-->
+					<!--</div>-->
+					<!--</div>-->
+
+					<!--<div class="flex-m flex-w">-->
+					<!--<div class="s-text15 w-size15 t-center">-->
+					<!--Color-->
+					<!--</div>-->
+
+					<!--<div class="rs2-select2 rs3-select2 bo4 of-hidden w-size16">-->
+					<!--<select class="selection-2" name="color">-->
+					<!--<option>Choose an option</option>-->
+					<!--<option>Gray</option>-->
+					<!--<option>Red</option>-->
+					<!--<option>Black</option>-->
+					<!--<option>Blue</option>-->
+					<!--</select>-->
+					<!--</div>-->
+					<!--</div>-->
+
+					<div class="flex-r-m flex-w p-t-10">
+						<div class="w-size16 flex-m flex-w">
+							<!--<div class="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">-->
+							<!--<button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">-->
+							<!--<i class="fs-12 fa fa-minus" aria-hidden="true"></i>-->
+							<!--</button>-->
+
+							<!--<input class="size8 m-text18 t-center num-product" type="number" name="num-product" id="cart-item-num" value="1">-->
+
+							<!--<button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">-->
+							<!--<i class="fs-12 fa fa-plus" aria-hidden="true"></i>-->
+							<!--</button>-->
+							<!--</div>-->
+
+							<div
+								class="btn-addcart-product-detail size9 trans-0-4 m-t-10 m-b-10">
+								<!-- Button -->
+								<button id="cartBtn" th:if="${product.availableItems >= 1}"
+									class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+									th:onclick="|NAMESPACE.addToCart( '${product.productId}', '${product.rate}');|">
+									Add to Cart</button>
+								<div class="p-l-33" th:switch="true">
+									<div th:case="${product.availableItems < 1}">
+										<span class=fs-20>Out Of Stock</span>
+									</div>
+
+									<div th:case="${product.availableItems <= 5}">
+										<span class=fs-12>Only <span
+											th:text="${product.availableItems}"> </span> in stock
+										</span>
+									</div>
+
+									<div th:case="*">
+										<span class=fs-12><span
+											th:text="${product.availableItems}"> </span> items in stock</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="p-b-45">
+						<!--<span class="s-text8 m-r-35">SKU: MUG-01</span>-->
+						<span class="s-text8">Categories: </span><span
+							th:text="${product.categoryName}"></span>
+					</div>
+
+					<!--  -->
+					<div
+						class="wrap-dropdown-content bo6 p-t-15 p-b-14 active-dropdown-content">
+						<h5
+							class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+							Description <i
+								class="down-mark fs-12 color1 fa fa-minus dis-none"
+								aria-hidden="true"></i> <i
+								class="up-mark fs-12 color1 fa fa-plus" aria-hidden="true"></i>
+						</h5>
+
+						<div class="dropdown-content dis-none p-t-15 p-b-23">
+							<p class="s-text8"
+								th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(product.getDescription()),'\n','&lt;br /&gt;'))}">
+
+							</p>
+						</div>
+					</div>
+
+					<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+						<h5
+							class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4">
+							Additional information <i
+								class="down-mark fs-12 color1 fa fa-minus dis-none"
+								aria-hidden="true"></i> <i
+								class="up-mark fs-12 color1 fa fa-plus" aria-hidden="true"></i>
+						</h5>
+
+						<div class="dropdown-content dis-none p-t-15 p-b-23">
+							<p class="s-text8"
+								th:utext="${#strings.unescapeJava(#strings.replace(#strings.escapeJava(product.getHighlights()),'\n','&lt;br /&gt;'))}">
+							</p>
+						</div>
+					</div>
+
+
+
+					<!-- 			<div class="wrap-dropdown-content bo7 p-t-15 p-b-14"> -->
+					<!-- 				<h5 class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4"> -->
+					<!-- 					Reviews (0) -->
+					<!-- 					<i class="down-mark fs-12 color1 fa fa-minus dis-none" aria-hidden="true"></i> -->
+					<!-- 					<i class="up-mark fs-12 color1 fa fa-plus" aria-hidden="true"></i> -->
+					<!-- 				</h5> -->
+
+					<!-- 				<div class="dropdown-content dis-none p-t-15 p-b-23"> -->
+					<!-- 					<p class="s-text8"> -->
+					<!-- 						Fusce ornare mi vel risus porttitor dignissim. Nunc eget risus at ipsum blandit ornare vel sed velit. Proin gravida arcu nisl, a dignissim mauris placerat -->
+					<!-- 					</p> -->
+					<!-- 				</div> -->
+					<!-- 			</div>  -->
+
+
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Modal View For Review Entry-->
+		<div class="modal fade" id="review-entry-modal" data-keyboard="false"
+			data-backdrop="false" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-lg modal-dialog-centered"
+				role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">
+							Add Review for <span th:text=${product.productName}></span>
+						</h5>
+					</div>
+					<div>
+						<span sec:authorize="isAuthenticated()"
+							class="sizefull s-text7 p-l-22 p-r-22"
+							th:text="'Dear ' + ${#authentication.principal.username} + ','"></span><br>
+						<span class="sizefull s-text6 p-l-22 p-r-22">Please make
+							the review relevant to the product and helpful for anyone viewing
+							the review. Avoid using profanity, racist or any comments that
+							are inappropriate. Let's make the market a safe place.</span>
+					</div>
+					<div class="modal-content-body">
+						<div class="row" style="margin: 5px 20px;">
+							<div style="width: 100%; margin: 10px auto;">
+								<form id="review-entry-form">
+									<div class="form-group">
+										<input type="text" name="review-title" class="form-control"
+											placeholder="Title of the Review" id="review-title" /> <span
+											class="error_form" id="reviewTitle_error_message"></span>
+									</div>
+
+									<div class="bo4 of-hidden size18 m-b-20">
+										<textarea type="text" name="review-description"
+											class="size18 s-text7 p-l-22 p-r-22"
+											placeholder="Review Description" id="review-description"></textarea>
+										<span class="error_form" id="reviewDesc_error_message"></span>
+									</div>
+
+									<div class="bo4 of-hidden size15 m-b-20">
+										<input type="text" name="review-pros"
+											class="sizefull s-text7 p-l-22 p-r-22" placeholder="Pros"
+											id="review-pros" />
+										<!-- 									<span class="error_form" id="pros_error_message"></span> -->
+									</div>
+
+									<div class="bo4 of-hidden size15 m-b-20">
+										<input type="text" name="review-cons"
+											class="sizefull s-text7 p-l-22 p-r-22" placeholder="Cons"
+											id="review-cons" />
+										<!-- 									<span class="error_form" id="cons_error_message"></span> -->
+									</div>
+
+									<!-- 						Rating selection dropdown									 -->
+									<span>Select Rating</span><br> <select
+										class="sizehalf s-text20 p-l-22 p-r-22" id="rating">
+										<!-- 								<option disabled='disabled' selected>Select Rating</option> -->
+										<option th:value=1>1</option>
+										<option th:value=2>2</option>
+										<option th:value=3>3</option>
+										<option th:value=4>4</option>
+										<option th:value=5>5</option>
+									</select>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="reviewOkBtn" class='btn btn-primary'>Submit
+							Review</button>
+						<button id="cancelBtn" class="btn btn-danger">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<button id="review-btn" sec:authorize="hasRole('ROLE_CUSTOMER')"
+			class="block2-user-id btn btn-success pull-right">Add Your
+			Review!</button>
+
+
+		<!--  This section is for review of the products -->
+
+		<!-- Getting the review from the reviewDto within the ProductDTO -->
+
+		<div class="wrap-dropdown-content bo7 p-t-15 p-b-14">
+			<h5
+				class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4"
+				th:text="'Reviews ( ' + ${product.getNosReview()} + ' )'">
+				<!-- 					Reviews<span class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4" th:text="'(' + ${product.getNosReview()} + ')'"></span> -->
+
+				<i class="down-mark fs-12 color1 fa fa-minus dis-none"
+					aria-hidden="true"></i> <i class="up-mark fs-12 color1 fa fa-plus"
+					aria-hidden="true"></i>
+			</h5>
+
+
+
+			<div th:each="rev : ${product.reviewDtos}">
+				<div class="dropdown-content dis-none p-t-15 p-b-23">
+
+					<b>Review Title: </b><span class="s-text12"
+						th:text="${rev.reviewTitle}"></span>&nbsp; &nbsp; &nbsp; &nbsp;
+					&nbsp; &nbsp; Rating: <span class="ratings font-weight-bold" id=""
+						th:text="${rev.rating} +   '/ 5.0'"> </span> <span
+						sec:authorize="isAuthenticated()" class="block2-user-id"
+						th:if="${#authentication.principal.userId} == ${rev.userId}"><a
+						th:href="@{/customer/editReview/} + ${rev.reviewId}"><button
+								class="block2-user-id btn btn-success pull-right">Edit</button></a></span>
+					<!-- 					<b>Review Title: </b><span class="s-text12" th:text="${rev.reviewTitle}"></span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;	 -->
+					<!-- 					Rating: -->
+					<!-- 						<div class="rating-review" id="review-select"> -->
+					<!-- 					<div class="stars-outer"> -->
+					<!--                           <div class="stars-inner"></div> -->
+					<!--                         </div> -->
+					<!--                         <span class="number-rating"></span> -->
+					<!--                         </div> -->
+					<!-- 					<span id="dots"></span> -->
+					<br>
+					<!-- 					<div class="js-toggle-dropdown-content flex-sb-m cs-pointer m-text19 color0-hov trans-0-4"> -->
+					<!-- 					<div class="dropdown-content dis-none p-t-15 p-b-23"> -->
+					<!-- 					<p class="s-text8" th:text="${rev.reviewId}"> -->
+					<!-- 					</p> -->
+					<!-- 					<span id="more"> -->
+					<b>Description: </b><span class="s-text7"
+						th:text="${rev.reviewDesc}"> </span> <br> <b>Pros: </b><span
+						class="s-text7" th:text="${rev.pros}"> </span> <br> <b>Cons:
+					</b><span class="s-text7" th:text="${rev.cons}"> </span> <br>
+					<!-- 					</span> -->
+					<b><i><span class="s-text6"
+							th:text="'Review By: ' + ${rev.userDto.getUsername()}"></span></i></b> &nbsp;
+					&nbsp; &nbsp; <span th:if="${rev.isVerified()} == true"><i class="fa fa-check-circle" aria-hidden="true"> </i> <span class="s-text6">Verified Purchase</span> </span>
+
+					<!-- 					</div> -->
+					<!-- 					</div> -->
+					<p class="s-text6" th:text="${rev.reviewDate}"></p>
+
+					<!-- 					<span sec:authorize="isAuthenticated()" class="block2-user-id" th:if="${#authentication.principal.userId} == ${rev.userId}" ><a th:href="@{/customer/editReview/} + ${rev.reviewId}"><button class="block2-user-id btn btn-success pull-left">Edit</button></a></span> -->
+					<!-- 					<button onclick="myFunction()" id="myBtn">Read more</button> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Relate Product -->
+
+	<div
+		th:if="${product.relatedProductDtos != null && #arrays.length(product.relatedProductDtos) > 0}">
+		<section id="relatedProducts"
+			class="relateproduct bgwhite p-t-45 p-b-138">
+			<div class="container">
+				<div class="sec-title p-b-60">
+					<h3 class="m-text5 t-center">Related Products</h3>
+				</div>
+
+				<!-- Slide2 -->
+				<div class="wrap-slick2">
+					<div class="slick2">
+						<div class="item-slick2 p-l-15 p-r-15"
+							th:each="pro : ${product.relatedProductDtos}">
+							<!-- Block2 -->
+
+							<div class="block2">
+								<div th:switch="true">
+
+									<div th:case="${pro.availableItems} < 1 ">
+										<div
+											class="block2-img wrap-pic-w of-hidden pos-relative block2-labeloutofstock">
+											<img
+												th:if="${pro.images != null && #arrays.length(pro.images) > 0}"
+												th:src="${pro.images[0].image}" alt="IMG-PRODUCT"> <img
+												th:if="${pro.images == null}"
+												th:src="${/images/gallery-13.jpg}" alt="" />
+											<div class="block2-overlay trans-0-4">
+												<a href="#"
+													class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+													class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+													<i class="icon-wishlist icon_heart dis-none"
+													aria-hidden="true"></i>
+												</a>
+
+												<div class="block2-btn-addcart w-size1 trans-0-4">
+													<!-- Button -->
+													<button id="relatedCartBtn"
+														th:if="${pro.availableItems >= 1}"
+														class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+														th:onclick="|NAMESPACE.addToCart( '${pro.productId}', '${pro.rate}');|">
+														Add to Cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div th:case="${pro.discountPercent} > 0">
+										<div
+											class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+											<img
+												th:if="${pro.images != null && #arrays.length(pro.images) > 0}"
+												th:src="${pro.images[0].image}" alt="IMG-PRODUCT"> <img
+												th:if="${pro.images == null}"
+												th:src="${/images/gallery-13.jpg}" alt="" />
+											<div class="block2-overlay trans-0-4">
+												<a href="#"
+													class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+													class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+													<i class="icon-wishlist icon_heart dis-none"
+													aria-hidden="true"></i>
+												</a>
+
+												<div class="block2-btn-addcart w-size1 trans-0-4">
+													<!-- Button -->
+													<button id="relatedCartBtn"
+														th:if="${pro.availableItems >= 1}"
+														class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+														th:onclick="|NAMESPACE.addToCart( '${pro.productId}', '${pro.rate}');|">
+														Add to Cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<div th:case="${pro.isNewProduct()}">
+										<div
+											class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+											<img
+												th:if="${pro.images != null && #arrays.length(pro.images) > 0}"
+												th:src="${pro.images[0].image}" alt="IMG-PRODUCT"> <img
+												th:if="${pro.images == null}"
+												th:src="${/images/gallery-13.jpg}" alt="" />
+											<div class="block2-overlay trans-0-4">
+												<a href="#"
+													class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+													class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+													<i class="icon-wishlist icon_heart dis-none"
+													aria-hidden="true"></i>
+												</a>
+
+												<div class="block2-btn-addcart w-size1 trans-0-4">
+													<!-- 														Button														 -->
+													<button id="relatedCartBtn"
+														th:if="${pro.availableItems >= 1}"
+														class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+														th:onclick="|NAMESPACE.addToCart( '${pro.productId}', '${pro.rate}');|">
+														Add to Cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div th:case="*">
+										<div class="block2-img wrap-pic-w of-hidden pos-relative ">
+											<img
+												th:if="${pro.images != null && #arrays.length(pro.images) > 0}"
+												th:src="${pro.images[0].image}" alt="IMG-PRODUCT"> <img
+												th:if="${pro.images == null}"
+												th:src="${/images/gallery-13.jpg}" alt="" />
+											<div class="block2-overlay trans-0-4">
+												<a href="#"
+													class="block2-btn-addwishlist hov-pointer trans-0-4"> <i
+													class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>
+													<i class="icon-wishlist icon_heart dis-none"
+													aria-hidden="true"></i>
+												</a>
+
+												<div class="block2-btn-addcart w-size1 trans-0-4">
+													<!-- Button -->
+													<button id="relatedCartBtn"
+														th:if="${pro.availableItems >= 1}"
+														class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4"
+														th:onclick="|NAMESPACE.addToCart( '${pro.productId}', '${pro.rate}');|">
+														Add to Cart</button>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+
+								<div class="block2-txt p-t-20">
+
+									<a th:href="@{/products/{id}(id=${pro.productId})}"
+										class="block2-name dis-block s-text3 p-b-5"> <span
+										th:text="${pro.productName}"></span>
+									</a> <input type="hidden" class="block2-pro-id"
+										th:value="${pro.productId}"> <input type="hidden"
+										sec:authorize="isAuthenticated()" class="block2-user-id"
+										th:value="${#authentication.principal.userId}">
+
+									<div th:switch="true">
+										<p th:case="${pro.discountPercent} > 0">
+											<span class="block2-oldprice m-text7 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(pro.actualRate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span> <span class="block2-price m-text6 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(pro.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span>
+										</p>
+
+										<p th:case="${pro.discountPercent} == 0">
+											<span class="block2-price m-text6 p-r-5"> Rs. <span
+												th:text="${#numbers.formatDecimal(pro.rate, 0,'COMMA', 0, 'POINT')}">
+											</span>
+											</span>
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+	<div id="dropDownSelect2"></div>
+	<!-- Footer -->
+	<!-- Replaces current footer tag with fragments/footer.html -->
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts ::scripts}"></div>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	var productId = /*[[${product.productId}]]*/ 'default';
+	var reviews = /*[[${product.reviewDtos}]]*/
+	var avgRating = /*[[${product.avgRating}]]*/ '0';
+	/*]]>*/
+
+
+	//Cart Added success swal Pop up
+	$("#cartBtn").click(function(event) {
+		var productName = $("#product-name").text();
+		swal(productName, "is added to cart !", "success");
+	});
+	
+	
+	
+	//For showing the Review entry modal	
+	$("#review-btn").on("click", function(event){
+		event.preventDefault();
+		$("#review-entry-modal").modal("show");
+	});
+	
+	
+	
+	//For canceling and hiding the Review entry modal
+	$("#cancelBtn").on("click", function(event){
+		$("#review-entry-modal").modal("hide");
+	});
+
+	
+	
+	//For reseting the data of the Review entry modal when entry is cancelled
+	$("#review-entry-modal").on("hidden.bs.modal", function (e) {
+		  $(this)
+		    .find("input,textarea")
+		       .val('')
+		       .end()
+		    .find("input[type=checkbox], input[type=radio]")
+		       .prop("checked", "")
+		       .end()
+		  	.find("select")
+		  		.val("1")
+		  		.end();
+		});
+	
+		
+	//Form validation using jQuery for review entry
+	$(function(){
+		
+		$("#reviewTitle_error_message").hide();	
+		$("#reviewDesc_error_message").hide();
+// 		$("#pros_error_message").hide();
+// 		$("#cons_error_message").hide();
+		
+		var error_reviewTitle = false;
+		var error_reviewDesc = false;
+// 		var	error_pros = false;
+// 		var error_cons = false;
+		
+		$("#review-title").focusout(function(){
+			check_reviewTitle();
+		});
+		
+		$("#review-description").focusout(function(){
+			check_reviewDesc();
+		});
+		
+/* 		$("#review-pros").focusout(function(){
+			check_pros();
+		});
+	
+		$("#review-cons").focusout(function(){
+			check_cons();
+		}); */	
+	
+		
+		function check_reviewTitle() {
+			var reviewTitle = $("#review-title").val();
+			if(reviewTitle !== '') {
+				$("#reviewTitle_error_message").hide();
+				$("#review-title").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#reviewTitle_error_message").html("Please enter the Review Title!");
+				$("#reviewTitle_error_message").show();
+				$("#review-title").css("border-bottom", "2px solid #F90A0A");
+				error_reviewTitle = true;
+			}
+		}
+		
+		function check_reviewDesc() {
+			var reviewDescription = $("#review-description").val();
+			if(reviewDescription !== '') {
+				$("#reviewDesc_error_message").hide();
+				$("#review-description").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#reviewDesc_error_message").html("Please enter the Review Description!");
+				$("#reviewDesc_error_message").show();
+				$("#review-description").css("border-bottom", "2px solid #F90A0A");
+				error_reviewDesc = true;
+			}
+		}
+		
+/* 		function check_pros() {
+			var reviewPros = $("#review-pros").val();
+			if(reviewPros !== '') {
+				$("#pros_error_message").hide();
+				$("#review-pros").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#pros_error_message").html("Please enter the pros!");
+				$("#pros_error_message").show();
+				$("#review-pros").css("border-bottom", "2px solid #F90A0A");
+				error_pros = true;
+			}
+		}
+		
+		function check_cons() {
+			var reviewCons = $("#review-cons").val();
+			if(reviewCons !== '') {
+				$("#cons_error_message").hide();
+				$("#review-cons").css("border-bottom", "2px solid #34F458");
+			} else {
+				$("#cons_error_message").html("Please enter the cons!");
+				$("#cons_error_message").show();
+				$("#review-cons").css("border-bottom", "2px solid #F90A0A");
+				error_cons = true;
+			}
+		} */
+		
+	
+		//For entering the Review through the reivew-entry-modal
+		$(function() {
+			$("#reviewOkBtn").click(function(event) {
+				event.preventDefault();
+				
+				
+				error_reviewTitle = false;
+				error_reviewDesc = false;
+// 				error_pros = false;
+// 				error_cons = false;
+				
+				check_reviewTitle();
+				check_reviewDesc();
+// 				check_pros();
+// 				check_cons();
+				
+				if(error_reviewTitle === false && error_reviewDesc === false) {
+				
+				var reviewTitle = $("#review-title").val();
+				var reviewDescription = $("#review-description").val();
+				var reviewPros = $("#review-pros").val();
+				var reviewCons = $("#review-cons").val();
+				var rating = parseInt($("#rating").val());
+				
+				//Every data retrieved from form should be validated and sanitized. 
+				//For now data is not sanitized. Always validate form data before sending it to server.
+				var review = {};
+				
+				review.reviewTitle = reviewTitle;
+				review.reviewDesc = reviewDescription;
+				review.pros = reviewPros;
+				review.cons = reviewCons;
+				review.rating = rating;
+				review.productId = productId;
+				
+				
+				//Now create an ajax request to send review detail to server.
+				$.ajax({
+					method: "POST",
+					url: contextPath + "/review/add",
+					data: JSON.stringify(review),
+					contentType: "application/json",
+					success: function(result) {
+						swal({
+							text: "Review added Successfully. Please wait for approval from the admin",
+							icon: "success",
+							closeOnClickOuside: false,
+							closeOnEsc: false,
+						}).then(function (){
+							window.location = contextPath + "/products/" + productId;
+						});
+					},
+					error: function(error) {
+						alert(error);
+					}
+				});
+				} else {
+					swal({
+		            	icon: "info",
+		            	text: "Please enter the required fields correctly :(",
+		        	});
+					}	
+			});
+		});	
+	});	
+		
+/* 	//For implementing the read-more/read-less functionality
+	function myFunction() {
+		  var dots = document.getElementById("dots");
+		  var moreText = document.getElementById("more");
+		  var btnText = document.getElementById("myBtn");
+
+		  if (dots.style.display === "none") {
+		    dots.style.display = "inline";
+		    btnText.innerHTML = "Read more"; 
+		    moreText.style.display = "none";
+		  } else {
+		    dots.style.display = "none";
+		    btnText.innerHTML = "Read less"; 
+		    moreText.style.display = "inline";
+		  }
+		}
+	 */
+/* 	
+	
+	//Rating Settings	
+
+	        // Initial Ratings
+    const ratings = {}
+
+    // Total Stars
+    const starsTotal = 5;
+
+    // Run getRatings when DOM loads
+    document.addEventListener('DOMContentLoaded', getRatings);
+
+    // Form Elements
+    const productSelect = document.getElementById('review-select');
+    const ratingControl = document.getElementById('rating-control');
+
+    // Init product
+    let product;
+
+    // Product select change
+    productSelect.addEventListener('change', (e) => {
+      product = e.target.value;
+      // Enable rating control
+      ratingControl.disabled = false;
+      ratingControl.value = ratings[product];
+    });
+
+    // Rating control change
+    ratingControl.addEventListener('blur', (e) => {
+      const rating = e.target.value;
+
+      // Make sure 5 or under
+      if (rating > 5) {
+        alert('Please rate 1 - 5');
+        return;
+      }
+
+      
+      
+      
+      
+      
+      
+      // Change rating
+      ratings[product] = rating;
+
+      getRatings();
+    		});
+
+    //Get ratings
+    function getRatings() {
+      for (let rating in ratings) {
+        // Get percentage
+        const starPercentage = (ratings[rating] / starsTotal) * 100;
+
+        // Round to nearest 10
+        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+        // Set width of stars-inner to percentage
+        document.querySelector(`.${rating-review} .stars-inner`).style.width = starPercentageRounded;
+
+        // Add number rating
+        document.querySelector(`.${rating-review} .number-rating`).innerHTML = ratings[rating];
+      }
+    }
+	 */
+	
+	 function getTotalRatings(avgRating) {
+	        //Get percentage
+	        const starPercentage = (avgRating / 5) * 100;
+
+	        //Round to nearest 10
+	        const starPercentageRounded = `${Math.round(starPercentage / 10) * 10}%`;
+
+	        //Set width of stars-inner to percentage
+			
+	        document.querySelector(`.avgRating .stars-inner`).style.width = starPercentageRounded;
+			
+ 	        //document.querySelector(`.${total-rating} .number-rating`).innerHTML = avgRating;
+	    }
+	 
+	 //Returns the total average ratings stars
+	 getTotalRatings(avgRating);
+	 
+	 
+</script>
+</body>
+</html>

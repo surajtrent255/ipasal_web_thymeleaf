@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Admin Dashboard </title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	h3 {
+		padding-top: 15px;
+		border-bottom: 1px solid #ccc;
+		border-top: 1px solid #ccc;
+	}
+	
+	.row {
+		margin-top: 20px;
+	}
+	
+	.custom-card {
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		height: 8em;
+		margin: 0px auto;
+		box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.17);
+	}
+	.order-circle-color {
+		background-color: #0188cc;
+	}
+	
+	.reviews-circle-color {
+		background-color: #0b6623;
+	}
+	
+	.stock-circle-color {
+		background-color: #7149aa;
+	}
+	
+	.category-circle-color {
+		background-color: #e65540;
+	}
+	
+	.product-circle-color {
+		background-color: #1d9c73;
+	}
+	
+	.slider-circle-color {
+		background-color: #2baab1;
+	}
+	
+	.circle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		width: 2em;
+		height: 2em;
+		font-size: 40px;
+		margin-left: 10px;
+		color: #fff;
+	}
+	
+	.card-link-header-container {
+		margin-left: 40px;
+	}	
+	
+	.card-link-header-container a {
+		border-bottom: 1px solid #cdcdcd;
+	}
+	
+	@media (max-width: 1100px) {
+		.card-link-header-container {
+			margin-left: 10px;
+		}
+	}
+	
+	@media (max-width: 768px) {
+		
+	}
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30" style="">
+					<h3 class="m-text26  p-b-16">
+						Welcome Back, <b><span th:text="${#authentication.principal.fName}"></span></b>
+					</h3>
+					<div class="row">
+						<div class="col-sm-6 col-md-6" >
+							<div class="custom-card" >
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle order-circle-color">
+											<span><i class="fa fa-shopping-cart" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Orders	<span th:if="${totalOrders > 0}" th:classappend="${totalOrders > 0} ? 'badge badge-primary' : ''" th:text="${totalOrders}"> </span></h4>
+<!-- 														<span th:if="${totalOrders < 1}" th:classappend="${totalOrders < 1} ? 'badge badge-primary' : ''" th:text="0"> </span> -->
+											<a href="#" th:href="@{/admin/orders}">View All &gt;</a>
+										</div>	
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="custom-card">
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle reviews-circle-color">
+											<span><i class="fa fa-list-alt" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Unapproved Reviews  <span th:if="${unapprovedReviews > 0}" th:classappend="${unapprovedReviews > 0} ? 'badge badge-primary' : ''" th:text="${unapprovedReviews}"> </span></h4>
+<!-- 																	<span th:unless="${unapprovedReviews < 1}" th:classappend="${unapprovedReviews > 0} ? 'badge badge-primary' : ''" th:text="0"> </span> -->
+											<a href="#" th:href="@{/admin/processing}">View Unapproved Reviews &gt;</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<div class="custom-card">
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle stock-circle-color">
+											<span><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Stock</h4>
+											<a href="#" th:href="@{/admin/stocks}">View Stock &gt;</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="custom-card">
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle category-circle-color">
+											<span><i class="fa fa-cog" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Category</h4>
+											<a th:href="@{/admin/category/parent/all}">View All &gt;</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 col-md-6">
+							<div class="custom-card">
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle product-circle-color">
+											<span><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Product Entry</h4>
+											<a href="#" th:href="@{/admin/productEntry}">Add Product &gt;</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-6">
+							<div class="custom-card">
+								<div class="row">
+									<div class="col-4 col-sm-4 col-md-4">
+										<div class="circle slider-circle-color">
+											<span><i class="fa fa-slideshare" aria-hidden="true"></i></span>
+										</div>
+									</div>
+									<div class="col-8 col-sm-8 col-md-8">
+										<div class="card-link-header-container">
+											<h4>Slider Content Entry</h4>
+											<a th:href="@{/admin/sliderEntry}" href="#">Create Content &gt;</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	
+	</footer>
+	
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+</body>
+</html>

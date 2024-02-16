@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+	<title> Slider Content Entry Page.</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->
+<style>
+	.site-color {
+			background-color: #e65540;
+		}
+		th{
+			color: aliceblue;
+		}
+		th, td {
+			text-align: left;
+			font-size: small;
+		}
+		table {
+			border: 1px solid #e9ecef;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+	
+	.feature-group-container {
+		margin: 20px auto;
+	}
+
+	.featured-group {
+		color: #757582;
+		margin: 10px 20px;
+		font-size: 13px;
+		vertical-align: center;
+	}
+	.submit-btn {
+		margin-top: 20px;
+	}
+	
+	
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card  mb-3">
+  							<div class="card-header bg-primary">Slider Content Entry Form</div>
+  							<div class="card-body">
+    							<form id="product_entry_form">
+    								<div class="bo4 of-hidden size15 m-b-20">
+    									<input type="text" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Slider Title" id="slider-title"/>
+    								</div>
+    								<div class="bo4 of-hidden size15 m-b-20">
+    									<input type="text" class="sizefull s-text7 p-l-22 p-r-22" placeholder="Slider Caption" id="slider-caption"/>
+    								</div>
+    								<div class="bo4 of-hidden size15 m-b-20">
+    									<select class="sizefull s-text7 p-l-22 p-r-22" id="product-category">
+											<option value="">Choose Category</option>
+											<option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"> Computer And Peripherals </option>
+    									</select>
+									</div>
+
+									<div class="bo4 of-hidden size15 m-b-20">
+    									<select class="sizefull s-text7 p-l-22 p-r-22" id="sub-category">
+											<option value=""> Sub Categories </option>
+    									</select>
+									</div>
+
+    								<div class="bo4 of-hidden size15 m-b-20p feature-group-container">
+										<div class="featured-group">
+											<label for="show-slider"> Show as Slider </label>
+											<input type="checkbox" name="feature" id="show-slider" value="true" />
+										</div>
+										
+									</div>
+    								<div class="w-size25 submit-btn">
+    									<button type="submit" class="flex-c-m size2 bg1 bo-rad-23 hov1 m-text3 trans-0-4" id="submit_btn">Submit</button>
+									</div>
+    							</form>
+  							</div>
+  							<div class="card-header bg-danger">Slider Content List</div>
+  							<div class="card-body">
+  							
+  							<table th:if="${sliders.size() > 0}" class="table">
+									<thead class="site-color">
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">Main Text</th>
+											<th scope="col">Secondary Text</th>
+											<th scope="col">Category</th>
+											<th>ACTION</th>
+										</tr>
+									</thead>
+									<tbody id="orders-container">
+											<tr th:each="slider, iteration: ${sliders}">
+												<td th:text="${slider.sliderId}"></td>
+												<td th:text="${slider.textMain}"></td>
+												<td th:text="${slider.textSecondary}"></td>
+												<td th:text="${slider.categoryName}">  </td>
+												<td >
+													<button
+														class="btn btn-danger pull-right"
+														th:onclick="|deleteSlider(${slider.sliderId})|">Delete
+													</button>
+												</td>
+											</tr>
+									</tbody>
+								</table>
+								<div th:if="${sliders.size() < 1}">
+									<div>
+										<p> No sliders are found in the system. </p>
+									</div>
+								</div>
+  							</div>
+						</div>
+					</div>
+					
+			</div>
+		</div>
+		</div>
+	</section>
+
+	<!-- Modal View For Product Image Upload-->
+	<div class="modal fade" id="slider-image-upload-modal" data-keyboard="false" data-backdrop="false" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Upload Slider Image</h5>
+				</div>
+				<div class="modal-content-body">
+					<form id="img-upload-form" enctype="multipart/form-data">
+							<div class="featured-group">
+								<input type="hidden" name="sliderId" id="slider-id" />
+								<label for="show-slider"> Choose Images For Upload: </label>
+								<input type="file" name="images" id="slider-image" multiple/>
+							</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" id="img-upload-btn" class="btn btn-primary">Upload</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}">
+	</div>
+<script th:inline="javascript">
+	
+	$("#sub-category").hide(); //hides subcategory
+
+	$(function() {
+		$("#submit_btn").click(function(event) {
+			event.preventDefault();
+			var sliderTitle = $("#slider-title").val();
+			var sliderCaption = $("#slider-caption").val();
+			var subCategoryValue = parseInt($("#sub-category").val());
+			var productCategoryId;
+			if(Number.isInteger(subCategoryValue)) {
+				console.log("SubCategoryValue: " + subCategoryValue);
+				productCategoryId = subCategoryValue;
+			} else {
+				productCategoryId = $("#product-category").val();
+			}
+			console.log("CategoryId : "+ productCategoryId);
+			
+			var showSlider = $("#show-slider").val() || false;
+			
+			//Every data retrieved from form should be validated and sanitized. 
+			//For now data is not sanitized. Always validate form data before sending it to server.
+			var sliderData = {};
+			sliderData.textMain = sliderTitle;
+			sliderData.textSecondary = sliderCaption;
+			sliderData.categoryId = productCategoryId;
+			sliderData.showSlider = showSlider;
+
+
+			//Now create an ajax request to send product detail to server.
+			$.ajax({
+				method: "POST",
+				url: contextPath + "/sliders/add",
+				data: JSON.stringify(sliderData),
+				contentType: "application/json",
+				success: function(result) {
+					$("#slider-id").val(result);
+					$("#slider-image-upload-modal").modal('show');
+				},
+				error: function(error) {
+					alert(error);
+				}
+			});
+		});
+	});
+
+	$("#product-category").on('change', function(event) {
+		var parentId = (this.value);
+		if(parentId !== undefined && parentId !== null && parentId != '') {
+			$.ajax({
+				method: "GET",
+				url: contextPath + "/category/productEntry/parent/" + parentId,
+				success: function(data) {
+					var subCategory = $("#sub-category");
+					if(data.data !== undefined || data.data.length > 0) {
+						subCategory.empty();
+						var option = "";
+						$.each(data.data, function(index, element) {
+							option += "<option value='" + element.categoryId +"' >" + element.categoryName + "</option>";
+						});
+					
+						subCategory.append(option);
+						subCategory.show();
+					}
+				},
+				error: function(error) {
+					swal({
+						icon: "error",
+						text: error.responseJSON.message
+					});
+				}
+			});
+		}
+		
+	});
+
+	$("#img-upload-btn").on('click', function(event) {
+		event.preventDefault();
+		var form = document.getElementById('img-upload-form');
+		var formData = new FormData(form);
+		$(".loader-holder").show();
+		$.ajax({
+			method: "POST",
+			url: contextPath + "/sliders/uploadSliderImage",
+			data: formData,
+			contentType: false,
+			processData: false,
+			success: function(data){
+			
+				$("#product-image-upload-modal").modal('hide');
+				$(".loader-holder").hide();
+				swal({
+					text: "Image uploaded successfully!",
+					icon: "success",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+
+			},
+			error: function(error){
+				$(".loader-holder").hide();
+				swal({
+					text: "Something went wrong while uploading image!",
+					icon: "error",
+					closeOnClickOutside: false,
+					closeOnEsc: false
+				}).then(function() {
+					window.location.href = contextPath;
+				});
+			}
+		});
+	});
+	
+	function deleteSlider(sliderId){
+		swal({
+			title : "Delete!",
+			text : "Are you sure you want to Delete this Slider?",
+			icon : "warning",
+			dangerMode : true,
+			buttons : true,
+			closeOnClickOutside : false,
+			closeOnEsc : false
+		})
+		.then(function(clickedOk) {
+			if (clickedOk) {
+				$(".loader-holder").show();
+				$.ajax({			
+					url : contextPath + "/sliders/" + sliderId,
+					method : "DELETE",
+					success : function(response) {
+						$(".loader-holder").hide();
+							swal({
+								icon : "success",
+								text : "Slider deleted successfully"
+							})
+							.then(function(clickedOk) {
+								window.location.href = contextPath;
+							});
+					},
+					error : function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon : "error",
+							text : error
+						});
+					}
+				});
+			}
+		});
+	}
+	
+</script>
+</body>
+</html>

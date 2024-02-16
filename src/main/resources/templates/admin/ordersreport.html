@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" 
+		xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>ipasal: Admin Panel - Order Information</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}"/>
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/themify/themify-icons.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/fonts/elegant-font/html-css/style.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animate/animate.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/css-hamburgers/hamburgers.min.css}"  />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/animsition/css/animsition.min.css}" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+	<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!--===============================================================================================-->	
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  	<link rel="stylesheet" href="/resources/demos/style.css">
+<!--===============================================================================================--> 	
+	<style>
+		.site-color {
+			background-color: #e65540;
+		}
+		.selection {
+			border-bottom: 3px solid #238AE6;
+		}
+		th{
+			color: aliceblue;
+		}
+		th, td {
+			text-align: left;
+			font-size: small;
+		}
+		table {
+			border: 1px solid #e9ecef;
+		}
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+		.displayBorder {
+		border: 1px solid #000 !important;
+		}
+	</style>
+<!--===============================================================================================-->
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1" >
+	</header>
+	
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+						<div th:replace="~{fragments/admin-sidebar}" >
+						
+						</div>
+				</div>
+				<input type="hidden" id="totalOrders" th:value="${currentPageTotalOrders}" />
+				<div class="col-md-9 p-b-30">
+					<div class="container">
+						<div class="card">
+							<div class="card-header">All Orders</div>
+							<div class="card-body">
+							<div>
+									<table class="table">
+										<tr>
+											<td><a th:href="@{/admin/delivered}"><i class="fa fa-circle text-success" aria-hidden="true"></i><button
+														class="btn">Delivered</button></a></td>
+											<td><a th:href="@{/admin/cancelled}"><i class="fa fa-circle text-danger" aria-hidden="true"></i><button
+														class="btn">Cancelled</button></a></td>
+											<td ><a class="selection" th:href="@{/admin/ordersreport}"><i class="fa fa-circle text-primary" aria-hidden="true" style="font-size: 1.2em;"></i><button
+														class="btn">All Orders</button></a></td>
+										</tr>
+									</table>
+								</div>
+								<div>
+								<button class="btn btn-secondary" id="btn_today">Today</button>
+								<button class="btn btn-secondary" id="btn_thisWeek">This Week</button>
+								<button class="btn btn-secondary" id="btn_thisMonth">This Month</button>
+								<div id="datePick"> 
+								<span class="s-text12">Start Date: <input type="text" class="displayBorder" id="startDate"></span> &nbsp;
+								<span class="s-text12">End Date: <input type="text" class="displayBorder" id="endDate"></span> &nbsp; &nbsp;
+								<button id="btn_customGo" class="btn btn-success">Go</button>
+							</div>
+								
+								</div>
+							
+								<table th:if="${orders.data.size() > 0}" class="table">
+									<thead class="site-color">
+										<tr>
+											<th scope="col">ID</th>
+											<th scope="col">STATUS</th>
+											<th scope="col">ORDER DATE</th>
+											<th scope="col">CUSTOMER</th>
+											<th>DETAILS</th>
+										</tr>
+									</thead>
+									<tbody id="orders-container">
+											<tr th:each="order, iteration: ${orders.data}">
+												<td th:text="${order.orderId}"></td>
+												<td th:text="${order.status}"></td>
+												<td th:text="${#calendars.format(order.orderDate,'dd/MM/yyyy')}">2018-10-12</td>
+<!-- 												<td th:text="${order.user.username}">  </td> -->
+												<td th:text="${order.user.fName + ' '+ order.user.lName}">  </td>
+												<td><a href="#" th:href="@{/admin/order/} + ${order.orderId}">View</a></td>
+											</tr>
+									</tbody>
+								</table>
+								<div th:if="${orders.data.size() < 1}">
+									<div>
+										<p> No orders are found in the system. </p>
+									</div>
+								</div>
+							</div>
+							<div th:if="${orders.data.size() >= 9}">
+								<button id="load-more-all" class="btn"> LOAD MORE</button>
+							</div>
+						</div>
+					</div>
+
+				</div>
+		</div>
+		</div>
+	</section>
+	
+	<footer th:replace="~{fragments/footer :: footer}" class="bg6 p-t-45 p-b-43 p-l-45 p-r-45">
+	</footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ 	<script th:inline="javascript">
+		let lastSeenId = /*[[${lastSeenId}]]*/ '';
+		let startDate = /*[[${startDate}]]*/ '';
+		let endDate = /*[[${endDate}]]*/ '';
+		const action = "next";
+	</script>
+	<script>
+	var url = contextPath + "/admin";
+	var today = new Date();
+	
+	$(function() {
+	    $("#startDate" ).datepicker({
+	    	dateFormat: "yy-mm-dd" 	
+	    })
+	});
+
+	$(function() {
+	    $("#endDate" ).datepicker({
+	    	dateFormat: "yy-mm-dd"
+	    });
+	});
+
+	
+	$("#btn_today").on("click", function (event) {
+		startDate =  today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+		endDate = startDate;
+		
+		window.location = url + "/orderReport/range?startDate=" + startDate + "&endDate=" + endDate;
+		
+	});
+	
+	$("#btn_thisWeek").on("click", function (event){
+		let oneWeekAgo = new Date();
+		oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+		endDate = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+		startDate = oneWeekAgo.getFullYear()+"-"+(oneWeekAgo.getMonth()+1)+"-"+oneWeekAgo.getDate();
+		
+		window.location = url + "/orderReport/range?startDate=" + startDate + "&endDate=" + endDate;
+	});
+
+	$("#btn_thisMonth").on("click", function(event){
+		let oneMonthAgo = new Date();
+		oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+		
+		 endDate = today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+		 startDate = oneMonthAgo.getFullYear()+"-"+(oneMonthAgo.getMonth()+1)+"-"+oneMonthAgo.getDate();
+		
+		window.location = url + "/orderReport/range?startDate=" + startDate + "&endDate=" + endDate ;		
+	});
+	
+	$("#btn_customGo").on("click", function(){
+		startDate = $("#startDate").val();
+		endDate = 	$("#endDate").val();
+		
+		if(startDate != "" && endDate != "" ) {
+			window.location = url + "/orderReport/range?startDate=" + startDate + "&endDate=" + endDate;
+		}
+		else {
+			swal({
+				icon: "error",
+				text: "Enter the date correctly"
+			});
+		}
+	});
+	
+	
+	</script>
+	<script src="js/orders.js" th:src="@{/js/orders.js}"></script>
+</body>
+</html>

@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+<title>Edit Product Details</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+<link rel="icon" type="image/png" th:href="@{/images/icons/favicon.png}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/font-awesome-4.7.0/css/font-awesome.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/themify/themify-icons.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/Linearicons-Free-v1.0.0/icon-font.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/fonts/elegant-font/html-css/style.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animate/animate.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/css-hamburgers/hamburgers.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/animsition/css/animsition.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/select2/select2.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/slick/slick.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/vendor/noui/nouislider.min.css}" />
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" th:href="@{/css/util.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+<!-- Section for bootstrap tag input  -->
+<link th:href="@{/vendor/tagsinput/tagsinput.css}" rel="stylesheet" type="text/css">
+<!--===============================================================================================-->
+<style>
+.error_form{
+	top: 12px;
+	color: rgb(216, 15, 15);
+    font-size: 15px;
+    font-family: Helvetica;
+}
+</style>
+</head>
+<body class="animsition">
+	<header th:replace="~{fragments/header}" class="header1"> </header>
+
+	<!-- content page -->
+	<section class="bgwhite p-t-66 p-b-38">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3 p-b-30">
+					<div th:replace="~{fragments/admin-sidebar}"></div>
+				</div>
+
+				<div class="col-md-9 p-b-30">
+					<h3 class="m-text26  p-b-16">Edit Product Information</h3>
+					<hr>
+
+					<div class="container">
+						<div>
+							<h4 style="font-size: 16px; margin-left:5em;">Edit Product 
+								<span style="margin-left: 60px">
+									<label for="stock-management-yes">
+										<input type="radio" id="stock-management-yes" name="stock-management-status" value="yes" checked/> Yes
+									</label>
+									<label style="margin-left: 20px;" for="stock-management-no">
+										<input type="radio" id="stock-management-no" name="stock-management-status" value="no" /> No
+									</label>
+								</span>
+							</h4>
+							
+						</div><br>
+
+						<div>
+							<h4>Product Source</h4> <br>
+							<div style="margin-left: 5em;">
+								<label>
+									Category ID: <input type="text" th:value="${product.categoryId}"/>
+								</label> <br>
+								<label>
+									Category Name: <input type="text" th:value="${product.categoryName}" />
+								</label>
+							</div>
+						</div><br>
+
+						<div >
+							<h4 style="margin-bottom: 15px;">Product Information</h4> 
+							<form id="productEditForm">
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th>#</th>
+											<td>
+												<input type="text" readonly="readonly" name="productId" th:value="${product.productId}"
+													   data-validation="strip escape" />
+<!-- 												<span th:text="${product.productId}"></span> -->
+											</td>
+										</tr>
+										<tr>
+											<th>Product Name</th>
+											<td>
+												<input type="text" name="productName" th:value="${product.productName}" id="product-name" data-validation="strip escape"/><br>
+												<span class="error_form" id="productName_error_message"></span>
+											</td>
+										</tr>
+										<tr>
+											<th>Short Description</th>
+											<td>
+												<textarea name="shortDescription" class="size18 s-text7 p-l-22 p-r-22" id="product-short-desc" th:text="${product.shortDesc}"
+														  data-validation="strip escape"></textarea><br>
+												<span class="error_form" id="shortDesc_error_message"></span>		  
+											</td>
+										</tr>
+										<tr>
+											<th>Highlights</th>
+											<td>
+												<textarea name="highlights" class="size18 s-text7 p-l-22 p-r-22" id="product-highlights" th:text="${product.highlights}"
+														  data-validation="strip escape" ></textarea><br>
+												<span class="error_form" id="highlights_error_message"></span>		  
+											</td>
+										</tr>
+										<tr>
+											<th>Description</th>
+											<td>
+												<textarea name="description" class="size18 s-text7 p-l-22 p-r-22" id="product-description" th:text="${product.description}"
+														  data-validation="strip escape"></textarea><br>
+												<span class="error_form" id="description_error_message"></span>		  
+											</td>
+										</tr>
+										<tr>
+											<th>Price</th>
+											<td>
+												<input id="price" type="number" name="price" th:value="${product.rate}"/><br>
+											</td>
+										</tr>
+										
+										<tr>
+											<th>Discount Percent</th>
+											<td>
+												<input type="number" step="0.01" name="discountPercent" th:value="${product.discountPercent}" />
+											</td>
+										</tr>
+										
+										<tr>
+											<th>Actual Price</th>
+											<td>
+												<input type="number" id="actualPrice" name="actualRate" th:value="${product.actualRate}"/><br>
+												<span class="error_form" id="actualPrice_error_message"></span>
+											</td>
+										</tr>
+										
+										<tr>
+											<th>Unit</th>
+											<td>
+												<input type="text" name="unit" id="unit" th:value="${product.unit}"
+													   data-validation="strip escape"/><br>
+												<span class="error_form" id="unit_error_message"></span>	   
+											</td>
+										</tr>
+										<tr>
+											<th>Quantity</th>
+											<td>
+												<input type="number" name="quantity" id="quantity" pattern="[-+]?[0-9]"
+													   th:value="${product.availableItems}"/><br>
+												<span class="error_form" id="quantity_error_message"></span>
+											</td>
+										</tr>
+										
+										<tr>
+											<th>Featured (Is this a Featured Product?)</th>
+<!-- 											<td> -->
+<!-- 												<input type="checkbox" name="feature" id="featuredCheck" /> -->
+<!-- 											</td> -->
+										</tr>
+										<tr>
+										            <td>
+										                 <div class="radio">
+										                      <label><input type="radio" name="selectFeature" value="true" checked>Yes</label>
+										                 </div>
+										            </td>
+										             <td>
+										                 <div class="radio">
+										                      <label><input type="radio" name="selectFeature" value="false">No</label>
+										                 </div>
+										             </td>
+										</tr>
+										<tr>
+											<td>
+<!-- 												<input type="text" class="lower-case" data-role="tagsinput" id="product_tags" th:value="${product.productTags.productTags}" placeholder="Enter Product Tags"/>										 -->
+												 <label>Enter product tags</label>
+												 <select multiple data-role="tagsinput" id="product_tags">		
+													 <option th:each="tag : ${product.productTags}" th:value="${tag}"></option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<button id="add-related-product" class="btn btn-link">Add Related Product</button>
+											</td>
+										</tr>
+									</thead>
+								</table>
+									<table id="related-div">
+										<tr>
+											<td>Related Products</td>
+										</tr>
+										<tr>
+											<td>Product ID</td>
+											<td>Product Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</td>
+											<td>Remove</td>
+										</tr>
+<!-- 										<tr th:each="related: ${product.relatedProductDtos}"> -->
+<!-- 											<td th:text="${related.productId}"></td> -->
+<!-- 											<td th:text="${related.productName}"></td> -->
+<!-- 										</tr> -->
+										<tbody id="related-table-data">
+
+										</tbody>
+										
+									</table>
+							
+							
+								<div class="pull-right">
+									<button class="btn btn-info">Cancel</button>
+									<button id="submit" class="btn btn-success">Done </button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	
+		<!-- Modal View For Related Products Entry-->
+	<div class="modal fade" id="related-product-entry-modal"
+		data-keyboard="false" data-backdrop="false" role="dialog"
+		aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered"
+			role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Add Related Product</h5>
+				</div>
+				<div class="modal-content-body">
+					<div class="row" style="margin: 5px 20px;">
+						<div style="width: 100%; margin: 10px auto;">
+							<select class="sizefull s-text7 p-l-22 p-r-22" id="cat-id">
+								<option>Select Category</option>
+								<option th:each="category: ${categories}"
+									th:value="${category.categoryId}"
+									th:text="${category.categoryName}">Technology</option>
+							</select>
+						</div>
+
+
+						<div class="input-group" style="margin: 10px auto;">
+							<input
+								class="form-control py-2 font-size-12 border-right-0 border"
+								type="search" placeholder="Search items..." id="search-input">
+							<span class="input-group-append">
+								<button id="searchBtn"
+									class="btn btn-outline-secondary border-left-0 border"
+									type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+						<div>
+							<table class="table">
+								<thead id="table-header">
+									<tr>
+										<th>SNo.</th>
+										<th>Product Name</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody id="table-data">
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="modal-footer">
+					<button id="relatedOkBtn" class='btn btn-primary'>OK</button>
+					<button id="cancelBtn" class="btn btn-danger">Cancel</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<footer th:replace="~{fragments/footer :: footer}"
+		class="bg6 p-t-45 p-b-43 p-l-45 p-r-45"> </footer>
+	<div th:replace="~{fragments/scripts :: scripts}"></div>
+	<script th:inline="javascript">
+		
+		let relatedProductId = /*[[${product.relatedProducts}]]*/ '0'
+		
+		
+		//Displaying the initial related product on first load of the page
+		getRelatedProducts(relatedProductId);
+		
+		//Initializing the final related product array
+		var relatedProductIdFinal = []; 
+		relatedProductIdFinal = relatedProductId;
+		
+		
+		var productInfo = {};
+		var updateProductInfo = function() {
+// 			productInfo.productId = $("tr td:first-child").text();
+			productInfo.productId = $("input[name='productId']").val();
+			productInfo.productName = $("input[name='productName']").val();
+			productInfo.shortDesc = $("textarea[name='shortDescription']").val();
+			productInfo.highlights = $("textarea[name='highlights']").val();
+			productInfo.description = $("textarea[name='description']").val();
+// 			productInfo.rate = $("input[name='price']").val();
+			productInfo.unit = $("input[name='unit']").val();
+			productInfo.availableItems = $("input[name='quantity']").val();
+			productInfo.discountPercent = $("input[name='discountPercent']").val();
+			productInfo.relatedProducts = relatedProductIdFinal;
+			productInfo.productTags = $("#product_tags").tagsinput('items');
+			var featuredValue = $("input[name='selectFeature']:checked").val();	
+				
+				var newActualPrice =  $("input[name='actualRate']").val();
+				var actualPrice;
+				var discountPercent = $("input[name='discountPercent']").val();
+				var rate;
+					
+				
+			    actualPrice = newActualPrice;
+			    
+			    if(discountPercent > 0) {
+			    	rate = (actualPrice - ((discountPercent / 100) * actualPrice));
+			    } else {
+			    	rate = actualPrice;
+				};
+			
+			productInfo.rate = rate;
+			productInfo.actualRate = actualPrice;
+			productInfo.featured = featuredValue;
+				
+			
+			
+			if(productInfo != null) {
+				$(".loader-holder").show();
+				$.ajax({
+					url: contextPath + "/products/" + productInfo.productId,
+					method: "PUT",
+					contentType: "application/json",
+					data: JSON.stringify(productInfo),
+					success: function(data) {
+						$(".loader-holder").hide();
+						swal({
+							text: data,
+							icon: "success",
+						}).then(function(btnVal) {
+							if(btnVal) {
+								window.location =  contextPath + "/admin/editItem/" + productInfo.productId;
+							}
+						});
+					},
+					error: function(error) {
+						$(".loader-holder").hide();
+						swal({
+							icon: "error",
+							text: error.responseText
+						});
+					}
+				});
+			}
+	}
+
+		
+		
+		$(function() {
+			$("#productName_error_message").hide();
+			$("#shortDesc_error_message").hide();
+			$("#highlights_error_message").hide();
+			$("#description_error_message").hide();
+			$("#actualPrice_error_message").hide();
+			$("#unit_error_message").hide();
+			$("#quantity_error_message").hide();
+			
+			var error_productName = false;
+			var error_shortDesc = false;
+			var error_highlights = false;
+			var error_description = false;
+			var error_actualPrice = false;
+			var error_unit = false;
+			var error_quantity = false;
+			
+			
+			$("#product-name").focusout(function() {
+				check_productName();
+			});
+			
+			$("#product-short-desc").focusout(function() {
+				check_shortDesc();
+			});
+			
+			$("#product-highlights").focusout(function() {
+				check_highlights();
+			});
+			
+			$("#product-description").focusout(function() {
+				check_description();
+			});
+			
+			$("#actualPrice").focusout(function() {
+				check_actualPrice();
+			});
+			
+			$("#unit").focusout(function() {
+				check_unit();
+			});
+			
+			$("#quantity").focusout(function() {
+				check_quantity();
+			});
+			
+			
+			function check_productName() {
+				var productName = $("#product-name").val();
+				if(productName !== '') {
+					$("#productName_error_message").hide();
+					$("#product-name").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#productName_error_message").html("Please enter the Product Name!");
+					$("#productName_error_message").show();
+					$("#product-name").css("border-bottom", "2px solid #F90A0A");
+					error_productName = true;
+				}
+			}
+			
+			function check_shortDesc() {
+				var productShortDesc = $("#product-short-desc").val();
+				if(productShortDesc !== '') {
+					$("#shortDesc_error_message").hide();
+					$("#product-short-desc").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#shortDesc_error_message").html("Please enter the Short Description!");
+					$("#shortDesc_error_message").show();
+					$("#product-short-desc").css("border-bottom", "2px solid #F90A0A");
+					error_shortDesc = true;
+				}
+			}
+			
+			function check_highlights() {
+				var productHighlights = $("#product-highlights").val();
+				if(productHighlights !== '') {
+					$("#highlights_error_message").hide();
+					$("#product-highlights").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#highlights_error_message").html("Please enter the Highlights!");
+					$("#highlights_error_message").show();
+					$("#product-highlights").css("border-bottom", "2px solid #F90A0A");
+					error_highlights = true;
+				}
+			}
+			
+			function check_description() {
+				var productDescription = $("#product-description").val();
+				if(productDescription !== '') {
+					$("#description_error_message").hide();
+					$("#product-description").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#description_error_message").html("Please enter the Product Description!");
+					$("#description_error_message").show();
+					$("#product-description").css("border-bottom", "2px solid #F90A0A");
+					error_description = true;
+				}
+			}
+			
+			function check_actualPrice() {
+				var actualPrice = $("#actualPrice").val();
+				if(actualPrice !== '') {
+					$("#actualPrice_error_message").hide();
+					$("#actualPrice").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#actualPrice_error_message").html("Please enter the Price!");
+					$("#actualPrice_error_message").show();
+					$("#actualPrice").css("border-bottom", "2px solid #F90A0A");
+					error_actualPrice = true;
+				}
+			}
+			
+			function check_unit() {
+				var unit = $("#unit").val();
+				if(unit !== '') {
+					$("#unit_error_message").hide();
+					$("#unit").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#unit_error_message").html("Please enter the unit!");
+					$("#unit_error_message").show();
+					$("#unit").css("border-bottom", "2px solid #F90A0A");
+					error_unit = true;
+				}
+			}
+			
+			function check_quantity() {
+				var quantity = $("#quantity").val();
+				if(quantity !== '') {
+					$("#quantity_error_message").hide();
+					$("#quantity").css("border-bottom", "2px solid #34F458");
+				} else {
+					$("#quantity_error_message").html("Please enter the Quantity!");
+					$("#quantity_error_message").show();
+					$("#quantity").css("border-bottom", "2px solid #F90A0A");
+					error_quantity = true;
+				}
+			}
+			
+			//calls product info update function when done button is clicked.
+			$("#submit").on("click", function(event) {
+				event.preventDefault();
+				
+				error_productName = false;
+				error_shortDesc = false;
+				error_highlights = false;
+				error_description = false;
+				error_actualPrice = false;
+				error_unit = false;
+				error_quantity = false;
+				
+				check_productName();
+				check_shortDesc();
+				check_highlights();
+				check_description();
+				check_actualPrice();
+				check_unit();
+				check_quantity();
+				
+				if(error_productName === false && error_shortDesc === false && 
+					error_highlights === false && error_description === false && 
+					error_actualPrice === false && error_unit === false && error_quantity === false) {
+
+					
+					var editMode = $("input[name='stock-management-status']:checked").val();
+					if(editMode == "yes") {
+						swal({
+							text: "Do you really want to update product info?",
+							icon: "info",
+							buttons: true
+						}).then(function(confirmation) {
+							if(confirmation) {
+								updateProductInfo();
+							}
+						});
+					} else {
+						swal({
+							text: "Please enable edit mode first!",
+							icon: "info"
+						});
+					}
+				} else {
+					swal({
+			        	icon: "info",
+			        	text: "Please enter the required fields correctly :(",
+			    	});
+				}	
+			});
+		});
+		
+		//Related Product Section		
+		$("#add-related-product").on("click", function(event){
+			event.preventDefault();
+			$("#table-data").empty();
+			$("#table-header").hide();
+			$("#related-product-entry-modal").modal("show");
+		});
+		
+		$("#cancelBtn").on("click", function(event){
+			$("#table-data").empty();
+			$("#table-header").hide();
+			$("#related-product-entry-modal").modal("hide");
+		});
+		
+		
+		//On click event listener fot the searchbox
+		$("#searchBtn").on("click", function(event) {
+			event.preventDefault();
+			let searchKey = $("#search-input").val().trim();
+			let url = "/category/";
+			let categoryId = parseInt($("#cat-id").val());
+			
+			if(Number.isInteger(categoryId)) {
+				$("#table-header").show();
+				$.ajax({
+					url: contextPath+ url + categoryId + "/product/search?searchKey=" + encodeURI(searchKey),
+					method: "GET",
+					success: function(data){
+						let returnedData = data.data;
+						let tableData ="";
+						returnedData.forEach(element => {
+							tableData += "<tr>";
+							tableData += "<td>" + element.productId + "</td>";
+							tableData += "<td>" + element.productName + "</td>";
+							tableData += "<td><input type='checkbox' value='" + element.productId  + "' /> </td>";
+							tableData += "</tr>";
+						});
+						
+						$("#table-data").empty();
+						$("#table-data").append(tableData);
+						
+					},
+					error: function(error){
+						alert(JSON.stringify(error));
+					}
+				});
+			} else {
+				swal({
+					icon: "error",
+					text: "Must select the category from category list."
+				});
+			}
+		});
+		
+		
+		
+		
+		// Getting the Related Product ids for main product 
+		$("#relatedOkBtn").click(function(event){
+			  event.preventDefault();
+
+
+			  $("#table-data input:checkbox:checked").each(function(){
+			    relatedProductId.push(parseInt($(this).val()));
+			  });
+			  
+			  if(relatedProductId.length > 0) {
+
+				$("#related-product-entry-modal").modal("hide");
+			  	
+			  	//Getting the product array from relatedProductId array after removing duplicates 
+			  	relatedProductIdFinal = [...  new Set(relatedProductId)];
+			  	
+			 
+			  	console.log("Final Related Products " + relatedProductIdFinal);
+			  	
+				//Getting the list of updated related products			  	
+			  	getRelatedProducts(relatedProductIdFinal);
+			  }
+			  else {
+				  swal({
+						icon: "error",
+						text: "Must select the category form category list."
+					});
+			  }
+			});
+		
+		
+		//Function to display all the related products in the tabular form
+		function getRelatedProducts(relatedArray) {
+			if(relatedArray.length != 0) {
+				$("#related-div").show();
+				relatedArray.sort();
+				$("#related-table-data").empty();
+			  	for(let i = 0; i < relatedArray.length; i++){
+		
+			  	   console.log(relatedArray[i]);
+			  	   let prodIndex = relatedArray[i];
+					$.ajax({
+						url: contextPath + "/products/byId/" + prodIndex,
+						method: "GET",
+						success: function(data){
+							
+							let returnedData = data.data;
+							let tableData ="";
+								tableData += "<tr>";
+								tableData += "<td>" + returnedData[0].productId + "</td>";
+								tableData += "<td>" + returnedData[0].productName + "</td>";
+								tableData += "<td><button class='fa fa-window-close pull-right' style='text-align: center;' onclick='removeRelatedProduct(" + returnedData[0].productId + ")'></button></td>";
+								tableData += "</tr>";
+							
+							$("#related-table-data").append(tableData);
+						},
+						error: function(error){
+							alert(JSON.stringify(error));
+						}
+					});
+			  	}
+			} else {
+				$("#related-div").hide();
+			}
+		}
+		
+		
+		//Function to remove a product from list of related products
+		function removeRelatedProduct(productId) {
+			$(".loader-holder").show();
+			//Getting the index of the product to be removed in the related product array
+			let removeIndex = relatedProductIdFinal.indexOf(productId);
+			
+			//Splicing the product id from the array of related product
+			relatedProductIdFinal.splice(removeIndex , 1);
+			
+			//Displaying the related products array in the table
+			getRelatedProducts(relatedProductIdFinal);
+			
+			//Assigning the new related product array into the old one
+			relatedProductId = relatedProductIdFinal;
+			
+			console.log(relatedProductIdFinal);
+			$(".loader-holder").hide();
+			event.preventDefault();
+		}		
+		
+	</script>
+</body>
+</html>
